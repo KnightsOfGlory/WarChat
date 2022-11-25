@@ -28,7 +28,7 @@ ipcMain.on('socket', async (event, arg) => {
         client.write("\x03\x04");
         client.write("piankachu\x0D\x0A")
         client.write("\x0D\x0A")
-        client.write("/join DaRK\x0D\x0A")
+        client.write("/join KoG\x0D\x0A")
       });
 
       client.on('data', function(data: string) {

@@ -1,28 +1,31 @@
 import Bar from "./navigation/Bar";
-import {Stack} from "@mui/material";
+import {ListItem, ListItemButton, Stack} from "@mui/material";
 import React from "react";
+import Profiles from "./navigation/Profiles";
+import List from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
+import Pages from "./navigation/Pages";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import d2dv from "../../assets/images/d2dv.png";
+import Users from "./channel/Users";
 
 export default class Home extends React.Component {
     constructor(props: {} | Readonly<{}>) {
         super(props);
-
-        console.log("constructor")
 
         this.state = {messages: []};
         this.hook();
     }
 
     hook() {
-        console.log("hook")
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
-            var string = new TextDecoder().decode(arg);
+            let string = new TextDecoder().decode(arg);
             let tokens = string.split("\n")
 
             // @ts-ignore
             this.setState({messages: [...this.state.messages, ...tokens]})
-            // @ts-ignore
-            console.log(this.state.messages)
         });
     }
 
@@ -30,17 +33,23 @@ export default class Home extends React.Component {
         return (
             <div>
                 <Bar/>
-                <Stack>
-                    <div>
+                <Stack direction="row" sx={{height: "100%"}}>
+                    <Profiles/>
+                    <Pages/>
+                    <List sx={{width: "100%", height: "calc(100vh - 100px)", overflowY: "auto"}}>
                         {
                             // @ts-ignore
                             this.state.messages.map((message: string) => {
-                                return (<div>
-                                    {message}<br/>
-                                </div>);
-                            })
+                                return (
+                                    <ListItem>
+                                        <ListItemText>
+                                            {message}
+                                        </ListItemText>
+                                    </ListItem>);
+                                 })
                         }
-                    </div>
+                    </List>
+                    <Users/>
                 </Stack>
             </div>
         );
