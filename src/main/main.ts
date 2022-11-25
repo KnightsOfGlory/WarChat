@@ -17,6 +17,11 @@ let mainWindow: BrowserWindow | null = null;
 const net = require('net');
 const client = new net.Socket();
 
+ipcMain.on('chat', async (event, arg) => {
+  client.write(arg);
+  client.write("\x0D\x0A");
+});
+
 ipcMain.on('socket', async (event, arg) => {
 
   console.log(arg)

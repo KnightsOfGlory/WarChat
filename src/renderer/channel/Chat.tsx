@@ -1,17 +1,29 @@
-import {Divider, ListItem, Stack, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import React from "react";
-import List from "@mui/material/List";
-import ListItemText from "@mui/material/ListItemText";
-import Box from "@mui/material/Box";
 
 export default class Chat extends React.Component {
     constructor(props: {} | Readonly<{}>) {
         super(props);
+
+        this.state = {message: ""};
     }
 
     render() {
         return (
-            <TextField id="outlined-basic" variant="outlined" sx={{width: "auto", margin: "16px"}} />
+            <TextField
+                variant="outlined"
+                // @ts-ignore
+                value={this.state.message}
+                // @ts-ignore
+                onInput={(event) => this.setState({message: event.target.value})}
+                onKeyDown={(event) => {
+                    if (event.code == "Enter") {
+                        // @ts-ignore
+                        window.electron.ipcRenderer.sendMessage("chat", this.state.message);
+                        this.setState({message: ""})
+                    }
+                }}
+                sx={{width: "auto", margin: "16px"}} />
         );
     }
 }

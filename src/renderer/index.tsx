@@ -1,12 +1,37 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {createTheme, CssBaseline, darkScrollbar, PaletteMode, ThemeProvider} from "@mui/material";
+import {grey} from "@mui/material/colors";
 
-const theme = createTheme({
+export const getDesignTokens = (mode: PaletteMode) => ({
     palette: {
         mode: 'dark',
     },
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                html: {
+                    ...darkScrollbar(
+                        mode === "dark"
+                            ? {
+                                track: grey[200],
+                                thumb: grey[400],
+                                active: grey[400]
+                            }
+                            : undefined
+                    ),
+                    //scrollbarWidth for Firefox
+                    scrollbarWidth: "thin"
+                }
+            }
+        }
+    }
 });
+
+const mode = "light"
+
+// @ts-ignore
+const theme = createTheme(getDesignTokens(mode));
 
 const Root = () => {
     return (
