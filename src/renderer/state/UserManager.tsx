@@ -10,28 +10,40 @@ export namespace UserManager {
 
     function parse(fields: string[]) {
         let code = fields[0]
+        let name = null
+        let flags = null
+        let client = null
+        let user = null
 
         switch (code) {
             case "1001": // user already there
+            name = fields[2]
+            flags = fields[3]
+            client = fields[4]
+            user = {
+                "name": name,
+                "flags": flags,
+                "client": client
+                };
             case "1002": // user joined
-                let name = fields[2]
-                let flags = fields[3]
-                let client = fields[4]
-                let user = {
+                name = fields[2]
+                flags = fields[3]
+                client = fields[4]
+                user = {
                     "name": name,
                     "flags": flags,
                     "client": client
                 };
                 break;
-            case "1003": // user left
+            case "1003": // user left -- using HOF to make up for bad protocol
+                name = users.filter((u) => fields[2] == u.name)[0]
+                users = users.filter((u) => fields[2] != u.name)
                 break;
+                case "1004":
+                    name = fields[2]
+                    flags = fields[3]
         }
-
-        let name = fields[2]
-        let flags = fields[3]
-        let client = fields[4]
     }
-
     function hook() {
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
