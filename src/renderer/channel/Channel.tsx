@@ -2,7 +2,6 @@ import {Divider, ListItem, Stack, TextField} from "@mui/material";
 import React from "react";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
-import Box from "@mui/material/Box";
 import Chat from "./Chat";
 
 export default class Channel extends React.Component {

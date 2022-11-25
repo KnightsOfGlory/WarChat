@@ -7,6 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Pages from "./navigation/Pages";
 import Users from "./channel/Users";
 import Channel from "./channel/Channel";
+import ChannelTree from "./channel/ChannelTree";
 
 export default class Home extends React.Component {
     constructor(props: {} | Readonly<{}>) {
@@ -35,6 +36,8 @@ export default class Home extends React.Component {
                     <Profiles/>
                     <Divider orientation="vertical" flexItem />
                     <Pages/>
+                    <Divider orientation="vertical" flexItem />
+                    <ChannelTree/>
                     <Divider orientation="vertical" flexItem />
                     <Channel/>
                     <Divider orientation="vertical" flexItem />
