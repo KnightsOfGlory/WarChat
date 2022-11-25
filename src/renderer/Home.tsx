@@ -5,10 +5,8 @@ import Profiles from "./navigation/Profiles";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import Pages from "./navigation/Pages";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import d2dv from "../../assets/images/d2dv.png";
 import Users from "./channel/Users";
+import Channel from "./channel/Channel";
 
 export default class Home extends React.Component {
     constructor(props: {} | Readonly<{}>) {
@@ -38,19 +36,7 @@ export default class Home extends React.Component {
                     <Divider orientation="vertical" flexItem />
                     <Pages/>
                     <Divider orientation="vertical" flexItem />
-                    <List sx={{width: "100%", height: "calc(100vh - 64px)", overflowY: "overlay"}}>
-                        {
-                            // @ts-ignore
-                            this.state.messages.map((message: string) => {
-                                return (
-                                    <ListItem>
-                                        <ListItemText>
-                                            {message}
-                                        </ListItemText>
-                                    </ListItem>);
-                                 })
-                        }
-                    </List>
+                    <Channel/>
                     <Divider orientation="vertical" flexItem />
                     <Users/>
                 </Stack>

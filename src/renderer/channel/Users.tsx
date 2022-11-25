@@ -7,7 +7,14 @@ import Avatar from "@mui/material/Avatar";
 
 import chat from "../../../assets/images/chat.png";
 import d2dv from "../../../assets/images/d2dv.png";
+import d2xp from "../../../assets/images/d2xp.png";
+import drtl from "../../../assets/images/drtl.png";
 import jstr from "../../../assets/images/jstr.png";
+import sexp from "../../../assets/images/sexp.png";
+import star from "../../../assets/images/star.png";
+import w2bn from "../../../assets/images/w2bn.png";
+import w3xp from "../../../assets/images/w3xp.png";
+import war3 from "../../../assets/images/war3.png";
 
 export default class Users extends React.Component {
     constructor(props: {} | Readonly<{}>) {
@@ -54,58 +61,42 @@ export default class Users extends React.Component {
         let icons = new Map([
             ["[CHAT]", chat],
             ["[D2DV]", d2dv],
+            ["[D2XP]", d2xp],
+            ["[DRTL]", drtl],
             ["[JSTR]", jstr],
+            ["[SEXP]", sexp],
+            ["[STAR]", star],
+            ["[W2BN]", w2bn],
+            ["[W3XP]", w3xp],
+            ["[WAR3]", war3],
         ])
 
         return (
-            <div>
-                <List sx={{ width: '100%', maxWidth: 300, overlflowY: "auto" }}>
-                    {
+            <List sx={{ width: "300px", overlflowY: "auto" }}>
+                {
+                    // @ts-ignore
+                    this.state.users.map((user) => {
                         // @ts-ignore
-                        this.state.users.map((user) => {
-                            // @ts-ignore
-                            let icon = icons.get(user.client.trim())
+                        let icon = icons.get(user.client.trim())
 
-                            return (
-                                <ListItem
-                                    disablePadding
-                                >
-                                    <ListItemButton>
-                                        <ListItemAvatar>
-                                            <Avatar
-                                                src={icon}
-                                                variant="rounded"
-                                            />
-                                        </ListItemAvatar>
-                                        <ListItemText primary={user.name} />
-                                    </ListItemButton>
-                                </ListItem>
-                            );
-                        })
-                    }
-
-                    {/*{[0, 1, 2, 3].map((value) => {*/}
-                    {/*    const labelId = `checkbox-list-secondary-label-${value}`;*/}
-                    {/*    return (*/}
-                    {/*        <ListItem*/}
-                    {/*            key={value}*/}
-                    {/*            disablePadding*/}
-                    {/*        >*/}
-                    {/*            <ListItemButton>*/}
-                    {/*                <ListItemAvatar>*/}
-                    {/*                    <Avatar*/}
-                    {/*                        alt={`Avatar n°${value + 1}`}*/}
-                    {/*                        src={d2dv}*/}
-                    {/*                        variant="rounded"*/}
-                    {/*                    />*/}
-                    {/*                </ListItemAvatar>*/}
-                    {/*                <ListItemText id={labelId} primary={`Line item ${value + 1}`} />*/}
-                    {/*            </ListItemButton>*/}
-                    {/*        </ListItem>*/}
-                    {/*    );*/}
-                    {/*})}*/}
-                </List>
-            </div>
+                        return (
+                            <ListItem
+                                disablePadding
+                            >
+                                <ListItemButton>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            src={icon}
+                                            variant="rounded"
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={user.name} />
+                                </ListItemButton>
+                            </ListItem>
+                        );
+                    })
+                }
+            </List>
         );
     }
 }
