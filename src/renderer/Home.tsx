@@ -1,5 +1,5 @@
 import Bar from "./navigation/Bar";
-import {ListItem, ListItemButton, Stack} from "@mui/material";
+import {Divider, ListItem, ListItemButton, Stack} from "@mui/material";
 import React from "react";
 import Profiles from "./navigation/Profiles";
 import List from "@mui/material/List";
@@ -35,8 +35,10 @@ export default class Home extends React.Component {
                 <Bar/>
                 <Stack direction="row" sx={{height: "100%"}}>
                     <Profiles/>
+                    <Divider orientation="vertical" flexItem />
                     <Pages/>
-                    <List sx={{width: "100%", height: "calc(100vh - 100px)", overflowY: "auto"}}>
+                    <Divider orientation="vertical" flexItem />
+                    <List sx={{width: "100%", height: "calc(100vh - 64px)", overflowY: "overlay"}}>
                         {
                             // @ts-ignore
                             this.state.messages.map((message: string) => {
@@ -49,6 +51,7 @@ export default class Home extends React.Component {
                                  })
                         }
                     </List>
+                    <Divider orientation="vertical" flexItem />
                     <Users/>
                 </Stack>
             </div>

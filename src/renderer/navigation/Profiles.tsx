@@ -10,7 +10,7 @@ export default function Profiles() {
     return (
         <List sx={{height: "100%"}}>
             <ListItem>
-                <ListItemAvatar sx={{minWidth: null}}>
+                <ListItemAvatar sx={{minWidth: 0}}>
                     <Avatar>
                         <ViewInArIcon />
                     </Avatar>

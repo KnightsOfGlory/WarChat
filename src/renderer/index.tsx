@@ -2,7 +2,11 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 
-const theme = createTheme({});
+const theme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
 
 const Root = () => {
     return (
