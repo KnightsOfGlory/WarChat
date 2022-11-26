@@ -1,24 +1,33 @@
 export type Channel = {
     name: string,
-    topic: string,
+    topic: string | null,
     users: number | null
 }
 
-export type ChannelListSubscription  = (channels: Channel[]) => void
+export type CurrentChannelSubscription = (channel: Channel) => void
+export type ChannelListSubscription = (channels: Channel[]) => void
 
 export namespace ChannelManager {
-    let currentChannel: string | null = null
+    let currentChannel: Channel | null = null
     let channels: Channel[] = []
-    let subscriptions: ChannelListSubscription[] = []
+    let currentChannelSubscriptions: CurrentChannelSubscription[] = []
+    let channelListSubscriptions: ChannelListSubscription[] = []
 
     listen()
 
+    export function subscribeCurrent(callback: CurrentChannelSubscription) {
+        currentChannelSubscriptions.push(callback)
+    }
     export function subscribeList(callback: ChannelListSubscription) {
-        subscriptions.push(callback)
+        channelListSubscriptions.push(callback)
     }
 
+    function dispatchCurrent(){
+        let outbound = currentChannel!
+        currentChannelSubscriptions.forEach((s) => s(outbound))
+    }
     function dispatchList(){
-        subscriptions.forEach((s) => s(channels))
+        channelListSubscriptions.forEach((s) => s(channels))
     }
 
     let counter = 0
@@ -34,9 +43,17 @@ export namespace ChannelManager {
                 let innerMessage: string = ""
 
                 switch (code) {
-                    case "1007": // info
+                    case "1007": // joined channel
                         innerMessage = message.split("\"")[1].trim()
-                        currentChannel = innerMessage
+                        currentChannel = {
+                            name: innerMessage,
+                            topic: "",
+                            users: 0
+                        }
+                        dispatchCurrent()
+                        if (currentChannel.name == "Chat") {
+                            window.electron.ipcRenderer.sendMessage("chat", "/channels");
+                        }
                         break;
                     case "1018": // info
                         innerMessage = message.split("\"")[1].trim()
