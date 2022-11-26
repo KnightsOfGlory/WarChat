@@ -4,46 +4,23 @@ export type User = {
     flags: string | null
 }
 
+export type Subscription = (users: User[]) => void
+
 export namespace UserManager {
     let users: User[] = []
     hook()
+    let subscriptions: Subscription[] = []
 
-    function parse(fields: string[]) {
-        let code = fields[0]
-        let name = null
-        let flags = null
-        let client = null
-        let user = null
-
-        switch (code) {
-            case "1001": // user already there
-            name = fields[2]
-            flags = fields[3]
-            client = fields[4]
-            user = {
-                "name": name,
-                "flags": flags,
-                "client": client
-                };
-            case "1002": // user joined
-                name = fields[2]
-                flags = fields[3]
-                client = fields[4]
-                user = {
-                    "name": name,
-                    "flags": flags,
-                    "client": client
-                };
-                break;
-            case "1003": // user left -- using HOF to make up for bad protocol
-                name = users.filter((u) => fields[2] == u.name)[0]
-                users = users.filter((u) => fields[2] != u.name)
-                break;
-                case "1004":
-                    name = fields[2]
-                    flags = fields[3]
-        }
+    export function subscribe(callback: Subscription) {
+        console.log('[DEBUG] Subscribe')
+        subscriptions.push(callback)
     }
+
+    function dispatch(){
+        console.log('[DEBUG] Dispatch')
+        subscriptions.forEach((s) => s(users))
+    }
+
     function hook() {
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
@@ -54,31 +31,57 @@ export namespace UserManager {
             messages.forEach((message) => {
                 let fields = message.split(" ");
                 let code = fields[0]
+                let name = null
+                let flags = null
+                let client = null
+                let user = null
 
                 switch (code) {
                     case "1001": // user already there
-                        let name = fields[2]
-                        let flags = fields[3]
-                        let client = fields[4]
-                        let user = {
+                        name = fields[2]
+                        flags = fields[3]
+                        client = fields[4]
+                        user = {
+                            "name": name,
+                            "flags": flags,
+                            "client": client
+                            };
+                        users.push(user)
+                        console.log('[DEBUG] 1001 Dispatch')
+                        dispatch()
+                        break;
+                    case "1002": // user joined
+                        name = fields[2]
+                        flags = fields[3]
+                        client = fields[4]
+                        user = {
                             "name": name,
                             "flags": flags,
                             "client": client
                         };
+                        users.push(user)
+                        console.log('[DEBUG] 1002 Dispatch')
+                        dispatch()
                         break;
-                    case "1002": // user joined
+                    case "1003": // user left -- using HOF to make up for bad protocol
+                        users = users.filter((u) => fields[2] != u.name)
+                        dispatch()
                         break;
-                    case "1003": // user left
+                    case "1007":
+                        users = []
+                        dispatch()
                         break;
-                    case "1007": // joined channel
+                    case "1009":
+                        name = fields[2]
+                        flags = fields[3]
+                        client = fields[4]
+                        dispatch()
                         break;
                     default:
                         break;
                 }
-            });
 
-            // @ts-ignore
-            this.setState({users: [...this.state.users, ...users]})
+            });
         });
     }
 }

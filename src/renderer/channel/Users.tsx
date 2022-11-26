@@ -4,6 +4,7 @@ import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
+import { UserManager } from "../state/UserManager";
 
 import chat from "../../../assets/images/chat.png";
 import d2dv from "../../../assets/images/d2dv.png";
@@ -21,7 +22,8 @@ export default class Users extends React.Component {
         super(props);
 
         this.state = {users: []};
-        this.hook();
+        //this.hook();
+        UserManager.subscribe((users) => this.setState({users:users}))
     }
 
     hook() {
