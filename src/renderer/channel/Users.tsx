@@ -1,4 +1,4 @@
-import {ListItem, ListItemButton, Stack} from "@mui/material";
+import {ListItem, ListItemButton, Paper, Stack} from "@mui/material";
 import React from "react";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
@@ -76,7 +76,9 @@ export default class Users extends React.Component {
 
         return (
             <Box sx={{ minWidth: "300px", overlflowY: "auto" }}>
-
+                <Paper>
+                    KoG
+                </Paper>
                 <List sx={{ paddingTop: "0px" }}>
                     {
                         // @ts-ignore

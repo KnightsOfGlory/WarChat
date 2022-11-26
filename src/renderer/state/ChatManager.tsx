@@ -2,26 +2,33 @@ import {User, UserManager, UserSubscription} from "./UserManager";
 
 export type Talk = {
     user: User,
-    isEmote: boolean,
     message: string | null
 }
 
-export type TalkSubscription = (talks: Talk[]) => void
+export type Emote = {
+    user: User,
+    message: string | null
+}
+
+export type Info = {
+    message: string
+}
+
+export type Chat = Talk | Emote | Info
+export type TalkSubscription = (talks: Chat[]) => void
 
 export namespace ChatManager {
-    let talks: Talk[] = []
+    let chats: Chat[] = []
     let subscriptions: TalkSubscription[] = []
 
     listen()
 
     export function subscribe(callback: TalkSubscription) {
-        console.log('[DEBUG] Subscribe')
         subscriptions.push(callback)
     }
 
     function dispatch(){
-        console.log('[DEBUG] Dispatch')
-        subscriptions.forEach((s) => s(talks))
+        subscriptions.forEach((s) => s(chats))
     }
 
     function listen() {
@@ -37,9 +44,8 @@ export namespace ChatManager {
                 switch (code) {
                     case "1005": // talk
                     case "1023": // emote
-                        talks.push({
+                        chats.push({
                             user: UserManager.getByUsername(fields[2]),
-                            isEmote: code == "1023",
                             message: message.split("\"")[1].slice(0, -1)
                         })
                         dispatch()
