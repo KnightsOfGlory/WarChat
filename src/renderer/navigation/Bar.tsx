@@ -10,7 +10,7 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 export default function Bar() {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar color="default" position="static">
                 <Toolbar>
                     <IconButton
                         size="large"

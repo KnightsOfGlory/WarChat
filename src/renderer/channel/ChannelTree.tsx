@@ -3,6 +3,17 @@ import Box from "@mui/material/Box";
 import {TreeItem, TreeView} from "@mui/lab";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import {Collapse, ListItem, ListItemButton, ListItemIcon, ListSubheader} from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import {ExpandLess, ExpandMore, StarBorder} from "@mui/icons-material";
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import TagIcon from '@mui/icons-material/Tag';
+
+function SendIcon() {
+    return null;
+}
 
 export default class ChannelTree extends React.Component {
     constructor(props: {} | Readonly<{}>) {
@@ -26,23 +37,43 @@ export default class ChannelTree extends React.Component {
     render() {
         return (
             <Box sx={{width: "150px"}}>
-                <TreeView
-                    expanded={["1", "7"]}
-                    defaultCollapseIcon={<ExpandMoreIcon />}
-                    defaultExpandIcon={<ChevronRightIcon />}
-                    sx={{ width: "150px", overflowY: 'auto' }}
+                <List
+                    sx={{ width: '150px', bgcolor: 'background.paper' }}
+                    component="nav"
+                    subheader={<li />}
+                    aria-labelledby="nested-list-subheader"
                 >
-                    <TreeItem nodeId="1" label="Server" sx={{paddingBottom: "4px", fontWeight: "bold"}}>
-                        <TreeItem nodeId="2" label="# DaRK" sx={{paddingBottom: "4px", marginLeft: "-8px"}}/>
-                        <TreeItem nodeId="3" label="# Fatal-Error" sx={{paddingBottom: "4px", marginLeft: "-8px"}}/>
-                        <TreeItem nodeId="4" label="# ~EwR~" sx={{paddingBottom: "4px", marginLeft: "-8px"}} />
-                        <TreeItem nodeId="5" label="# KoG" sx={{paddingBottom: "4px", marginLeft: "-8px"}} />
-                        <TreeItem nodeId="6" label="# test" sx={{paddingBottom: "4px", marginLeft: "-8px"}} />
-                    </TreeItem>
-                    <TreeItem nodeId="7" label="Favorites">
-                        <TreeItem nodeId="8" label="# KoG" sx={{paddingBottom: "4px", marginLeft: "-8px"}} />
-                    </TreeItem>
-                </TreeView>
+                    <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                        SERVER
+                    </ListSubheader>
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <TagIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="DaRK" sx={{marginLeft:"-24px"}} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <TagIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Fatal-Error" sx={{marginLeft:"-24px"}} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                        FAVORITES
+                    </ListSubheader>
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <TagIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="KoG" sx={{marginLeft:"-24px"}} />
+                        </ListItemButton>
+                    </ListItem>
+                </List>
             </Box>
         );
     }

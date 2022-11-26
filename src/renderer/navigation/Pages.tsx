@@ -5,8 +5,9 @@ import Tab from '@mui/material/Tab';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ForumIcon from '@mui/icons-material/Forum';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import Box from "@mui/material/Box";
+import {Divider} from "@mui/material";
 
 export default function Pages() {
     const [value, setValue] = React.useState(0);
@@ -16,7 +17,7 @@ export default function Pages() {
     };
 
     return (
-        <Box sx={{width: "150px"}}>
+        <Box sx={{width: "150px", fontFamily: "Roboto"}}>
             <Tabs
                 value={value}
                 orientation="vertical"
@@ -26,7 +27,8 @@ export default function Pages() {
                 <Tab icon={<ChatBubbleIcon />} label="CHANNEL" style={{width:"150px", paddingTop:"16px", paddingBottom:"16px"}} />
                 <Tab icon={<GroupsIcon />} label="FRIENDS" style={{width:"150px", paddingTop:"16px", paddingBottom:"16px"}} />
                 <Tab icon={<ForumIcon />} label="WHISPERS" style={{width:"150px", paddingTop:"16px", paddingBottom:"16px"}} />
-                <Tab icon={<EqualizerIcon />} label="STATISTICS" style={{width:"150px", paddingTop:"16px", paddingBottom:"16px"}} />
+                <Divider/>
+                <Tab icon={<BarChartIcon />} label="STATISTICS" style={{width:"150px", paddingTop:"16px", paddingBottom:"16px"}} />
             </Tabs>
         </Box>
     );
