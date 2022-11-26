@@ -7,17 +7,13 @@ import TagIcon from '@mui/icons-material/Tag';
 import {Channel, ChannelManager} from "../state/ChannelManager";
 
 export default function ChannelTree() {
-    const [messages, setMessages] = useState([])
+    const [channels, setChannels] = useState<Channel[]>([])
 
     useEffect(() => {
-        window.electron.ipcRenderer.on('messages', (arg) => {
-            // @ts-ignore
-            let string = new TextDecoder().decode(arg);
-            let tokens = string.split("\n")
-
-            // @ts-ignore
-            this.setState({messages: [...this.state.messages, ...tokens]})
-        });
+        ChannelManager.subscribeList((newChannels: Channel[]) => {
+            console.log("NEEEWW CHANNELS")
+            setChannels(newChannels)
+        })
     },[])
 
     return (
@@ -31,22 +27,18 @@ export default function ChannelTree() {
                 <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
                     SERVER
                 </ListSubheader>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <TagIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="DaRK" sx={{marginLeft:"-24px"}} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <TagIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Fatal-Error" sx={{marginLeft:"-24px"}} />
-                    </ListItemButton>
-                </ListItem>
+                {
+                    channels.map((channel: Channel) => {
+                        return (<ListItem disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <TagIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={channel.name} sx={{marginLeft:"-24px"}} />
+                            </ListItemButton>
+                        </ListItem>)
+                    })
+                }
                 <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
                     FAVORITES
                 </ListSubheader>

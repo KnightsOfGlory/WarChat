@@ -35,16 +35,18 @@ export namespace ChannelManager {
 
                 switch (code) {
                     case "1007": // info
-                        innerMessage = message.split("\"")[1].slice(0, -1)
+                        innerMessage = message.split("\"")[1].trim()
                         currentChannel = innerMessage
                         break;
                     case "1018": // info
-                        innerMessage = message.split("\"")[1].slice(0, -1).trim()
-                        console.log(counter)
+                        innerMessage = message.split("\"")[1].trim()
+                        console.log(innerMessage)
                         if (innerMessage.startsWith("Listing ") && innerMessage.endsWith(" channels:")) {
-                            counter = Number(innerMessage.slice(7, 8))
+                            counter = Number(innerMessage.slice(8, 9))
                         } else if (counter > 0) {
                             let tokens = innerMessage.split("|")
+                            console.log("COUNTER")
+                            console.log(tokens)
                             channels.push({
                                 name: tokens[0].trim(),
                                 topic: tokens[3].trim(),
