@@ -74,6 +74,7 @@ export default class Users extends React.Component {
 
         return (
             <Box sx={{ minWidth: "300px", overlflowY: "auto" }}>
+
                 <List sx={{ paddingTop: "0px" }}>
                     {
                         // @ts-ignore

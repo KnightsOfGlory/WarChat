@@ -26,7 +26,7 @@ export default class Channel extends React.Component {
     render() {
         return (
             <Stack sx={{width: "100%"}}>
-                <List sx={{width: "100%", height: "calc(100vh - 64px - 89px)", overflowY: "overlay"}}>
+                <List sx={{width: "100%", height: "calc(100vh - 64px - 89px)", overflowY: "overlay", overflowAnchor: "none"}}>
                     {
                         // @ts-ignore
                         this.state.messages.map((message: string) => {
