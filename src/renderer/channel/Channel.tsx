@@ -38,6 +38,7 @@ export default class Channel extends React.Component {
                                 </ListItem>);
                         })
                     }
+                    <div style={{overflowAnchor: "auto", height: "1px"}}/>
                 </List>
                 <Chat/>
             </Stack>

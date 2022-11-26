@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Box from "@mui/material/Box";
 import {TreeItem, TreeView} from "@mui/lab";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -15,15 +15,11 @@ function SendIcon() {
     return null;
 }
 
-export default class ChannelTree extends React.Component {
-    constructor(props: {} | Readonly<{}>) {
-        super(props);
+export default function ChannelTree() {
+    const [messages, setMessages] = useState([])
 
-        this.state = {messages: []};
-        this.hook();
-    }
 
-    hook() {
+    useEffect(() => {
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
             let string = new TextDecoder().decode(arg);
@@ -32,49 +28,48 @@ export default class ChannelTree extends React.Component {
             // @ts-ignore
             this.setState({messages: [...this.state.messages, ...tokens]})
         });
-    }
+    },[])
 
-    render() {
-        return (
-            <Box sx={{width: "150px"}}>
-                <List
-                    sx={{ width: '150px', bgcolor: 'background.paper' }}
-                    component="nav"
-                    subheader={<li />}
-                    aria-labelledby="nested-list-subheader"
-                >
-                    <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
-                        SERVER
-                    </ListSubheader>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <TagIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="DaRK" sx={{marginLeft:"-24px"}} />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <TagIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Fatal-Error" sx={{marginLeft:"-24px"}} />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
-                        FAVORITES
-                    </ListSubheader>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <TagIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="KoG" sx={{marginLeft:"-24px"}} />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </Box>
-        );
-    }
+    return (
+        <Box sx={{width: "150px"}}>
+            <List
+                sx={{ width: '150px', bgcolor: 'background.paper' }}
+                component="nav"
+                subheader={<li />}
+                aria-labelledby="nested-list-subheader"
+            >
+                <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                    SERVER
+                </ListSubheader>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <TagIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="DaRK" sx={{marginLeft:"-24px"}} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <TagIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Fatal-Error" sx={{marginLeft:"-24px"}} />
+                    </ListItemButton>
+                </ListItem>
+                <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                    FAVORITES
+                </ListSubheader>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <TagIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="KoG" sx={{marginLeft:"-24px"}} />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+        </Box>
+    );
 }
+
