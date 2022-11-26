@@ -31,8 +31,8 @@ ipcMain.on('socket', async (event, arg) => {
       client.connect(6112, 'war1.twistednet.org', function() {
         console.log('Connected');
         client.write("\x03\x04");
-        client.write("piankachu\x0D\x0A")
-        client.write("\x0D\x0A")
+        client.write("fearful\x0D\x0A")
+        client.write("asswordpay\x0D\x0A")
         client.write("/join KoG\x0D\x0A")
       });
 
