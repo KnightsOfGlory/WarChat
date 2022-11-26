@@ -1,23 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
 import Box from "@mui/material/Box";
-import {TreeItem, TreeView} from "@mui/lab";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import {Collapse, ListItem, ListItemButton, ListItemIcon, ListSubheader} from "@mui/material";
+import {ListItem, ListItemButton, ListItemIcon, ListSubheader} from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
-import {ExpandLess, ExpandMore, StarBorder} from "@mui/icons-material";
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import TagIcon from '@mui/icons-material/Tag';
-
-function SendIcon() {
-    return null;
-}
+import {Channel, ChannelManager} from "../state/ChannelManager";
 
 export default function ChannelTree() {
     const [messages, setMessages] = useState([])
-
 
     useEffect(() => {
         window.electron.ipcRenderer.on('messages', (arg) => {
@@ -72,4 +62,3 @@ export default function ChannelTree() {
         </Box>
     );
 }
-

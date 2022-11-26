@@ -4,21 +4,20 @@ export type Channel = {
     users: number | null
 }
 
-export type ChannelSubscription  = (talks: Channel[]) => void
+export type ChannelListSubscription  = (channels: Channel[]) => void
 
 export namespace ChannelManager {
+    let currentChannel: string | null = null
     let channels: Channel[] = []
-    let subscriptions: ChannelSubscription[] = []
+    let subscriptions: ChannelListSubscription[] = []
 
     listen()
 
-    export function subscribe(callback: ChannelSubscription) {
-        console.log('[DEBUG] Subscribe')
+    export function subscribeList(callback: ChannelListSubscription) {
         subscriptions.push(callback)
     }
 
-    function dispatch(){
-        console.log('[DEBUG] Dispatch')
+    function dispatchList(){
         subscriptions.forEach((s) => s(channels))
     }
 
@@ -32,19 +31,26 @@ export namespace ChannelManager {
             messages.forEach((message) => {
                 let fields = message.split(" ");
                 let code = fields[0]
+                let innerMessage: string = ""
 
                 switch (code) {
+                    case "1007": // info
+                        innerMessage = message.split("\"")[1].slice(0, -1)
+                        currentChannel = innerMessage
+                        break;
                     case "1018": // info
-                        let innerMessage = message.split("\"")[1].slice(0, -1)
+                        innerMessage = message.split("\"")[1].slice(0, -1).trim()
+                        console.log(counter)
                         if (innerMessage.startsWith("Listing ") && innerMessage.endsWith(" channels:")) {
                             counter = Number(innerMessage.slice(7, 8))
                         } else if (counter > 0) {
                             let tokens = innerMessage.split("|")
                             channels.push({
-                                name: tokens[0],
-                                topic: tokens[3],
-                                users: Number(tokens[1])
+                                name: tokens[0].trim(),
+                                topic: tokens[3].trim(),
+                                users: Number(tokens[1].trim())
                             })
+                            dispatchList()
                             counter--
                         }
                         //dispatch()
