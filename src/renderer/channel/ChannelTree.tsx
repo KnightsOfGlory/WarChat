@@ -11,7 +11,6 @@ export default function ChannelTree() {
 
     useEffect(() => {
         ChannelManager.subscribeList((newChannels: Channel[]) => {
-            console.log("NEEEWW CHANNELS")
             setChannels(newChannels)
         })
     },[])

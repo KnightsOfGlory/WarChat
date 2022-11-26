@@ -40,13 +40,10 @@ export namespace ChannelManager {
                         break;
                     case "1018": // info
                         innerMessage = message.split("\"")[1].trim()
-                        console.log(innerMessage)
                         if (innerMessage.startsWith("Listing ") && innerMessage.endsWith(" channels:")) {
                             counter = Number(innerMessage.slice(8, 9))
                         } else if (counter > 0) {
                             let tokens = innerMessage.split("|")
-                            console.log("COUNTER")
-                            console.log(tokens)
                             channels.push({
                                 name: tokens[0].trim(),
                                 topic: tokens[3].trim(),
