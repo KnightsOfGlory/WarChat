@@ -7,6 +7,7 @@ export type Channel = {
 export type ChannelSubscription  = (talks: Channel[]) => void
 
 export namespace ChannelManager {
+    let currentChannel: string | null = null
     let channels: Channel[] = []
     let subscriptions: ChannelSubscription[] = []
 
@@ -32,10 +33,15 @@ export namespace ChannelManager {
             messages.forEach((message) => {
                 let fields = message.split(" ");
                 let code = fields[0]
+                let innerMessage: string = ""
 
                 switch (code) {
+                    case "1007": // info
+                        innerMessage = message.split("\"")[1].slice(0, -1)
+                        this.currentChannel = innerMessage
+                        break;
                     case "1018": // info
-                        let innerMessage = message.split("\"")[1].slice(0, -1)
+                        innerMessage = message.split("\"")[1].slice(0, -1)
                         if (innerMessage.startsWith("Listing ") && innerMessage.endsWith(" channels:")) {
                             counter = Number(innerMessage.slice(7, 8))
                         } else if (counter > 0) {
