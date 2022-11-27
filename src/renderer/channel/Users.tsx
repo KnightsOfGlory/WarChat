@@ -48,7 +48,7 @@ export default function Users() {
                     (channel == null ? "Disconnected" : channel.name) + ` (${users.length})`
                 }
             </Paper>
-            <List sx={{ paddingTop: "0px" }}>
+            <List sx={{ paddingTop: "0px"}}>
                 {
                     // @ts-ignore
                     users.map((user) => {
@@ -57,6 +57,7 @@ export default function Users() {
 
                         return (
                             <ListItem
+                              key={user.name}
                                 disablePadding
                             >
                                 <ListItemButton>
@@ -66,7 +67,7 @@ export default function Users() {
                                             variant="rounded"
                                         />
                                     </ListItemAvatar>
-                                    <ListItemText primary={user.name} />
+                                    <ListItemText  primary={user.name} />
                                 </ListItemButton>
                             </ListItem>
                         );
