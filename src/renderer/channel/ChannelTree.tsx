@@ -1,44 +1,44 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
-import {ListItem, ListItemButton, ListItemIcon, ListSubheader} from "@mui/material";
+import { ListItem, ListItemButton, ListItemIcon, ListSubheader } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import TagIcon from '@mui/icons-material/Tag';
-import {Channel, ChannelManager} from "../state/ChannelManager";
+import { Channel, ChannelManager } from "../state/ChannelManager";
 
 export default function ChannelTree() {
-    const [channels, setChannels] = useState<Channel[]>([])
+    const [channels, setChannels] = useState<Channel[]>([]);
 
     useEffect(() => {
         ChannelManager.subscribeList((newChannels: Channel[]) => {
-            setChannels(newChannels)
-        })
-    },[])
+            setChannels(newChannels);
+        });
+    }, []);
 
     return (
-        <Box sx={{width: "150px"}}>
+        <Box sx={{ width: "150px" }}>
             <List
-                sx={{ width: '150px', bgcolor: 'background.paper' }}
+                sx={{ width: '150px', bgcolor: 'background.paper', maxHeight: '90%'}}
                 component="nav"
                 subheader={<li />}
                 aria-labelledby="nested-list-subheader"
             >
-                <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                <ListSubheader component="div" sx={{ fontSize: "0.875rem" }}>
                     SERVER
                 </ListSubheader>
                 {
                     channels.map((channel: Channel) => {
-                        return (<ListItem disablePadding>
+                        return (<ListItem key={channel.name} disablePadding>
                             <ListItemButton>
                                 <ListItemIcon>
                                     <TagIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={channel.name} sx={{marginLeft:"-24px"}} />
+                                <ListItemText key={channel.name} primary={channel.name} sx={{ marginLeft: "-24px" }} />
                             </ListItemButton>
-                        </ListItem>)
+                        </ListItem>);
                     })
                 }
-                <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                <ListSubheader component="div" sx={{ fontSize: "0.875rem" }}>
                     FAVORITES
                 </ListSubheader>
                 <ListItem disablePadding>
@@ -46,7 +46,7 @@ export default function ChannelTree() {
                         <ListItemIcon>
                             <TagIcon />
                         </ListItemIcon>
-                        <ListItemText primary="KoG" sx={{marginLeft:"-24px"}} />
+                        <ListItemText primary="KoG" sx={{ marginLeft: "-24px" }} />
                     </ListItemButton>
                 </ListItem>
             </List>
