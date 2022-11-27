@@ -14,7 +14,12 @@ export type Info = {
     message: string
 }
 
-export type Chat = Talk | Emote | Info
+export type Error = {
+    message: string,
+    isError: boolean
+}
+
+export type Chat = Talk | Emote | Info | Error
 export type TalkSubscription = (talks: Chat[]) => void
 
 export namespace ChatManager {
@@ -36,6 +41,7 @@ export namespace ChatManager {
             // @ts-ignore
             let string = new TextDecoder().decode(arg);
             let messages = string.split("\r\n")
+            let innerMessage: string
 
             messages.forEach((message) => {
                 let fields = message.split(" ");
@@ -49,6 +55,14 @@ export namespace ChatManager {
                             message: message.split("\"")[1].slice(0, -1)
                         })
                         dispatch()
+                        break;
+                    case "1018": // info
+                    case "1019": // error
+                        innerMessage = message.split("\"")[1].trim()
+                        chats.push({
+                            message: innerMessage,
+                            isError: true
+                        })
                         break;
                 }
             })

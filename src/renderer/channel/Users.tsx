@@ -43,7 +43,7 @@ export default function Users() {
 
     return (
         <Box sx={{ minWidth: "300px", overlflowY: "auto" }}>
-            <Paper>
+            <Paper elevation={3} sx={{textAlign: "center"}}>
                 {
                     (channel == null ? "Disconnected" : channel.name) + ` (${users.length})`
                 }
