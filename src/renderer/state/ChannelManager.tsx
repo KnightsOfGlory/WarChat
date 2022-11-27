@@ -23,8 +23,12 @@ export namespace ChannelManager {
     }
 
     function dispatchCurrent(){
-        let outbound = currentChannel!
-        currentChannelSubscriptions.forEach((s) => s(outbound))
+        console.log("DISPATCH CURRENT CHANNEL")
+        console.log(currentChannelSubscriptions.length)
+
+        if (currentChannel == null) return;
+        // @ts-ignore
+        currentChannelSubscriptions.forEach((s) => s(currentChannel))
     }
     function dispatchList(){
         channelListSubscriptions.forEach((s) => s(channels))
@@ -50,6 +54,7 @@ export namespace ChannelManager {
                             topic: "",
                             users: 0
                         }
+                        console.log(currentChannel)
                         dispatchCurrent()
                         if (currentChannel.name == "Chat") {
                             window.electron.ipcRenderer.sendMessage("chat", "/channels");
