@@ -2,12 +2,13 @@ import {User, UserManager, UserSubscription} from "./UserManager";
 
 export type Talk = {
     user: User,
-    message: string | null
+    message: string
 }
 
 export type Emote = {
     user: User,
-    message: string | null
+    isEmote: boolean,
+    message: string
 }
 
 export type Info = {
@@ -49,20 +50,37 @@ export namespace ChatManager {
 
                 switch (code) {
                     case "1005": // talk
-                    case "1023": // emote
+                        innerMessage = message.split("\"")[1].trim()
                         chats.push({
                             user: UserManager.getByUsername(fields[2]),
-                            message: message.split("\"")[1].slice(0, -1)
+                            message: innerMessage
+                        })
+                        dispatch()
+                        break;
+                    case "1023": // emote
+                        innerMessage = message.split("\"")[1].trim()
+                        chats.push({
+                            user: UserManager.getByUsername(fields[2]),
+                            isEmote: true,
+                            message: innerMessage
                         })
                         dispatch()
                         break;
                     case "1018": // info
+                        innerMessage = message.split("\"")[1].trim()
+                        chats.push({
+                            message: innerMessage,
+                            isError: true
+                        })
+                        dispatch()
+                        break;
                     case "1019": // error
                         innerMessage = message.split("\"")[1].trim()
                         chats.push({
                             message: innerMessage,
                             isError: true
                         })
+                        dispatch()
                         break;
                 }
             })
