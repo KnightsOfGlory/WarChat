@@ -24,9 +24,9 @@ export default function Channel() {
 
     useEffect(() => {
         ChatManager.subscribe((newMessage: any) => {
-            setMessages(newMessage);
+            setMessages([...newMessage]); // force state change
         });
-    });
+    }, [messages]);
 
     const grouped = () => {
         let groups: Chat[][] = [];

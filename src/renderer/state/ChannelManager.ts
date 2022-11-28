@@ -23,9 +23,6 @@ export namespace ChannelManager {
     }
 
     function dispatchCurrent(){
-        console.log("DISPATCH CURRENT CHANNEL")
-        console.log(currentChannelSubscriptions.length)
-
         if (currentChannel == null) return;
         // @ts-ignore
         currentChannelSubscriptions.forEach((s) => s(currentChannel))
