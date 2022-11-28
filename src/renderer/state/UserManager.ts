@@ -1,16 +1,23 @@
 export type User = {
     name: string,
-    client: string | null,
-    flags: string | null
+    client: string | undefined,
+    flags: string | undefined
 }
 
 export type UserSubscription = (users: User[]) => void
 
 export namespace UserManager {
+    let self: string
     let users: User[] = []
     let subscriptions: UserSubscription[] = []
 
     listen()
+
+    export let ignoreInfo = false
+
+    export function getSelf(): User {
+        return getByUsername(self)
+    }
 
     export function getByUsername(username: string): User {
         let results = users.filter((u) => u.name.toLowerCase() == username.toLowerCase())
@@ -69,6 +76,9 @@ export namespace UserManager {
                         // flags = fields[3]
                         // client = fields[4]
                         // dispatch()
+                        break;
+                    case "2010":
+                        self = fields[2]
                         break;
                     default:
                         break;
