@@ -1,10 +1,10 @@
-import {ListItem, ListItemButton, Stack} from "@mui/material";
-import React from "react";
+import {ListItem, ListItemButton, Paper, Stack} from "@mui/material";
+import React, {useEffect, useState} from "react";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import { UserManager } from "../state/UserManager";
+import {User, UserManager} from "../state/UserManager";
 
 import chat from "../../../assets/images/chat.png";
 import d2dv from "../../../assets/images/d2dv.png";
@@ -17,92 +17,62 @@ import w2bn from "../../../assets/images/w2bn.png";
 import w3xp from "../../../assets/images/w3xp.png";
 import war3 from "../../../assets/images/war3.png";
 import Box from "@mui/material/Box";
+import {Channel, ChannelManager} from "../state/ChannelManager";
 
-export default class Users extends React.Component {
-    constructor(props: {} | Readonly<{}>) {
-        super(props);
+export default function Users() {
+    const [channel, setChannel] = useState<Channel>()
+    const [users, setUsers] = useState<User[]>([])
 
-        this.state = {users: []};
-        //this.hook();
-        UserManager.subscribe((users) => this.setState({users:users}))
-    }
+    useEffect(() => {
+        ChannelManager.subscribeCurrent((newChannel: Channel) => setChannel(newChannel))
+        UserManager.subscribe((newUsers) => setUsers(newUsers))
+    },[])
 
-    hook() {
-        window.electron.ipcRenderer.on('messages', (arg) => {
-            // @ts-ignore
-            let string = new TextDecoder().decode(arg);
-            let tokens = string.split("\n")
-            let users: { name: string; client: string; }[] = []
+    let icons = new Map([
+        ["[CHAT]", chat],
+        ["[D2DV]", d2dv],
+        ["[D2XP]", d2xp],
+        ["[DRTL]", drtl],
+        ["[JSTR]", jstr],
+        ["[SEXP]", sexp],
+        ["[STAR]", star],
+        ["[W2BN]", w2bn],
+        ["[W3XP]", w3xp],
+        ["[WAR3]", war3],
+    ])
 
-            tokens.forEach((token) => {
-                let fields = token.split(" ");
-                let code = fields[0]
-                let name = fields[2]
-                let client = fields[4]
-
-                if (code != "1001") return;
-
-                let user = {
-                    "name": name,
-                    "client": client
-                };
-
-                users.push(user)
-            });
-
-            // @ts-ignore
-            this.setState({users: [...this.state.users, ...users]})
-        });
-    }
-
-    render() {
-        // let icons = {
-        //     "[CHAT]": chat,
-        //     "[D2DV]": d2dv,
-        //     "[JSTR]": jstr
-        // }
-        let icons = new Map([
-            ["[CHAT]", chat],
-            ["[D2DV]", d2dv],
-            ["[D2XP]", d2xp],
-            ["[DRTL]", drtl],
-            ["[JSTR]", jstr],
-            ["[SEXP]", sexp],
-            ["[STAR]", star],
-            ["[W2BN]", w2bn],
-            ["[W3XP]", w3xp],
-            ["[WAR3]", war3],
-        ])
-
-        return (
-            <Box sx={{ minWidth: "300px", overlflowY: "auto" }}>
-
-                <List sx={{ paddingTop: "0px" }}>
-                    {
+    return (
+        <Box sx={{ minWidth: "300px", overlflowY: "auto" }}>
+            <Paper sx={{textAlign: "center", textSize: "1rem", margin: "8px", backgroundColor: "#272727"}}>
+                {
+                    (channel == null ? "Disconnected" : channel.name) + ` (${users.length})`
+                }
+            </Paper>
+            <List sx={{ paddingTop: "0px"}}>
+                {
+                    // @ts-ignore
+                    users.map((user) => {
                         // @ts-ignore
-                        this.state.users.map((user) => {
-                            // @ts-ignore
-                            let icon = icons.get(user.client.trim())
+                        let icon = icons.get(user.client.trim())
 
-                            return (
-                                <ListItem
-                                    disablePadding
-                                >
-                                    <ListItemButton>
-                                        <ListItemAvatar>
-                                            <Avatar
-                                                src={icon}
-                                                variant="rounded"
-                                            />
-                                        </ListItemAvatar>
-                                        <ListItemText primary={user.name} />
-                                    </ListItemButton>
-                                </ListItem>
-                            );
-                        })
-                    }
-                </List>
-            </Box>
-        );
-    }
+                        return (
+                            <ListItem
+                              key={user.name}
+                                disablePadding
+                            >
+                                <ListItemButton>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            src={icon}
+                                            variant="rounded"
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText  primary={user.name} />
+                                </ListItemButton>
+                            </ListItem>
+                        );
+                    })
+                }
+            </List>
+        </Box>);
 }

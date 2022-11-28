@@ -4,62 +4,55 @@ export type User = {
     flags: string | null
 }
 
-export type Subscription = (users: User[]) => void
+export type UserSubscription = (users: User[]) => void
 
 export namespace UserManager {
     let users: User[] = []
-    hook()
-    let subscriptions: Subscription[] = []
+    let subscriptions: UserSubscription[] = []
 
-    export function subscribe(callback: Subscription) {
-        console.log('[DEBUG] Subscribe')
+    listen()
+
+    export function getByUsername(username: string): User {
+        let results = users.filter((u) => u.name.toLowerCase() == username.toLowerCase())
+        //TODO handle missing
+
+        return results[0]
+    }
+
+    export function subscribe(callback: UserSubscription) {
         subscriptions.push(callback)
     }
 
     function dispatch(){
-        console.log('[DEBUG] Dispatch')
         subscriptions.forEach((s) => s(users))
     }
 
-    function hook() {
+    function listen() {
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
             let string = new TextDecoder().decode(arg);
             let messages = string.split("\r\n")
-            let newUsers: User[] = []
 
             messages.forEach((message) => {
                 let fields = message.split(" ");
                 let code = fields[0]
-                let name = null
-                let flags = null
-                let client = null
-                let user = null
 
                 switch (code) {
                     case "1001": // user already there
-                        name = fields[2]
-                        flags = fields[3]
-                        client = fields[4]
-                        user = {
-                            "name": name,
-                            "flags": flags,
-                            "client": client
-                            };
-                        users.push(user)
+                        users.push({
+                            "name": fields[2],
+                            "flags": fields[3],
+                            "client": fields[4]
+                        })
                         console.log('[DEBUG] 1001 Dispatch')
                         dispatch()
                         break;
                     case "1002": // user joined
-                        name = fields[2]
-                        flags = fields[3]
-                        client = fields[4]
-                        user = {
-                            "name": name,
-                            "flags": flags,
-                            "client": client
-                        };
-                        users.push(user)
+                        users.push({
+                            "name": fields[2],
+                            "flags": fields[3],
+                            "client": fields[4]
+                        })
                         console.log('[DEBUG] 1002 Dispatch')
                         dispatch()
                         break;
@@ -72,10 +65,10 @@ export namespace UserManager {
                         dispatch()
                         break;
                     case "1009":
-                        name = fields[2]
-                        flags = fields[3]
-                        client = fields[4]
-                        dispatch()
+                        // name = fields[2]
+                        // flags = fields[3]
+                        // client = fields[4]
+                        // dispatch()
                         break;
                     default:
                         break;
