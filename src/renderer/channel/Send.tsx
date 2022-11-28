@@ -1,7 +1,9 @@
 import {TextField} from "@mui/material";
 import React from "react";
+import {ChatManager} from "../state/ChatManager";
+import {UserManager} from "../state/UserManager";
 
-export default class Chat extends React.Component {
+export default class Send extends React.Component {
     constructor(props: {} | Readonly<{}>) {
         super(props);
 
@@ -19,7 +21,14 @@ export default class Chat extends React.Component {
                 onKeyDown={(event) => {
                     if (event.code == "Enter") {
                         // @ts-ignore
-                        window.electron.ipcRenderer.sendMessage("chat", this.state.message);
+                        const message = this.state.message
+                        window.electron.ipcRenderer.sendMessage("chat", message);
+                        let chat = {
+                            timestamp: Date.now(),
+                            user: UserManager.getSelf(),
+                            message: message
+                        }
+                        ChatManager.add(chat)
                         this.setState({message: ""})
                     }
                 }}

@@ -48,7 +48,7 @@ export default function Users() {
                     (channel == null ? "Disconnected" : channel.name) + ` (${users.length})`
                 }
             </Paper>
-            <List sx={{ paddingTop: "0px"}}>
+            <List sx={{ paddingTop: "0px", overlflowY: "auto" }}>
                 {
                     // @ts-ignore
                     users.map((user) => {
