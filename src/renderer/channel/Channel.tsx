@@ -27,7 +27,7 @@ export default function Channel() {
             >
                 {
                     // @ts-ignore
-                    messages.map((message: any) => {
+                    messages.reverse().map((message: any) => {
                         return (
                             <ListItem>
                                 <ListItemText key={message.message}>{message.message}</ListItemText>

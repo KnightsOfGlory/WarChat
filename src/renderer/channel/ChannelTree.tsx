@@ -24,7 +24,7 @@ export default function ChannelTree() {
                 aria-labelledby="nested-list-subheader"
             >
                 <ListSubheader component="div" sx={{ fontSize: "0.875rem" }}>
-                    SERVER
+                    CHANNELS
                 </ListSubheader>
                 {
                     channels.map((channel: Channel) => {
