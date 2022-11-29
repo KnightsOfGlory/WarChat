@@ -4,6 +4,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { ConnectionManager } from './state/ConnectionManager';
+import { ChatManager } from './state/ChatManager';
 
 class AppUpdater {
   constructor() {
@@ -13,40 +15,11 @@ class AppUpdater {
   }
 }
 
+ConnectionManager.initialize()
+ChatManager.initialize()
+
 let mainWindow: BrowserWindow | null = null;
-const net = require('net');
-const client = new net.Socket();
 
-ipcMain.on('chat', async (event, arg) => {
-  client.write(arg);
-  client.write("\x0D\x0A");
-});
-
-ipcMain.on('socket', async (event, arg) => {
-
-  console.log(arg)
-
-  switch (arg) {
-    case "connect":
-      client.connect(6112, 'war1.twistednet.org', function() {
-        console.log('Connected');
-        client.write("\x03\x04");
-        client.write("fearful[L]\x0D\x0A")
-        client.write("benjie\x0D\x0A")
-        client.write("/join KoG\x0D\x0A")
-      });
-
-      client.on('data', function(data: string) {
-        //client.write(data);
-        event.reply("messages", data);
-        // ipcMain.emit("messages", data);
-        console.log('Received: ' + data);
-      });
-      break;
-    case "disconnect":
-      break;
-  }
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
