@@ -1,10 +1,10 @@
-import {ListItem, ListItemButton, Paper, Stack} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import { ListItem, ListItemButton, Paper, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import {User, UserManager} from "../state/UserManager";
+import { User, UserManager } from "../state/UserManager";
 
 import chat from "../../../assets/images/chat.png";
 import d2dv from "../../../assets/images/d2dv.png";
@@ -17,16 +17,16 @@ import w2bn from "../../../assets/images/w2bn.png";
 import w3xp from "../../../assets/images/w3xp.png";
 import war3 from "../../../assets/images/war3.png";
 import Box from "@mui/material/Box";
-import {Channel, ChannelManager} from "../state/ChannelManager";
+import { Channel, ChannelManager } from "../state/ChannelManager";
 
 export default function Users() {
-    const [channel, setChannel] = useState<Channel>()
-    const [users, setUsers] = useState<User[]>([])
+    const [channel, setChannel] = useState<Channel>();
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
-        ChannelManager.subscribeCurrent((newChannel: Channel) => setChannel(newChannel))
-        UserManager.subscribe((newUsers) => setUsers(newUsers))
-    },[])
+        ChannelManager.subscribeCurrent((newChannel: Channel) => setChannel(newChannel));
+        UserManager.subscribe((newUsers) => setUsers(newUsers));
+    }, []);
 
     let icons = new Map([
         ["[CHAT]", chat],
@@ -39,25 +39,28 @@ export default function Users() {
         ["[W2BN]", w2bn],
         ["[W3XP]", w3xp],
         ["[WAR3]", war3],
-    ])
+    ]);
 
+    // got a mic?  lol  one sec
+    //yeah can't hear you though
+    // you heard me?
     return (
-        <Box sx={{ minWidth: "300px", overlflowY: "auto" }}>
-            <Paper sx={{textAlign: "center", textSize: "1rem", margin: "8px", backgroundColor: "#272727"}}>
+        <Box sx={{ minWidth: "300px", height: "100%" }}>
+            <Paper sx={{ textAlign: "center", textSize: "1rem", margin: "8px", backgroundColor: "#272727" }}>
                 {
                     (channel == null ? "Disconnected" : channel.name) + ` (${users.length})`
                 }
             </Paper>
-            <List sx={{ paddingTop: "0px", overlflowY: "auto" }}>
+            <List sx={{ paddingTop: "0px", overflowY: "overlay", height: 'calc(100vh - 64px - 58px)' }}>
                 {
                     // @ts-ignore
                     users.map((user) => {
                         // @ts-ignore
-                        let icon = icons.get(user.client.trim())
+                        let icon = icons.get(user.client.trim());
 
                         return (
                             <ListItem
-                              key={user.name}
+                                key={user.name}
                                 disablePadding
                             >
                                 <ListItemButton>
@@ -67,7 +70,7 @@ export default function Users() {
                                             variant="rounded"
                                         />
                                     </ListItemAvatar>
-                                    <ListItemText  primary={user.name} />
+                                    <ListItemText primary={user.name} />
                                 </ListItemButton>
                             </ListItem>
                         );
