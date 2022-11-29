@@ -30,7 +30,7 @@ export default class Home extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{height: "100%"}}>
                 <Bar/>
                 <Stack direction="row" sx={{height: "100%"}}>
                     <Profiles/>
