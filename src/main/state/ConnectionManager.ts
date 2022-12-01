@@ -29,19 +29,6 @@ export namespace ConnectionManager {
           client.on('data', function(data: string) {
             event.reply("messages", data);
           });
-
-          /*
-            on(event: 'close', listener: (hadError: boolean) => void): this;
-            on(event: 'connect', listener: () => void): this;
-            on(event: 'data', listener: (data: Buffer) => void): this;
-            on(event: 'drain', listener: () => void): this;
-            on(event: 'end', listener: () => void): this;
-            on(event: 'error', listener: (err: Error) => void): this;
-            on(event: 'lookup', listener: (err: Error, address: string, family: string | number, host: string) => void): this;
-            on(event: 'ready', listener: () => void): this;
-            on(event: 'timeout', listener: () => void): this;
-          */
-
           client.on("close", () => {
             connected = false
             event.reply("socket", "disconnected")
