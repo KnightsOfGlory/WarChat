@@ -6,16 +6,6 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { User, UserManager } from "../state/UserManager";
 
-import chat from "../../../assets/products/chat.png";
-import d2dv from "../../../assets/products/d2dv.png";
-import d2xp from "../../../assets/products/d2xp.png";
-import drtl from "../../../assets/products/drtl.png";
-import jstr from "../../../assets/products/jstr.png";
-import sexp from "../../../assets/products/sexp.png";
-import star from "../../../assets/products/star.png";
-import w2bn from "../../../assets/products/w2bn.png";
-import w3xp from "../../../assets/products/w3xp.png";
-import war3 from "../../../assets/products/war3.png";
 import Box from "@mui/material/Box";
 import { Channel, ChannelManager } from "../state/ChannelManager";
 import {ProductIcons} from "../utilities/ProductIcons";
