@@ -12,6 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import HelmetTail from "../../../assets/logos/helmet-tail.png";
 import {ChatManager} from "../state/ChatManager";
 import {ConnectionManager} from "../state/ConnectionManager";
+import {UserManager} from "../state/UserManager";
 
 export default function Bar() {
     const [connected, setConnected] = React.useState(false);
@@ -52,11 +53,7 @@ export default function Bar() {
 
                             ChatManager.add({
                                 timestamp: Date.now(),
-                                user: {
-                                    name: "WarChat",
-                                    client: "[WCHT]",
-                                    flags: ""
-                                },
+                                user: UserManager.getWarChatUser(),
                                 message: message
                             })
 

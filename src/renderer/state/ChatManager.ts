@@ -1,5 +1,4 @@
-import {User, UserManager, UserSubscription} from "./UserManager";
-import {ConnectionManager} from "./ConnectionManager";
+import {User, UserManager} from "./UserManager";
 
 export type Talk = {
     timestamp: number,
@@ -27,7 +26,14 @@ export type Error = {
     isError: boolean
 }
 
-export type Chat = Talk | Emote | Info | Error
+export type Enter = {
+    timestamp: number,
+    user: User,
+    channel: string,
+    message: string
+}
+
+export type Chat = Talk | Emote | Info | Error | Enter
 export type TalkSubscription = (talks: Chat[]) => void
 
 export namespace ChatManager {
@@ -71,6 +77,18 @@ export namespace ChatManager {
                             message: innerMessage
                         })
                         dispatch()
+                        break;
+                    case "1007": // joined channel
+                        innerMessage = message.split("\"")[1].trim()
+                        if (innerMessage != "Chat") {
+                            chats.push({
+                                timestamp: Date.now(),
+                                user: UserManager.getWarChatUser(),
+                                channel: innerMessage,
+                                message: ""
+                            })
+                            dispatch()
+                        }
                         break;
                     case "1023": // emote
                         innerMessage = message.split("\"")[1].trim()
