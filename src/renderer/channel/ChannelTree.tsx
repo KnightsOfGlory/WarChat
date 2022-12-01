@@ -16,9 +16,9 @@ export default function ChannelTree() {
     }, []);
 
     return (
-        <Box sx={{ width: "150px" }}>
+        <Box sx={{ width: "225px" }}>
             <List
-                sx={{ width: '150px', bgcolor: 'background.paper', maxHeight: '90%'}}
+                sx={{ width: '225px', bgcolor: 'background.paper', maxHeight: '90%'}}
                 component="nav"
                 subheader={<li />}
                 aria-labelledby="nested-list-subheader"
@@ -33,7 +33,7 @@ export default function ChannelTree() {
                                 <ListItemIcon>
                                     <TagIcon />
                                 </ListItemIcon>
-                                <ListItemText key={channel.name} primary={channel.name} sx={{ marginLeft: "-24px" }} />
+                                <ListItemText key={channel.name} primary={channel.name + " – " + channel.users} sx={{ marginLeft: "-24px" }} />
                             </ListItemButton>
                         </ListItem>);
                     })

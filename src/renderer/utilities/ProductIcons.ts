@@ -10,8 +10,14 @@ import w2bn from "../../../assets/products/w2bn.png";
 import w3xp from "../../../assets/products/w3xp.png";
 import war3 from "../../../assets/products/war3.png";
 import wcht from "../../../assets/products/wcht.png";
+import oper from "../../../assets/products/oper.png";
+import bliz from "../../../assets/products/bliz.png";
+import {UserFlags} from "./UserFlags";
 
 export namespace ProductIcons {
+
+    // (blizzard) 1001 USER gh0st 0011 [CHAT]
+    // (ops)      1001 USER ~TG|{~xir|4 0012 [CHAT]
 
     let icons = new Map([
         ["[CHAT]", chat],
@@ -30,7 +36,12 @@ export namespace ProductIcons {
         ["[WCHT]", wcht],
     ])
 
-    export const getByClient = (client: string) => {
+    export const getByClient = (client: string, flags: string) => {
+        if (flags == "") flags = "0000";
+
+        if (UserFlags.isAdministrator(flags)) return bliz;
+        if (UserFlags.isOperator(flags)) return oper;
+
         return icons.get(client)
     }
 }

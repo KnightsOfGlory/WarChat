@@ -1,6 +1,6 @@
 export type User = {
     name: string,
-    client: string | undefined,
+    client: string,
     flags: string | undefined
 }
 

@@ -56,7 +56,8 @@ export default function Channel() {
                         if (group[0].user == undefined) return
                         if (group[0].user.client == undefined) return
 
-                        let icon = ProductIcons.getByClient(group[0].user.client.trim())
+                        // @ts-ignore
+                        let icon = ProductIcons.getByClient(group[0].user.client.trim(), group[0].user.flags)
                         let said = group.map((g) => g.message)
 
                         let saying = (

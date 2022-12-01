@@ -19,15 +19,16 @@ export namespace ConnectionManager {
     ipcMain.on('socket', async (event, arg) => {
       switch (arg) {
         case "connect":
-          client.connect(6112, 'war2.twistednet.org', function() {
+          client.connect(6112, 'war1.twistednet.org', function() {
             client.write("\x03\x04");
-            client.write("fearful[L]\x0D\x0A")
-            client.write("benjie\x0D\x0A")
+            client.write("piankachu\x0D\x0A")
+            client.write("vanhaltern1\x0D\x0A")
             client.write("/join KoG\x0D\x0A")
           });
 
           client.on('data', function(data: string) {
             event.reply("messages", data);
+            console.log("" + data)
           });
           client.on("close", () => {
             connected = false
