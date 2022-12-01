@@ -22,7 +22,7 @@ export namespace ConnectionManager {
           client.connect(6112, 'war1.twistednet.org', function() {
             client.write("\x03\x04");
             client.write("piankachu\x0D\x0A")
-            client.write("\x0D\x0A")
+            client.write("vanhaltern1\x0D\x0A")
             client.write("/join KoG\x0D\x0A")
           });
 

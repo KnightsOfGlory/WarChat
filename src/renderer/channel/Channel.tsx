@@ -1,4 +1,4 @@
-import {ListItem, Stack} from '@mui/material';
+import {Link, ListItem, Stack} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import {Chat, ChatManager} from '../state/ChatManager';
@@ -8,6 +8,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import {ProductIcons} from "../utilities/ProductIcons";
+import Box from "@mui/material/Box";
 
 export default function Channel() {
     const [messages, setMessages] = useState<Chat[]>([]);
@@ -73,6 +74,14 @@ export default function Channel() {
                                 }
                             </React.Fragment>)
 
+                        let primary = (<Box sx={{fontSize: "0.875rem"}}>
+                            <Link href={"#"} underline={"hover"}>{group[0].user.name}</Link>
+                        </Box>)
+
+                        let secondary = (<Box sx={{fontSize: "1rem", color: "#ffffff"}}>
+                            {saying}
+                        </Box>)
+
                         return (
                             <ListItem alignItems={"flex-start"}>
                                 <ListItemAvatar>
@@ -81,7 +90,7 @@ export default function Channel() {
                                         variant="rounded"
                                     />
                                 </ListItemAvatar>
-                                <ListItemText primary={group[0].user.name} secondary={saying} />
+                                <ListItemText primary={primary} secondary={secondary} />
                             </ListItem>
                         )
                     })
