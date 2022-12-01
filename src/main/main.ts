@@ -4,8 +4,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { ConnectionManager } from './state/ConnectionManager';
 import { ChatManager } from './state/ChatManager';
+import {ConnectionManager} from "./state/ConnectionManager";
 
 class AppUpdater {
   constructor() {
@@ -19,7 +19,6 @@ ConnectionManager.initialize()
 ChatManager.initialize()
 
 let mainWindow: BrowserWindow | null = null;
-
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');

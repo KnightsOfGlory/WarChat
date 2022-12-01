@@ -8,10 +8,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {useEffect} from "react";
-import {ConnectionManager} from "../state/ConnectionManager";
 import Avatar from "@mui/material/Avatar";
 import HelmetTail from "../../../assets/logos/helmet-tail.png";
 import {ChatManager} from "../state/ChatManager";
+import {ConnectionManager} from "../state/ConnectionManager";
 
 export default function Bar() {
     const [connected, setConnected] = React.useState(false);
@@ -33,11 +33,14 @@ export default function Bar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Avatar
-                        src={HelmetTail}
-                        variant="rounded"
-                        sx={{marginRight: "8px"}}
-                    />
+                    <Box sx={{flexGrow: 1}}/>
+                    <Box sx={{alignItems: "right"}}>
+                        <Avatar
+                            src={HelmetTail}
+                            variant="rounded"
+                            sx={{marginRight: "8px", alignItems: "right"}}
+                        />
+                    </Box>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         WarChat
                     </Typography>
