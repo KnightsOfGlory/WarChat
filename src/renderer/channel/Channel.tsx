@@ -7,17 +7,7 @@ import Send from "./Send";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import chat from "../../../assets/images/chat.png";
-import d2dv from "../../../assets/images/d2dv.png";
-import d2xp from "../../../assets/images/d2xp.png";
-import drtl from "../../../assets/images/drtl.png";
-import jstr from "../../../assets/images/jstr.png";
-import sexp from "../../../assets/images/sexp.png";
-import star from "../../../assets/images/star.png";
-import w2bn from "../../../assets/images/w2bn.png";
-import w3xp from "../../../assets/images/w3xp.png";
-import war3 from "../../../assets/images/war3.png";
-import serv from "../../../assets/images/serv.png";
+import {ProductIcons} from "../utilities/ProductIcons";
 
 export default function Channel() {
     const [messages, setMessages] = useState<Chat[]>([]);
@@ -50,20 +40,6 @@ export default function Channel() {
         return groups
     }
 
-    let icons = new Map([
-        ["[CHAT]", chat],
-        ["[SERV]", serv],
-        ["[D2DV]", d2dv],
-        ["[D2XP]", d2xp],
-        ["[DRTL]", drtl],
-        ["[JSTR]", jstr],
-        ["[SEXP]", sexp],
-        ["[STAR]", star],
-        ["[W2BN]", w2bn],
-        ["[W3XP]", w3xp],
-        ["[WAR3]", war3],
-    ])
-
     return (
         <Stack sx={{ width: '100%' }}>
             <List
@@ -76,9 +52,11 @@ export default function Channel() {
                 }}
             >
                 {
-                    grouped().reverse().map((group) => {
-                        // @ts-ignore
-                        let icon = icons.get(group[0].user.client.trim())
+                    grouped().reverse().filter((g) => g.length > 0).map((group) => {
+                        if (group[0].user == undefined) return
+                        if (group[0].user.client == undefined) return
+
+                        let icon = ProductIcons.getByClient(group[0].user.client.trim())
                         let said = group.map((g) => g.message)
 
                         let saying = (

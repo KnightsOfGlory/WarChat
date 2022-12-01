@@ -23,12 +23,11 @@ export default class Send extends React.Component {
                         // @ts-ignore
                         const message = this.state.message
                         window.electron.ipcRenderer.sendMessage("chat", message);
-                        let chat = {
+                        ChatManager.add({
                             timestamp: Date.now(),
                             user: UserManager.getSelf(),
                             message: message
-                        }
-                        ChatManager.add(chat)
+                        })
                         this.setState({message: ""})
                     }
                 }}

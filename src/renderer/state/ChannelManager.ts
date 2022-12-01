@@ -1,3 +1,6 @@
+import {ConnectionManager} from "./ConnectionManager";
+import {ChatManager} from "./ChatManager";
+
 export type Channel = {
     name: string,
     topic: string | null,
@@ -33,6 +36,8 @@ export namespace ChannelManager {
 
     let counter = 0
     function listen() {
+        ConnectionManager.subscribe(() => channels = [])
+
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
             let string = new TextDecoder().decode(arg);
@@ -54,6 +59,7 @@ export namespace ChannelManager {
                         console.log(currentChannel)
                         dispatchCurrent()
                         if (currentChannel.name == "Chat") {
+                            ChatManager.ignoreInfo = true
                             window.electron.ipcRenderer.sendMessage("chat", "/channels");
                         }
                         break;
@@ -61,6 +67,7 @@ export namespace ChannelManager {
                         innerMessage = message.split("\"")[1].trim()
                         if (innerMessage.startsWith("Listing ") && innerMessage.endsWith(" channels:")) {
                             counter = Number(innerMessage.slice(8, 9))
+                            channels = []
                         } else if (counter > 0) {
                             let tokens = innerMessage.split("|")
                             channels.push({
@@ -70,6 +77,10 @@ export namespace ChannelManager {
                             })
                             dispatchList()
                             counter--
+
+                            if (counter == 0) {
+                                ChatManager.ignoreInfo = false
+                            }
                         }
                         //dispatch()
                         break;
