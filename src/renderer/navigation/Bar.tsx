@@ -6,8 +6,20 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import {useEffect} from "react";
+import {ConnectionManager} from "../state/ConnectionManager";
+import Avatar from "@mui/material/Avatar";
+import HelmetTail from "../../../assets/logos/helmet-tail.png";
+import {ChatManager} from "../state/ChatManager";
 
 export default function Bar() {
+    const [connected, setConnected] = React.useState(false);
+
+    useEffect(() => {
+        ConnectionManager.subscribe((isConnected: boolean) => setConnected(isConnected));
+    }, []);
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar color="default" position="static">
@@ -21,6 +33,11 @@ export default function Bar() {
                     >
                         <MenuIcon />
                     </IconButton>
+                    <Avatar
+                        src={HelmetTail}
+                        variant="rounded"
+                        sx={{marginRight: "8px"}}
+                    />
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         WarChat
                     </Typography>
@@ -28,11 +45,27 @@ export default function Bar() {
                         size="large"
                         edge="end"
                         onClick={() => {
-                            window.electron.ipcRenderer.sendMessage('socket', "connect");
+                            let message = connected ? "Disconnecting..." : "Connecting..."
+
+                            ChatManager.add({
+                                timestamp: Date.now(),
+                                user: {
+                                    name: "WarChat",
+                                    client: "[WCHT]",
+                                    flags: ""
+                                },
+                                message: message
+                            })
+
+                            window.electron.ipcRenderer.sendMessage('socket', connected ? "disconnect" : "connect");
                         }}
                         color="inherit"
                     >
-                        <RadioButtonCheckedIcon />
+                        {
+                            connected
+                            ? <RadioButtonCheckedIcon />
+                            : <RadioButtonUncheckedIcon />
+                        }
                     </IconButton>
                 </Toolbar>
             </AppBar>

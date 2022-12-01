@@ -1,8 +1,8 @@
 import { ipcMain } from 'electron';
 import { ConnectionManager } from './ConnectionManager';
 
-
 export namespace ChatManager {
+
   export function initialize() {
     listen();
   }

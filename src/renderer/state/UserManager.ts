@@ -13,8 +13,6 @@ export namespace UserManager {
 
     listen()
 
-    export let ignoreInfo = false
-
     export function getSelf(): User {
         return getByUsername(self)
     }

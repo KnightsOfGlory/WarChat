@@ -1,4 +1,5 @@
 import {User, UserManager, UserSubscription} from "./UserManager";
+import {ConnectionManager} from "./ConnectionManager";
 
 export type Talk = {
     timestamp: number,
@@ -35,10 +36,10 @@ export namespace ChatManager {
 
     listen()
 
+    export let ignoreInfo = false
+
     export function add(chat: Chat) {
         chats.push(chat)
-        console.log(chat)
-
         dispatch()
     }
 
@@ -82,13 +83,15 @@ export namespace ChatManager {
                         dispatch()
                         break;
                     case "1018": // info
-                        innerMessage = message.split("\"")[1].trim()
-                        chats.push({
-                            timestamp: Date.now(),
-                            user: { name: "Server", client: "[SERV]", flags: "" },
-                            message: innerMessage,
-                        })
-                        dispatch()
+                        if (!ignoreInfo) {
+                            innerMessage = message.split("\"")[1].trim()
+                            chats.push({
+                                timestamp: Date.now(),
+                                user: {name: "Server", client: "[SERV]", flags: ""},
+                                message: innerMessage,
+                            })
+                            dispatch()
+                        }
                         break;
                     case "1019": // error
                         innerMessage = message.split("\"")[1].trim()
