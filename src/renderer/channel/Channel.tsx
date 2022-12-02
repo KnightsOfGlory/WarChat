@@ -1,4 +1,4 @@
-import {Link, ListItem, Stack} from '@mui/material';
+import {Chip, Divider, Link, ListItem, Stack} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import {Chat, ChatManager} from '../state/ChatManager';
@@ -8,7 +8,6 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import {ProductIcons} from "../utilities/ProductIcons";
-import Box from "@mui/material/Box";
 
 export default function Channel() {
     const [messages, setMessages] = useState<Chat[]>([]);
@@ -25,6 +24,13 @@ export default function Channel() {
         let user: User | null = null
 
         messages.forEach((message) => {
+            if (message.hasOwnProperty("channel")) {
+                groups.push(group)
+                groups.push([message])
+                group = []
+                return
+            }
+
             if (user != null && message.user.name != user.name) {
                 groups.push(group)
                 group = []
@@ -57,6 +63,20 @@ export default function Channel() {
                         if (group[0].user == undefined) return
                         if (group[0].user.client == undefined) return
 
+                        if (group[0].hasOwnProperty("channel")) {
+                            console.log("XXX CHANNEL CHAT EVENT")
+                            return (
+                                <Divider sx={{"&::before, &::after": {
+                                        top: "0%",
+                                    },}}>
+                                    <Chip label={
+                                        // @ts-ignore*
+                                        "Channel: " + group[0].channel
+                                    }/>
+                                </Divider>
+                            )
+                        }
+
                         // @ts-ignore
                         let icon = ProductIcons.getByClient(group[0].user.client.trim(), group[0].user.flags)
                         let said = group.map((g) => g.message)
@@ -74,13 +94,13 @@ export default function Channel() {
                                 }
                             </React.Fragment>)
 
-                        let primary = (<Box sx={{fontSize: "0.875rem"}}>
+                        let primary = (<span style={{fontSize: "0.875rem"}}>
                             <Link href={"#"} underline={"hover"}>{group[0].user.name}</Link>
-                        </Box>)
+                        </span>)
 
-                        let secondary = (<Box sx={{fontSize: "1rem", color: "#ffffff"}}>
+                        let secondary = (<span style={{fontSize: "1rem", color: "#ffffff"}}>
                             {saying}
-                        </Box>)
+                        </span>)
 
                         return (
                             <ListItem alignItems={"flex-start"}>

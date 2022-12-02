@@ -7,9 +7,11 @@ import TagIcon from '@mui/icons-material/Tag';
 import { Channel, ChannelManager } from "../state/ChannelManager";
 
 export default function ChannelTree() {
+    const [currentChannel, setCurrentChannel] = useState<Channel>();
     const [channels, setChannels] = useState<Channel[]>([]);
 
     useEffect(() => {
+        ChannelManager.subscribeCurrent((newChannel: Channel) => setCurrentChannel(newChannel));
         ChannelManager.subscribeList((newChannels: Channel[]) => {
             setChannels(newChannels);
         });
@@ -29,11 +31,11 @@ export default function ChannelTree() {
                 {
                     channels.map((channel: Channel) => {
                         return (<ListItem key={channel.name} disablePadding>
-                            <ListItemButton>
+                            <ListItemButton selected={currentChannel != null && channel.name == currentChannel.name}>
                                 <ListItemIcon>
                                     <TagIcon />
                                 </ListItemIcon>
-                                <ListItemText key={channel.name} primary={channel.name + " – " + channel.users} sx={{ marginLeft: "-24px" }} />
+                                <ListItemText primary={channel.name + " – " + channel.users} sx={{ marginLeft: "-24px" }} />
                             </ListItemButton>
                         </ListItem>);
                     })

@@ -13,8 +13,16 @@ export namespace UserManager {
 
     listen()
 
-    export function getSelf(): User {
+    export function getConnectedUser(): User {
         return getByUsername(self)
+    }
+
+    export function getServerUser(): User {
+        return {name: "Server", client: "[SERV]", flags: "0000"}
+    }
+
+    export function getWarChatUser(): User {
+        return {name: "WarChat", client: "[WCHT]", flags: "0000"}
     }
 
     export function getByUsername(username: string): User {
