@@ -2,21 +2,32 @@ import {Chip, Divider, Link, ListItem, Stack} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import {Chat, ChatManager} from '../state/ChatManager';
-import {User} from "../state/UserManager";
+import {User, UserManager} from "../state/UserManager";
 import Send from "./Send";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import {ProductIcons} from "../utilities/ProductIcons";
+import {ConnectionManager} from "../state/ConnectionManager";
 
 export default function Channel() {
+    const [connected, setConnected] = useState(false)
     const [messages, setMessages] = useState<Chat[]>([]);
 
     useEffect(() => {
         ChatManager.subscribe((newMessage: any) => {
             setMessages([...newMessage]); // force state change
         });
-    }, [messages]);
+        console.log("SUBSCRIBING")
+        ConnectionManager.subscribe((isConnected) => {
+            setConnected(isConnected)
+            ChatManager.add({
+                timestamp: Date.now(),
+                user: UserManager.getWarChatUser(),
+                message: isConnected ? "Connected!" : "Disconnected!"
+            })
+        })
+    }, []);
 
     const grouped = () => {
         let groups: Chat[][] = [];
@@ -64,7 +75,6 @@ export default function Channel() {
                         if (group[0].user.client == undefined) return
 
                         if (group[0].hasOwnProperty("channel")) {
-                            console.log("XXX CHANNEL CHAT EVENT")
                             return (
                                 <Divider sx={{"&::before, &::after": {
                                         top: "0%",

@@ -1,3 +1,5 @@
+import {ConnectionManager} from "./ConnectionManager";
+
 export type User = {
     name: string,
     client: string,
@@ -41,6 +43,11 @@ export namespace UserManager {
     }
 
     function listen() {
+        ConnectionManager.subscribe(() => {
+            users = []
+            dispatch()
+        })
+
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
             let string = new TextDecoder().decode(arg);
