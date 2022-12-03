@@ -18,7 +18,6 @@ export default function Channel() {
         ChatManager.subscribe((newMessage: any) => {
             setMessages([...newMessage]); // force state change
         });
-        console.log("SUBSCRIBING")
         ConnectionManager.subscribe((isConnected) => {
             setConnected(isConnected)
             ChatManager.add({

@@ -64,7 +64,6 @@ export namespace UserManager {
                             "flags": fields[3],
                             "client": fields[4]
                         })
-                        console.log('[DEBUG] 1001 Dispatch')
                         dispatch()
                         break;
                     case "1002": // user joined
@@ -73,7 +72,6 @@ export namespace UserManager {
                             "flags": fields[3],
                             "client": fields[4]
                         })
-                        console.log('[DEBUG] 1002 Dispatch')
                         dispatch()
                         break;
                     case "1003": // user left -- using HOF to make up for bad protocol
