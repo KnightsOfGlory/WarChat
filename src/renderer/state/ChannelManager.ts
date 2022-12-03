@@ -56,7 +56,6 @@ export namespace ChannelManager {
                             topic: "",
                             users: 0
                         }
-                        console.log(currentChannel)
                         dispatchCurrent()
                         if (currentChannel.name == "Chat") {
                             ChatManager.ignoreInfo = true

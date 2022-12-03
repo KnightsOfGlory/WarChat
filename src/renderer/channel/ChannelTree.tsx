@@ -1,12 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
-import { ListItem, ListItemButton, ListItemIcon, ListSubheader } from "@mui/material";
+import {
+    Button,
+    Dialog, DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListSubheader
+} from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import TagIcon from '@mui/icons-material/Tag';
 import { Channel, ChannelManager } from "../state/ChannelManager";
 
 export default function ChannelTree() {
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [joining, setJoining] = useState("");
     const [currentChannel, setCurrentChannel] = useState<Channel>();
     const [channels, setChannels] = useState<Channel[]>([]);
 
@@ -16,6 +28,18 @@ export default function ChannelTree() {
             setChannels(newChannels);
         });
     }, []);
+
+    const joinChannel = (channel: string) => {
+        setConfirmOpen(true);
+        setJoining(channel);
+    }
+    const joinYes = () => {
+        window.electron.ipcRenderer.sendMessage("chat", "/join " + joining);
+        setConfirmOpen(false);
+    }
+    const joinNo = () => {
+        setConfirmOpen(false);
+    }
 
     return (
         <Box sx={{ width: "225px" }}>
@@ -30,7 +54,7 @@ export default function ChannelTree() {
                 </ListSubheader>
                 {
                     channels.map((channel: Channel) => {
-                        return (<ListItem key={channel.name} disablePadding>
+                        return (<ListItem key={channel.name} onClick={() => joinChannel(channel.name)} disablePadding>
                             <ListItemButton selected={currentChannel != null && channel.name == currentChannel.name}>
                                 <ListItemIcon>
                                     <TagIcon />
@@ -52,6 +76,25 @@ export default function ChannelTree() {
                     </ListItemButton>
                 </ListItem>
             </List>
+            <Dialog
+                open={confirmOpen}
+                // onClose={handleClose}
+            >
+                <DialogTitle>
+                    {"Join channel?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Do you want to leave your current channel and join {joining}?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={joinNo}>No</Button>
+                    <Button onClick={joinYes} autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
