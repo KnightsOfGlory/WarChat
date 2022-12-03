@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { Channel, ChannelManager } from "../state/ChannelManager";
 import {ProductIcons} from "../utilities/ProductIcons";
 import {UserFlags} from "../utilities/UserFlags";
+import {ConnectionManager} from "../state/ConnectionManager";
 
 const draw = (label: string, users: User[]) => {
     if (users.length == 0) return
@@ -46,12 +47,15 @@ const draw = (label: string, users: User[]) => {
 }
 
 export default function Users() {
-    const [channel, setChannel] = useState<Channel>();
+    const [channel, setChannel] = useState<Channel | null>();
     const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         ChannelManager.subscribeCurrent((newChannel: Channel) => setChannel(newChannel));
         UserManager.subscribe((newUsers) => setUsers(newUsers));
+        ConnectionManager.subscribe((isConnected) => {
+            if (!isConnected) setChannel(null)
+        })
     }, []);
 
     const grouped = () => {
@@ -77,7 +81,7 @@ export default function Users() {
         <Box sx={{ minWidth: "250px", height: "100%", paddingBottom: "0px" }}>
             <Paper sx={{ textAlign: "center", textSize: "1.5rem", margin: "8px", paddingTop: "4px", paddingBottom: "4px", backgroundColor: "#272727" }}>
                 {
-                    (channel == null ? "Disconnected" : channel.name) + ` – ${users.length}`
+                    (channel == null ? "Disconnected" : channel.name + ` – ${users.length}`)
                 }
             </Paper>
             <List sx={{ paddingTop: "0px", overflowY: "overlay", height: 'calc(100vh - 64px - 58px)' }}>
