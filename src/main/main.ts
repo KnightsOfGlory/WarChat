@@ -6,6 +6,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { ChatManager } from './state/ChatManager';
 import {ConnectionManager} from "./state/ConnectionManager";
+import {ProfileManager} from "./state/ProfileManager";
 
 class AppUpdater {
   constructor() {
@@ -17,6 +18,7 @@ class AppUpdater {
 
 ConnectionManager.initialize()
 ChatManager.initialize()
+ProfileManager.initialize()
 
 let mainWindow: BrowserWindow | null = null;
 

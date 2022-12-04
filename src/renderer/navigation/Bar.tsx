@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {useEffect} from "react";
@@ -13,6 +12,7 @@ import HelmetTail from "../../../assets/logos/helmet-tail.png";
 import {ChatManager} from "../state/ChatManager";
 import {ConnectionManager} from "../state/ConnectionManager";
 import {UserManager} from "../state/UserManager";
+import Hamburger from "./Hamburger";
 
 export default function Bar() {
     const [connected, setConnected] = React.useState(false);
@@ -25,15 +25,7 @@ export default function Bar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar color="default" position="static">
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    <Hamburger/>
                     <Box sx={{flexGrow: 1}}/>
                     <Box sx={{alignItems: "right"}}>
                         <Avatar
