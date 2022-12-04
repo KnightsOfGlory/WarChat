@@ -1,38 +1,37 @@
 import {TextField} from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import {ChatManager} from "../state/ChatManager";
 import {UserManager} from "../state/UserManager";
+import {ConnectionManager} from "../state/ConnectionManager";
 
-export default class Send extends React.Component {
-    constructor(props: {} | Readonly<{}>) {
-        super(props);
+export default function Send() {
+    const [message, setMessage] = React.useState("");
+    const [connected, setConnected] = React.useState(false);
 
-        this.state = {message: ""};
-    }
+    useEffect(() => {
+        ConnectionManager.subscribe((isConnected: boolean) => setConnected(isConnected));
+    }, []);
 
-    render() {
-        return (
-            <TextField
-                variant="outlined"
+    return (
+        <TextField
+            variant="outlined"
+            value={message}
+            onInput={(event) =>
                 // @ts-ignore
-                value={this.state.message}
-                // @ts-ignore
-                onInput={(event) => this.setState({message: event.target.value})}
-                onKeyDown={(event) => {
-                    if (event.code == "Enter") {
-                        // @ts-ignore
-                        const message = this.state.message
-
-                        window.electron.ipcRenderer.sendMessage("chat", message);
-                        ChatManager.add({
-                            timestamp: Date.now(),
-                            user: UserManager.getConnectedUser(),
-                            message: message
-                        })
-                        this.setState({message: ""})
-                    }
-                }}
-                sx={{width: "auto", margin: "16px"}} />
-        );
-    }
+                setMessage(event.target.value)
+            }
+            onKeyDown={(event) => {
+                if (event.code == "Enter" && connected) {
+                    window.electron.ipcRenderer.sendMessage("chat", message);
+                    ChatManager.add({
+                        timestamp: Date.now(),
+                        user: UserManager.getConnectedUser(),
+                        message: message
+                    })
+                    setMessage("")
+                }
+            }}
+            disabled={!connected}
+            sx={{width: "auto", margin: "16px"}} />
+    );
 }
