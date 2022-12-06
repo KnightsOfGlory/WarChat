@@ -15,11 +15,13 @@ import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import TagIcon from '@mui/icons-material/Tag';
 import { Channel, ChannelManager } from "../state/ChannelManager";
+import {User} from "../state/UserManager";
 
 export default function ChannelTree() {
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [joining, setJoining] = useState("");
     const [currentChannel, setCurrentChannel] = useState<Channel>();
+
     const [channels, setChannels] = useState<Channel[]>([]);
 
     useEffect(() => {

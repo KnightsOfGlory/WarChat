@@ -16,6 +16,13 @@ class AppUpdater {
   }
 }
 
+ipcMain.on('app', async (event, arg) => {
+  if (arg == "quit") {
+    mainWindow?.close()
+    process.exit()
+  }
+});
+
 ConnectionManager.initialize()
 ChatManager.initialize()
 ProfileManager.initialize()
@@ -64,7 +71,8 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
-    icon: getAssetPath('icon.png'),
+    // icon: getAssetPath('icon.png'),
+    icon: getAssetPath('logos/icon.png'),
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

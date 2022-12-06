@@ -23,11 +23,13 @@ export default function Send() {
             onKeyDown={(event) => {
                 if (event.code == "Enter" && connected) {
                     window.electron.ipcRenderer.sendMessage("chat", message);
-                    ChatManager.add({
-                        timestamp: Date.now(),
-                        user: UserManager.getConnectedUser(),
-                        message: message
-                    })
+                    if (!message.startsWith("/")) {
+                        ChatManager.add({
+                            timestamp: Date.now(),
+                            user: UserManager.getConnectedUser(),
+                            message: message
+                        })
+                    }
                     setMessage("")
                 }
             }}
