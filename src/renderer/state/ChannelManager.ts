@@ -42,12 +42,16 @@ export namespace ChannelManager {
         UserManager.subscribe((users) => {
             if (currentChannel != undefined && channels.length > 0) {
                 currentChannel.users = users.length
-                console.log(channels)
                 channels.filter((c) => c.name == currentChannel.name)[0].users = users.length
                 dispatchCurrent()
                 dispatchList()
             }
         })
+
+        setInterval(() => {
+            ChatManager.ignoreInfo = true
+            window.electron.ipcRenderer.sendMessage("chat", "/channels");
+        }, 60*1000)
 
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
