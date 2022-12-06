@@ -85,7 +85,7 @@
   },
   "build": {
     "productName": "WarChat",
-    "appId": "io.knightsofglory",
+    "appId": "io.knightsofglory.WarChat",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
