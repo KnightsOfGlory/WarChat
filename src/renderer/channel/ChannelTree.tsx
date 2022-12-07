@@ -69,7 +69,7 @@ export default function ChannelTree() {
                 <ListSubheader component="div" sx={{ fontSize: "0.875rem" }}>
                     FAVORITES
                 </ListSubheader>
-                <ListItem disablePadding>
+                <ListItem onClick={() => joinChannel("KoG")} disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
                             <TagIcon />

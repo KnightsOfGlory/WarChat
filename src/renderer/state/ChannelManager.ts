@@ -40,7 +40,7 @@ export namespace ChannelManager {
     function listen() {
         ConnectionManager.subscribe(() => { channels = []; dispatchList() })
         UserManager.subscribe((users) => {
-            if (currentChannel != undefined && channels.length > 0) {
+            if (currentChannel != undefined && channels.length > 0 && users.length > 0) {
                 currentChannel.users = users.length
                 channels.filter((c) => c.name == currentChannel.name)[0].users = users.length
                 dispatchCurrent()
