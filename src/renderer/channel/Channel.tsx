@@ -1,4 +1,4 @@
-import {Chip, Divider, Link, ListItem, Stack} from '@mui/material';
+import {Chip, Divider, Link, ListItem, Stack, Tooltip} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import {Chat, ChatManager} from '../state/ChatManager';
@@ -9,6 +9,9 @@ import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import {ProductIcons} from "../utilities/ProductIcons";
 import {ConnectionManager} from "../state/ConnectionManager";
+import {Timestamps} from "../utilities/Timestamps";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export default function Channel() {
     const [connected, setConnected] = useState(false)
@@ -105,6 +108,14 @@ export default function Channel() {
 
                         let primary = (<span style={{fontSize: "0.875rem"}}>
                             <Link href={"#"} underline={"hover"}>{group[0].user.name}</Link>
+                            <Tooltip
+                                placement={"top"}
+                                title={(new Date(group[0].timestamp)).toString().split(" (")[0]}
+                                sx={{maxWidth: "none"}}>
+                                <Box component="div" sx={{ display: 'inline', paddingLeft: "4px", color: 'text.secondary' }}>
+                                    {Timestamps.toReadable(group[0].timestamp)}
+                                </Box>
+                            </Tooltip>
                         </span>)
 
                         let secondary = (<span style={{fontSize: "1rem", color: "#ffffff"}}>
