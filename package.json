@@ -2,7 +2,7 @@
   "name": "warchat",
   "version": "0.1.0",
   "main": "./src/main/main.ts",
-  "author": "DaRK`PiaNKA^KoG",
+  "author": "Knights of Glory",
   "license": "MIT",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -95,6 +95,7 @@
     ],
     "afterSign": ".erb/scripts/notarize.js",
     "mac": {
+      "icon": "assets/logos/icon.png",
       "target": {
         "target": "default",
         "arch": [
@@ -104,8 +105,8 @@
       },
       "type": "distribution",
       "hardenedRuntime": true,
-      "entitlements": "assets/entitlements.mac.plist",
-      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "entitlements": "assets/package/entitlements.mac.plist",
+      "entitlementsInherit": "assets/package/entitlements.mac.plist",
       "gatekeeperAssess": false
     },
     "dmg": {
@@ -123,11 +124,13 @@
       ]
     },
     "win": {
+      "icon": "assets/logos/icon.png",
       "target": [
         "nsis"
       ]
     },
     "linux": {
+      "icon": "assets/logos/icon.png",
       "target": [
         "AppImage"
       ],
