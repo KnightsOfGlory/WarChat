@@ -21,6 +21,7 @@ export namespace ConnectionManager {
       switch (arg) {
         case "connect":
           let profile = ProfileManager.getProfile()
+          client = new net.Socket()
           client.connect(6112, profile.server, function() {
             client.write("\x03\x04");
             client.write(profile.username + "\x0D\x0A")

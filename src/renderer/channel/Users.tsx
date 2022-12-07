@@ -29,8 +29,9 @@ const draw = (label: string, users: User[]) => {
                         <ListItem
                             key={user.name}
                             disablePadding
+
                         >
-                            <ListItemButton>
+                            <ListItemButton sx={{paddingTop: "4px", paddingBottom: "4px"}}>
                                 <ListItemAvatar>
                                     <Avatar
                                         src={icon}

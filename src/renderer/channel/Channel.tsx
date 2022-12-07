@@ -123,7 +123,7 @@ export default function Channel() {
                         </span>)
 
                         return (
-                            <ListItem alignItems={"flex-start"}>
+                            <ListItem alignItems={"flex-start"} sx={{paddingTop: "0px", paddingBottom: "0px"}}>
                                 <ListItemAvatar>
                                     <Avatar
                                         src={icon}
