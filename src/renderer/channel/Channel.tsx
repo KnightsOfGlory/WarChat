@@ -80,7 +80,7 @@ export default function Channel() {
                             return (
                                 <Divider sx={{"&::before, &::after": {
                                         top: "0%",
-                                    },}}>
+                                    }, marginBottom: "4px", marginTop: "4px"}}>
                                     <Chip label={
                                         // @ts-ignore*
                                         "Channel: " + group[0].channel
@@ -106,8 +106,17 @@ export default function Channel() {
                                 }
                             </React.Fragment>)
 
+                        let color = ""
+                        if (group[0].user && UserManager.getConnectedUser() && group[0].user.name == UserManager.getConnectedUser().name) {
+                            color = "success.main"
+                        }
+
                         let primary = (<span style={{fontSize: "0.875rem"}}>
-                            <Link href={"#"} underline={"hover"}>{group[0].user.name}</Link>
+                            <Link href={"#"} underline={"hover"}>
+                                <Box component="div" sx={{ display: 'inline', color: color }}>
+                                    {group[0].user.name}
+                                </Box>
+                            </Link>
                             <Tooltip
                                 placement={"top"}
                                 title={(new Date(group[0].timestamp)).toString().split(" (")[0]}
