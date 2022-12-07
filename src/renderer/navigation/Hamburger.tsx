@@ -15,6 +15,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import {ChatManager} from "../state/ChatManager";
 import {UserManager} from "../state/UserManager";
 import Profile from "../configuration/Profile";
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)
@@ -91,6 +92,15 @@ export default function Hamburger() {
                             </ListItemButton>
                         </ListItem>
                     </List>
+                    <Divider />
+                    <ListItem key={"Quit"} disablePadding>
+                        <ListItemButton onClick={() => window.electron.ipcRenderer.sendMessage('app', "quit")}>
+                            <ListItemIcon>
+                                <NotInterestedIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={"Quit"} />
+                        </ListItemButton>
+                    </ListItem>
                 </Box>
             </Drawer>
         </React.Fragment>

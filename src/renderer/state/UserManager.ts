@@ -83,10 +83,9 @@ export namespace UserManager {
                         dispatch()
                         break;
                     case "1009":
-                        // name = fields[2]
-                        // flags = fields[3]
-                        // client = fields[4]
-                        // dispatch()
+                        let user = getByUsername(fields[2])
+                        user.flags = fields[3]
+                        user.client = fields[4]
                         break;
                     case "2010":
                         self = fields[2]

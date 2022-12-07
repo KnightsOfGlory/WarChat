@@ -84,8 +84,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "WarChat",
+    "appId": "io.knightsofglory.WarChat",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -143,8 +143,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "KnightsOfGlory",
+      "repo": "WarChat"
     }
   },
   "devEngines": {

@@ -1,5 +1,6 @@
 import {ConnectionManager} from "./ConnectionManager";
 import {ChatManager} from "./ChatManager";
+import {User, UserManager} from "./UserManager";
 
 export type Channel = {
     name: string,
@@ -11,8 +12,9 @@ export type CurrentChannelSubscription = (channel: Channel) => void
 export type ChannelListSubscription = (channels: Channel[]) => void
 
 export namespace ChannelManager {
-    let currentChannel: Channel | null = null
+    let currentChannel: Channel
     let channels: Channel[] = []
+
     let currentChannelSubscriptions: CurrentChannelSubscription[] = []
     let channelListSubscriptions: ChannelListSubscription[] = []
 
@@ -26,7 +28,7 @@ export namespace ChannelManager {
     }
 
     function dispatchCurrent(){
-        if (currentChannel == null) return;
+        if (currentChannel == undefined) return;
         // @ts-ignore
         currentChannelSubscriptions.forEach((s) => s(currentChannel))
     }
@@ -36,7 +38,20 @@ export namespace ChannelManager {
 
     let counter = 0
     function listen() {
-        ConnectionManager.subscribe(() => channels = [])
+        ConnectionManager.subscribe(() => { channels = []; dispatchList() })
+        UserManager.subscribe((users) => {
+            if (currentChannel != undefined && channels.length > 0 && users.length > 0) {
+                currentChannel.users = users.length
+                channels.filter((c) => c.name == currentChannel.name)[0].users = users.length
+                dispatchCurrent()
+                dispatchList()
+            }
+        })
+
+        setInterval(() => {
+            ChatManager.ignoreInfo = true
+            window.electron.ipcRenderer.sendMessage("chat", "/channels");
+        }, 60*1000)
 
         window.electron.ipcRenderer.on('messages', (arg) => {
             // @ts-ignore
