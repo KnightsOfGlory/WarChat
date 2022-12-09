@@ -36,7 +36,6 @@ export namespace ConnectionManager {
 
           client.on('data', function(data: string) {
             event.reply("messages", data);
-            console.log("" + data)
           });
           client.on("close", () => {
             if (connected) {
