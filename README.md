@@ -21,7 +21,7 @@ Architectures supported: Intel x64, ARM64
 
 [Download (ARM)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.1.1/WarChat-0.1.1-arm64.AppImage)
 
-The Linux deployment target is an AppImage.  Electron apps no longer support desktop integration out of the box.  [AppLauncher](https://github.com/TheAssassin/AppImageLauncher) is the recommended utility to integrate and launch the WarChat AppImage on Linux.
+The Linux deployment target is an AppImage.  Electron apps no longer support desktop integration for AppImages out of the box.  [AppLauncher](https://github.com/TheAssassin/AppImageLauncher) is the recommended utility to integrate and launch the WarChat AppImage on Linux.
 
 To install AppLauncher on a Debian-based distribution with Aptitude, for example:
 
