@@ -4,14 +4,14 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import {Drawer, ListItem, ListItemButton, Menu} from "@mui/material";
+import {Drawer, ListItem, ListItemButton} from "@mui/material";
 import {useState} from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
 import SettingsIcon from '@mui/icons-material/Settings';
-import BadgeIcon from '@mui/icons-material/Badge';
 import {ChatManager} from "../state/ChatManager";
 import {UserManager} from "../state/UserManager";
 import Profile from "../configuration/Profile";
@@ -82,6 +82,14 @@ export default function Hamburger() {
                     </List>
                     <Divider />
                     <List>
+                        <ListItem key={"Update"} disablePadding>
+                            <ListItemButton onClick={() => window.electron.ipcRenderer.sendMessage("updater", "check")}>
+                                <ListItemIcon>
+                                    <UpgradeIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Update"} />
+                            </ListItemButton>
+                        </ListItem>
                         <Profile/>
                         <ListItem key={"Settings"} disablePadding>
                             <ListItemButton>

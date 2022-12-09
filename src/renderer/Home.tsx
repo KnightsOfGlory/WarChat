@@ -8,6 +8,8 @@ import Pages from "./navigation/Pages";
 import Users from "./channel/Users";
 import Channel from "./channel/Channel";
 import ChannelTree from "./channel/ChannelTree";
+import AutoUpdate from "./general/AutoUpdate";
+import Alerts from "./general/Alerts";
 
 export default class Home extends React.Component {
     constructor(props: {} | Readonly<{}>) {
@@ -43,6 +45,8 @@ export default class Home extends React.Component {
                     <Divider orientation="vertical" flexItem />
                     <Users/>
                 </Stack>
+                <AutoUpdate/>
+                <Alerts/>
             </div>
         );
     }

@@ -1,20 +1,13 @@
 import path from 'path';
 import {app, BrowserWindow, shell, ipcMain, ipcRenderer} from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
+import {autoUpdater, UpdateInfo} from 'electron-updater';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { ChatManager } from './state/ChatManager';
 import {ConnectionManager} from "./state/ConnectionManager";
 import {ProfileManager} from "./state/ProfileManager";
-
-class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
+import {ProgressInfo} from "electron-builder";
+import log from 'electron-log';
 
 ipcMain.on('app', async (event, arg) => {
   if (arg == "quit") {
@@ -22,6 +15,44 @@ ipcMain.on('app', async (event, arg) => {
     process.exit()
   }
 });
+
+ipcMain.on("updater", async (event, command) => {
+  switch (command) {
+    case "initialize":
+      log.transports.file.level = 'verbose';
+      autoUpdater.logger = log;
+
+      autoUpdater.autoDownload = false
+      autoUpdater.on('checking-for-update', () => {
+      })
+      autoUpdater.on('update-available', (info: UpdateInfo) => {
+        event.reply("updater", "update.available")
+      })
+      autoUpdater.on('update-not-available', (info: UpdateInfo) => {
+        event.reply("updater", "update.not.available")
+      })
+      autoUpdater.on('error', (err) => {
+        event.reply("updater", "error", err)
+      })
+      // @ts-ignore
+      autoUpdater.on('download-progress', (progressObj: ProgressInfo) => {
+        event.reply("updater", "download.progress", progressObj)
+      })
+      autoUpdater.on('update-downloaded', (info) => {
+        event.reply("updater", "update.downloaded")
+      })
+      break;
+    case "check":
+      autoUpdater.checkForUpdates()
+      break;
+    case "download":
+      autoUpdater.downloadUpdate()
+      break;
+    case "install":
+      autoUpdater.quitAndInstall()
+      break;
+  }
+})
 
 ConnectionManager.initialize()
 ChatManager.initialize()
@@ -104,8 +135,6 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
-
-  new AppUpdater();
 };
 
 app.on('window-all-closed', () => {
