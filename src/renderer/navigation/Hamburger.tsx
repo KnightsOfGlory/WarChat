@@ -82,14 +82,6 @@ export default function Hamburger() {
                     </List>
                     <Divider />
                     <List>
-                        <ListItem key={"Update"} disablePadding>
-                            <ListItemButton onClick={() => window.electron.ipcRenderer.sendMessage("updater", "check")}>
-                                <ListItemIcon>
-                                    <UpgradeIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Update"} />
-                            </ListItemButton>
-                        </ListItem>
                         <Profile/>
                         <ListItem key={"Settings"} disablePadding>
                             <ListItemButton>
@@ -97,6 +89,14 @@ export default function Hamburger() {
                                     <SettingsIcon />
                                 </ListItemIcon>
                                 <ListItemText primary={"Settings"} />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem key={"Update"} disablePadding>
+                            <ListItemButton onClick={() => window.electron.ipcRenderer.sendMessage("updater", "check")}>
+                                <ListItemIcon>
+                                    <UpgradeIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Update"} />
                             </ListItemButton>
                         </ListItem>
                     </List>
