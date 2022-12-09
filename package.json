@@ -125,15 +125,24 @@
     },
     "win": {
       "icon": "assets/logos/icon.png",
-      "target": [
-        "nsis"
-      ]
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "arm64",
+          "x64",
+          "ia32"
+        ]
+      }
     },
     "linux": {
       "icon": "assets/logos/icon.png",
-      "target": [
-        "AppImage"
-      ],
+      "target": {
+        "target": "AppImage",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      },
       "category": "Development"
     },
     "directories": {
