@@ -1,5 +1,5 @@
-import {ipcRenderer} from "../utilities/IpcRenderer"
 import {Interprocess} from "../../common/Interprocess";
+import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export type Subscription = (isConnected: boolean) => void
 

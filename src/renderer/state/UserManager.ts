@@ -1,7 +1,7 @@
 import {ConnectionManager} from "./ConnectionManager";
-import {ipcRenderer} from "../utilities/IpcRenderer";
 import {Interprocess} from "../../common/Interprocess";
 import {MessageEvents} from "../../common/MessageEvents";
+import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export type User = {
     name: string,

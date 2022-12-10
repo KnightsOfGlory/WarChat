@@ -2,8 +2,8 @@ import {TextField} from "@mui/material"
 import React, {useEffect} from "react"
 import {ChatManager} from "../state/ChatManager"
 import {ConnectionManager} from "../state/ConnectionManager"
-import {ipcRenderer} from "../utilities/IpcRenderer"
 import {ChatHelper} from "../utilities/ChatHelper"
+import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export default function Send() {
     const [message, setMessage] = React.useState("")

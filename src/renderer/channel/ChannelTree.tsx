@@ -16,7 +16,7 @@ import ListItemText from "@mui/material/ListItemText"
 import List from "@mui/material/List"
 import TagIcon from '@mui/icons-material/Tag'
 import {Channel, ChannelManager} from "../state/ChannelManager"
-import {ipcRenderer} from "../utilities/IpcRenderer"
+import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export default function ChannelTree() {
     const [confirmOpen, setConfirmOpen] = useState(false)

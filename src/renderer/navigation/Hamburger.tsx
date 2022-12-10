@@ -15,8 +15,8 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import {ChatManager} from "../state/ChatManager"
 import Profile from "../configuration/Profile"
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
-import {ipcRenderer} from "../utilities/IpcRenderer"
 import {ChatHelper} from "../utilities/ChatHelper"
+import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)

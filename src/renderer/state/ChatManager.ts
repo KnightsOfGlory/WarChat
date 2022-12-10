@@ -1,8 +1,8 @@
 import {User, UserManager} from "./UserManager"
-import {ipcRenderer} from "../utilities/IpcRenderer"
 import {ChatHelper} from "../utilities/ChatHelper"
 import {Interprocess} from "../../common/Interprocess";
 import {MessageEvents} from "../../common/MessageEvents";
+import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export type Talk = {
     timestamp: number,
