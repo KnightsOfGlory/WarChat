@@ -24,6 +24,7 @@ export default class Home extends React.Component {
             let string = new TextDecoder().decode(arg as Uint8Array)
             let tokens = string.split("\n")
 
+            // @ts-ignore
             this.setState({messages: [...this.state.messages, ...tokens]})
         })
     }

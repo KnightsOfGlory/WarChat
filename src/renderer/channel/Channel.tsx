@@ -78,7 +78,7 @@ export default function Channel() {
                                     }, marginBottom: "4px", marginTop: "4px"
                                 }}>
                                     <Chip label={
-                                        // @ts-ignore*
+                                        // @ts-ignore
                                         "Channel: " + group[0].channel
                                     }/>
                                 </Divider>

@@ -51,6 +51,7 @@ export namespace ProfileManager {
         let user = os.homedir()
         let file = path.join(user, ".warchat", "profiles", "default")
         let data = JSON.stringify(profile)
+
         fs.writeFileSync(file, data)
     }
 
