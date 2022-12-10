@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import net from "net";
 import {ProfileManager} from "./ProfileManager";
+import {Interprocess} from "../../common/Interprocess";
 
 export namespace ConnectionManager {
   let connected = false
@@ -17,9 +18,9 @@ export namespace ConnectionManager {
   }
 
   function listen() {
-    ipcMain.on('socket', async (event, arg) => {
+    ipcMain.on(Interprocess.Channels.SOCKET, async (event, arg) => {
       switch (arg) {
-        case "connect":
+        case Interprocess.Commands.Socket.CONNECT:
           let profile = ProfileManager.getProfile()
           client.removeAllListeners("data")
           client.removeAllListeners("close")
@@ -35,13 +36,15 @@ export namespace ConnectionManager {
           });
 
           client.on('data', function(data: string) {
-            event.reply("messages", data);
-            console.log("" + data)
+            event.reply(Interprocess.Channels.MESSAGES, data);
           });
           client.on("close", () => {
             if (connected) {
               connected = false
-              event.reply("socket", "disconnected")
+              event.reply(
+                  Interprocess.Channels.SOCKET,
+                  Interprocess.Commands.Socket.DISCONNECTED
+              )
             }
           })
           client.on("error", () => {
@@ -50,11 +53,14 @@ export namespace ConnectionManager {
           client.on("connect", () => {
             if (!connected) {
               connected = true
-              event.reply("socket", "connected")
+              event.reply(
+                  Interprocess.Channels.SOCKET,
+                  Interprocess.Commands.Socket.CONNECTED
+              )
             }
           })
           break;
-        case "disconnect":
+        case Interprocess.Commands.Socket.DISCONNECT:
           client.destroy()
           setTimeout(() => {
             client.removeAllListeners("data")

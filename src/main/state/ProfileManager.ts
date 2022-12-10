@@ -2,6 +2,7 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import {ipcMain} from "electron";
+import {Interprocess} from "../../common/Interprocess";
 
 export type Profile = {
     server: string,
@@ -50,16 +51,25 @@ export namespace ProfileManager {
         let user = os.homedir()
         let file = path.join(user, ".warchat", "profiles", "default")
         let data = JSON.stringify(profile)
+
         fs.writeFileSync(file, data)
     }
 
     function listen() {
-        ipcMain.on("profile.read", async (event, arg) => {
-            event.reply("profile.read", profile)
-        })
-        ipcMain.on("profile.save", async (event, arg) => {
-            profile = arg as Profile
-            save()
+        ipcMain.on(Interprocess.Channels.PROFILE, async (event, command, data) => {
+            switch (command) {
+                case Interprocess.Commands.Profile.READ:
+                    event.reply(
+                        Interprocess.Channels.PROFILE,
+                        Interprocess.Commands.Profile.READ,
+                        profile
+                    )
+                    break
+                case Interprocess.Commands.Profile.SAVE:
+                    profile = data as Profile
+                    save()
+                    break
+            }
         })
     }
 }

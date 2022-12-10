@@ -1,31 +1,31 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import {ListItem, ListItemButton} from "@mui/material";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import BadgeIcon from "@mui/icons-material/Badge";
-import ListItemText from "@mui/material/ListItemText";
-import {useState} from "react";
-import {ProfileManager} from "../state/ProfileManager";
+import * as React from 'react'
+import {useState} from 'react'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import {ListItem, ListItemButton} from "@mui/material"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import BadgeIcon from "@mui/icons-material/Badge"
+import ListItemText from "@mui/material/ListItemText"
+import {ProfileManager} from "../state/ProfileManager"
 
 export default function Profile() {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
     const [server, setServer] = useState(ProfileManager.getProfile().server)
     const [username, setUsername] = useState(ProfileManager.getProfile().username)
     const [password, setPassword] = useState(ProfileManager.getProfile().password)
     const [home, setHome] = useState(ProfileManager.getProfile().home)
 
     const handleClickOpen = () => {
-        setOpen(true);
-    };
+        setOpen(true)
+    }
     const handleClose = () => {
-        setOpen(false);
-    };
+        setOpen(false)
+    }
     const handleSave = () => {
         ProfileManager.setProfile({
             server: server,
@@ -33,17 +33,17 @@ export default function Profile() {
             password: password,
             home: home
         })
-        setOpen(false);
-    };
+        setOpen(false)
+    }
 
     return (
         <React.Fragment>
             <ListItem key={"Profile"} disablePadding>
                 <ListItemButton onClick={handleClickOpen}>
                     <ListItemIcon>
-                        <BadgeIcon />
+                        <BadgeIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={"Profile"} />
+                    <ListItemText primary={"Profile"}/>
                 </ListItemButton>
             </ListItem>
             <Dialog open={open} onClose={handleClose} maxWidth={"xs"}>
@@ -100,5 +100,5 @@ export default function Profile() {
                 </DialogActions>
             </Dialog>
         </React.Fragment>
-    );
+    )
 }

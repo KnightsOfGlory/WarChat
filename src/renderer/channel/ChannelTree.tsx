@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import Box from "@mui/material/Box";
+import React, {useEffect, useState} from "react"
+import Box from "@mui/material/Box"
 import {
     Button,
-    Dialog, DialogActions,
+    Dialog,
+    DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
@@ -10,48 +11,48 @@ import {
     ListItemButton,
     ListItemIcon,
     ListSubheader
-} from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
-import List from "@mui/material/List";
-import TagIcon from '@mui/icons-material/Tag';
-import { Channel, ChannelManager } from "../state/ChannelManager";
-import {User} from "../state/UserManager";
+} from "@mui/material"
+import ListItemText from "@mui/material/ListItemText"
+import List from "@mui/material/List"
+import TagIcon from '@mui/icons-material/Tag'
+import {Channel, ChannelManager} from "../state/ChannelManager"
+import {ipcRenderer} from "../utilities/IpcRenderer"
 
 export default function ChannelTree() {
-    const [confirmOpen, setConfirmOpen] = useState(false);
-    const [joining, setJoining] = useState("");
-    const [currentChannel, setCurrentChannel] = useState<Channel>();
+    const [confirmOpen, setConfirmOpen] = useState(false)
+    const [joining, setJoining] = useState("")
+    const [currentChannel, setCurrentChannel] = useState<Channel>()
 
-    const [channels, setChannels] = useState<Channel[]>([]);
+    const [channels, setChannels] = useState<Channel[]>([])
 
     useEffect(() => {
-        ChannelManager.subscribeCurrent((newChannel: Channel) => setCurrentChannel(newChannel));
+        ChannelManager.subscribeCurrent((newChannel: Channel) => setCurrentChannel(newChannel))
         ChannelManager.subscribeList((newChannels: Channel[]) => {
-            setChannels(newChannels);
-        });
-    }, []);
+            setChannels(newChannels)
+        })
+    }, [])
 
     const joinChannel = (channel: string) => {
-        setConfirmOpen(true);
-        setJoining(channel);
+        setConfirmOpen(true)
+        setJoining(channel)
     }
     const joinYes = () => {
-        window.electron.ipcRenderer.sendMessage("chat", "/join " + joining);
-        setConfirmOpen(false);
+        ipcRenderer.sendMessage("chat", "/join " + joining)
+        setConfirmOpen(false)
     }
     const joinNo = () => {
-        setConfirmOpen(false);
+        setConfirmOpen(false)
     }
 
     return (
-        <Box sx={{ width: "225px" }}>
+        <Box sx={{width: "225px"}}>
             <List
-                sx={{ width: '225px', bgcolor: 'background.paper', maxHeight: '90%'}}
+                sx={{width: '225px', bgcolor: 'background.paper', maxHeight: '90%'}}
                 component="nav"
-                subheader={<li />}
+                subheader={<li/>}
                 aria-labelledby="nested-list-subheader"
             >
-                <ListSubheader component="div" sx={{ fontSize: "0.875rem" }}>
+                <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
                     CHANNELS
                 </ListSubheader>
                 {
@@ -59,29 +60,27 @@ export default function ChannelTree() {
                         return (<ListItem key={channel.name} onClick={() => joinChannel(channel.name)} disablePadding>
                             <ListItemButton selected={currentChannel != null && channel.name == currentChannel.name}>
                                 <ListItemIcon>
-                                    <TagIcon />
+                                    <TagIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary={channel.name + " – " + channel.users} sx={{ marginLeft: "-24px" }} />
+                                <ListItemText primary={channel.name + " – " + channel.users}
+                                              sx={{marginLeft: "-24px"}}/>
                             </ListItemButton>
-                        </ListItem>);
+                        </ListItem>)
                     })
                 }
-                <ListSubheader component="div" sx={{ fontSize: "0.875rem" }}>
+                <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
                     FAVORITES
                 </ListSubheader>
                 <ListItem onClick={() => joinChannel("KoG")} disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
-                            <TagIcon />
+                            <TagIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="KoG" sx={{ marginLeft: "-24px" }} />
+                        <ListItemText primary="KoG" sx={{marginLeft: "-24px"}}/>
                     </ListItemButton>
                 </ListItem>
             </List>
-            <Dialog
-                open={confirmOpen}
-                // onClose={handleClose}
-            >
+            <Dialog open={confirmOpen}>
                 <DialogTitle>
                     {"Join channel?"}
                 </DialogTitle>
@@ -98,5 +97,5 @@ export default function ChannelTree() {
                 </DialogActions>
             </Dialog>
         </Box>
-    );
+    )
 }

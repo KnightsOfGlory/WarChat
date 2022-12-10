@@ -1,3 +1,6 @@
+import {ipcRenderer} from "../utilities/IpcRenderer"
+import {Interprocess} from "../../common/Interprocess";
+
 export type Subscription = (isConnected: boolean) => void
 
 export namespace ConnectionManager {
@@ -15,15 +18,15 @@ export namespace ConnectionManager {
     }
 
     function listen() {
-        window.electron.ipcRenderer.on("socket", (arg) => {
+        ipcRenderer.on(Interprocess.Channels.SOCKET, (arg) => {
             switch (arg) {
-                case "connected":
+                case Interprocess.Commands.Socket.CONNECTED:
                     if (!isConnected) {
                         isConnected = true
                         dispatch()
                     }
                     break
-                case "disconnected":
+                case Interprocess.Commands.Socket.DISCONNECTED:
                     if (isConnected) {
                         isConnected = false
                         dispatch()

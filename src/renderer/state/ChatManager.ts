@@ -1,4 +1,8 @@
-import {User, UserManager} from "./UserManager";
+import {User, UserManager} from "./UserManager"
+import {ipcRenderer} from "../utilities/IpcRenderer"
+import {ChatHelper} from "../utilities/ChatHelper"
+import {Interprocess} from "../../common/Interprocess";
+import {MessageEvents} from "../../common/MessageEvents";
 
 export type Talk = {
     timestamp: number,
@@ -53,52 +57,53 @@ export namespace ChatManager {
         subscriptions.push(callback)
     }
 
-    function dispatch(){
+    function dispatch() {
         subscriptions.forEach((s) => s(chats))
     }
 
     function listen() {
-        window.electron.ipcRenderer.on('messages', (arg) => {
+        ipcRenderer.on(Interprocess.Channels.MESSAGES, (arg) => {
             // @ts-ignore
-            let string = new TextDecoder().decode(arg);
+            let string = new TextDecoder().decode(arg)
             let messages = string.split("\r\n")
             let innerMessage: string
 
             messages.forEach((message) => {
-                let fields = message.split(" ");
+                let fields = message.split(" ")
                 let code = fields[0]
 
+                const name = () => fields[2]
+
                 switch (code) {
-                    case "1004": // whisper in
-                        innerMessage = message.split("\"")[1].trim()
+                    case MessageEvents.WHISPER_IN:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         chats.push({
                             timestamp: Date.now(),
-                            // user: UserManager.getByUsername(fields[2]),
-                            user: {name: fields[2], client: "[NONE]", flags: "0000"},
+                            user: {name: name(), client: "[NONE]", flags: "0000"},
                             message: "(whisper) " + innerMessage
                         })
                         dispatch()
-                        break;
-                    case "1005": // talk
-                        innerMessage = message.split("\"")[1].trim()
+                        break
+                    case MessageEvents.TALK:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         chats.push({
                             timestamp: Date.now(),
-                            user: UserManager.getByUsername(fields[2]),
+                            user: UserManager.getByUsername(name()),
                             message: innerMessage
                         })
                         dispatch()
-                        break;
-                    case "1006": // broadcast
-                        innerMessage = message.split("\"")[1].trim()
+                        break
+                    case MessageEvents.BROADCAST:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         chats.push({
                             timestamp: Date.now(),
                             user: UserManager.getServerUser(),
                             message: innerMessage
                         })
                         dispatch()
-                        break;
-                    case "1007": // joined channel
-                        innerMessage = message.split("\"")[1].trim()
+                        break
+                    case MessageEvents.CHANNEL:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         if (innerMessage != "Chat") {
                             chats.push({
                                 timestamp: Date.now(),
@@ -108,19 +113,19 @@ export namespace ChatManager {
                             })
                             dispatch()
                         }
-                        break;
-                    case "1010": // whisper out
-                        innerMessage = message.split("\"")[1].trim()
+                        break
+                    case MessageEvents.WHISPER_OUT:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         chats.push({
                             timestamp: Date.now(),
                             user: UserManager.getConnectedUser(),
-                            message: "(to " + fields[2] + ") " + innerMessage
+                            message: "(to " + name() + ") " + innerMessage
                         })
                         dispatch()
-                        break;
-                    case "1018": // info
+                        break
+                    case MessageEvents.INFO:
                         if (!ignoreInfo) {
-                            innerMessage = message.split("\"")[1].trim()
+                            innerMessage = ChatHelper.parseQuoted(message)
                             chats.push({
                                 timestamp: Date.now(),
                                 user: UserManager.getServerUser(),
@@ -128,27 +133,27 @@ export namespace ChatManager {
                             })
                             dispatch()
                         }
-                        break;
-                    case "1019": // error
-                        innerMessage = message.split("\"")[1].trim()
+                        break
+                    case MessageEvents.ERROR:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         chats.push({
                             timestamp: Date.now(),
-                            user: { name: "Server", client: "[SERV]", flags: "" },
+                            user: UserManager.getServerUser(),
                             message: innerMessage,
                             isError: true
                         })
                         dispatch()
-                        break;
-                    case "1023": // emote
-                        innerMessage = message.split("\"")[1].trim()
+                        break
+                    case MessageEvents.EMOTE:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         chats.push({
                             timestamp: Date.now(),
-                            user: UserManager.getByUsername(fields[2]),
+                            user: UserManager.getByUsername(name()),
                             isEmote: true,
                             message: innerMessage
                         })
                         dispatch()
-                        break;
+                        break
                 }
             })
         })

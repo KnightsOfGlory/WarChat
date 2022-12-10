@@ -1,14 +1,14 @@
-import {useEffect, useState} from "react";
-import {AlertsManager, WarChatAlert} from "../state/AlertsManager";
-import {Alert, Snackbar} from "@mui/material";
+import {useEffect, useState} from "react"
+import {AlertsManager, WarChatAlert} from "../state/AlertsManager"
+import {Alert, Snackbar} from "@mui/material"
 
 export default function Alerts() {
-    const [alerts, setAlerts] = useState<WarChatAlert[]>([]);
+    const [alerts, setAlerts] = useState<WarChatAlert[]>([])
 
     useEffect(() => {
         AlertsManager.subscribe((newAlerts) => {
-            setAlerts([...newAlerts]); // force state change
-        });
+            setAlerts([...newAlerts]) // force state change
+        })
     })
 
     return (
@@ -17,7 +17,8 @@ export default function Alerts() {
                 alerts.map((alert) => {
                     return (
                         <Snackbar open={true} autoHideDuration={5000} onClose={() => AlertsManager.remove(alert)}>
-                            <Alert onClose={() => AlertsManager.remove(alert)} severity={alert.severity} sx={{ width: '100%' }}>
+                            <Alert onClose={() => AlertsManager.remove(alert)} severity={alert.severity}
+                                   sx={{width: '100%'}}>
                                 {alert.message}
                             </Alert>
                         </Snackbar>

@@ -1,32 +1,34 @@
-import {useEffect, useState} from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import {AlertsManager} from "../state/AlertsManager";
+import {useEffect, useState} from "react"
+import Dialog from "@mui/material/Dialog"
+import DialogTitle from "@mui/material/DialogTitle"
+import DialogContent from "@mui/material/DialogContent"
+import DialogContentText from "@mui/material/DialogContentText"
+import DialogActions from "@mui/material/DialogActions"
+import Button from "@mui/material/Button"
+import {AlertsManager} from "../state/AlertsManager"
+import {ipcRenderer} from "../utilities/IpcRenderer"
+import {Interprocess} from "../../common/Interprocess";
 
 let silentUpdate = false
 
 export default function AutoUpdate() {
-    const [open, setOpen] = useState(false);
-    const [done, setDone] = useState(false);
-    const [updating, setUpdating] = useState(false);
+    const [open, setOpen] = useState(false)
+    const [done, setDone] = useState(false)
+    const [updating, setUpdating] = useState(false)
 
     useEffect(() => {
         listen(setOpen, setDone)
-        window.electron.ipcRenderer.sendMessage("updater", "initialize")
+        ipcRenderer.sendMessage("updater", "initialize")
         setInterval(() => {
             silentUpdate = true
-            window.electron.ipcRenderer.sendMessage("updater", "check")
-        }, 60*60*1000)
-    }, []);
+            ipcRenderer.sendMessage("updater", "check")
+        }, 60 * 60 * 1000)
+    }, [])
 
     const handleYes = () => {
         setUpdating(true)
-        window.electron.ipcRenderer.sendMessage("updater", "download")
-    };
+        ipcRenderer.sendMessage("updater", "download")
+    }
 
     const prompt = (<Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>
@@ -34,7 +36,7 @@ export default function AutoUpdate() {
         </DialogTitle>
         <DialogContent>
             <DialogContentText>
-                A new version of WarChat is available.  We strongly recommend you keep the version up to date.
+                A new version of WarChat is available. We strongly recommend you keep the version up to date.
                 Would you like to update to the new version now?
             </DialogContentText>
         </DialogContent>
@@ -56,7 +58,8 @@ export default function AutoUpdate() {
             </DialogContentText>
         </DialogContent>
         <DialogActions>
-            <Button disabled={!done} onClick={() => window.electron.ipcRenderer.sendMessage("updater", "install")}>Done</Button>
+            <Button disabled={!done}
+                    onClick={() => ipcRenderer.sendMessage("updater", "install")}>Done</Button>
         </DialogActions>
     </Dialog>)
 
@@ -70,13 +73,13 @@ export default function AutoUpdate() {
 type SetBoolean = (value: (((prevState: boolean) => boolean) | boolean)) => void
 
 function listen(setOpen: SetBoolean, setDone: SetBoolean) {
-    window.electron.ipcRenderer.on("updater", (event, data) => {
+    ipcRenderer.on(Interprocess.Channels.UPDATER, (event, data) => {
         switch (event) {
-            case "update.available":
+            case Interprocess.Commands.Updater.UPDATE_AVAILABLE:
                 setOpen(true)
                 silentUpdate = false
-                break;
-            case "update.not.available":
+                break
+            case Interprocess.Commands.Updater.UPDATE_NOT_AVAILABLE:
                 if (!silentUpdate) {
                     AlertsManager.add({
                         severity: "info",
@@ -84,17 +87,17 @@ function listen(setOpen: SetBoolean, setDone: SetBoolean) {
                     })
                     silentUpdate = false
                 }
-                break;
-            case "update.downloaded":
+                break
+            case Interprocess.Commands.Updater.UPDATE_DOWNLOADED:
                 setDone(true)
-                break;
-            case "error":
+                break
+            case Interprocess.Commands.Updater.ERROR:
                 let error = data as Error
                 AlertsManager.add({
                     severity: "error",
                     message: error.message
                 })
-                break;
+                break
         }
     })
 }
