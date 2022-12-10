@@ -1,4 +1,4 @@
-import {AlertColor} from "@mui/material";
+import {AlertColor} from "@mui/material"
 
 export type WarChatAlert = {
     severity: AlertColor,
@@ -27,7 +27,7 @@ export namespace AlertsManager {
     export function remove(alert: WarChatAlert) {
         let index = alerts.indexOf(alert)
         if (index > -1) {
-            alerts.splice(index, 1);
+            alerts.splice(index, 1)
             dispatch()
         }
     }

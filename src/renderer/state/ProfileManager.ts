@@ -1,3 +1,6 @@
+import {ipcRenderer} from "../utilities/IpcRenderer"
+import {Interprocess} from "../../common/Interprocess";
+
 export type Profile = {
     server: string,
     username: string,
@@ -6,6 +9,7 @@ export type Profile = {
 }
 
 export namespace ProfileManager {
+
     let profile: Profile = {
         server: "",
         username: "",
@@ -21,13 +25,24 @@ export namespace ProfileManager {
 
     export function setProfile(newProfile: Profile) {
         profile = newProfile
-        window.electron.ipcRenderer.sendMessage("profile.save", profile);
+        ipcRenderer.sendMessage(
+            Interprocess.Channels.PROFILE,
+            Interprocess.Commands.Profile.SAVE,
+            profile
+        )
     }
 
     function listen() {
-        window.electron.ipcRenderer.on("profile.read", (arg) => {
-            profile = arg as Profile
+        ipcRenderer.on(Interprocess.Channels.PROFILE, (command, data) => {
+            switch (command) {
+                case Interprocess.Commands.Profile.READ:
+                    profile = data as Profile
+                    break
+            }
         })
-        window.electron.ipcRenderer.sendMessage("profile.read", null);
+        ipcRenderer.sendMessage(
+            Interprocess.Channels.PROFILE,
+            Interprocess.Commands.Profile.READ
+        )
     }
 }

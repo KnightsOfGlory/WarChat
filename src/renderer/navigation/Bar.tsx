@@ -1,28 +1,29 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import {useEffect} from "react";
-import Avatar from "@mui/material/Avatar";
-import HelmetTail from "../../../assets/logos/helmet-tail.png";
-import {ChatManager} from "../state/ChatManager";
-import {ConnectionManager} from "../state/ConnectionManager";
-import {UserManager} from "../state/UserManager";
-import Hamburger from "./Hamburger";
+import * as React from 'react'
+import {useEffect} from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
+import Avatar from "@mui/material/Avatar"
+import HelmetTail from "../../../assets/logos/helmet-tail.png"
+import {ChatManager} from "../state/ChatManager"
+import {ConnectionManager} from "../state/ConnectionManager"
+import Hamburger from "./Hamburger"
+import {ipcRenderer} from "../utilities/IpcRenderer"
+import {ChatHelper} from "../utilities/ChatHelper"
 
 export default function Bar() {
-    const [connected, setConnected] = React.useState(false);
+    const [connected, setConnected] = React.useState(false)
 
     useEffect(() => {
-        ConnectionManager.subscribe((isConnected: boolean) => setConnected(isConnected));
-    }, []);
+        ConnectionManager.subscribe((isConnected) => setConnected(isConnected))
+    }, [])
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{flexGrow: 1}}>
             <AppBar color="default" position="static">
                 <Toolbar>
                     <Hamburger/>
@@ -34,7 +35,7 @@ export default function Bar() {
                             sx={{marginRight: "8px", alignItems: "right"}}
                         />
                     </Box>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         WarChat
                     </Typography>
                     <IconButton
@@ -42,25 +43,15 @@ export default function Bar() {
                         edge="end"
                         onClick={() => {
                             let message = connected ? "Disconnecting..." : "Connecting..."
-
-                            ChatManager.add({
-                                timestamp: Date.now(),
-                                user: UserManager.getWarChatUser(),
-                                message: message
-                            })
-
-                            window.electron.ipcRenderer.sendMessage('socket', connected ? "disconnect" : "connect");
+                            ChatManager.add(ChatHelper.makeBotChat(message))
+                            ipcRenderer.sendMessage('socket', connected ? "disconnect" : "connect")
                         }}
                         color="inherit"
                     >
-                        {
-                            connected
-                            ? <RadioButtonCheckedIcon />
-                            : <RadioButtonUncheckedIcon />
-                        }
+                        {connected ? <RadioButtonCheckedIcon/> : <RadioButtonUncheckedIcon/>}
                     </IconButton>
                 </Toolbar>
             </AppBar>
         </Box>
-    );
+    )
 }

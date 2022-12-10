@@ -1,7 +1,7 @@
 import {ipcMain} from "electron";
 import log from "electron-log";
 import {autoUpdater, UpdateInfo} from "electron-updater";
-import {ProgressInfo} from "electron-builder";
+import {Interprocess} from "../../common/Interprocess";
 
 export namespace AutoUpdateManager {
 
@@ -10,9 +10,9 @@ export namespace AutoUpdateManager {
     }
 
     function listen() {
-        ipcMain.on("updater", async (event, command) => {
+        ipcMain.on(Interprocess.Channels.UPDATER, async (event, command) => {
             switch (command) {
-                case "initialize":
+                case Interprocess.Commands.Updater.INITIALIZE:
                     log.transports.file.level = 'verbose';
                     autoUpdater.logger = log;
 
@@ -20,20 +20,29 @@ export namespace AutoUpdateManager {
                     autoUpdater.on('checking-for-update', () => {
                     })
                     autoUpdater.on('update-available', (info: UpdateInfo) => {
-                        event.reply("updater", "update.available")
+                        event.reply(
+                            Interprocess.Channels.UPDATER,
+                            Interprocess.Commands.Updater.UPDATE_AVAILABLE
+                        )
                     })
                     autoUpdater.on('update-not-available', (info: UpdateInfo) => {
-                        event.reply("updater", "update.not.available")
+                        event.reply(
+                            Interprocess.Channels.UPDATER,
+                            Interprocess.Commands.Updater.UPDATE_NOT_AVAILABLE
+                        )
                     })
                     autoUpdater.on('error', (err) => {
-                        event.reply("updater", "error", err)
-                    })
-                    // @ts-ignore
-                    autoUpdater.on('download-progress', (progressObj: ProgressInfo) => {
-                        event.reply("updater", "download.progress", progressObj)
+                        event.reply(
+                            Interprocess.Channels.UPDATER,
+                            Interprocess.Commands.Updater.ERROR,
+                            err
+                        )
                     })
                     autoUpdater.on('update-downloaded', (info) => {
-                        event.reply("updater", "update.downloaded")
+                        event.reply(
+                            Interprocess.Channels.UPDATER,
+                            Interprocess.Commands.Updater.UPDATE_DOWNLOADED
+                        )
                     })
                     break;
                 case "check":

@@ -1,18 +1,18 @@
-import chat from "../../../assets/products/chat.png";
-import serv from "../../../assets/products/serv.png";
-import d2dv from "../../../assets/products/d2dv.png";
-import d2xp from "../../../assets/products/d2xp.png";
-import drtl from "../../../assets/products/drtl.png";
-import jstr from "../../../assets/products/jstr.png";
-import sexp from "../../../assets/products/sexp.png";
-import star from "../../../assets/products/star.png";
-import w2bn from "../../../assets/products/w2bn.png";
-import w3xp from "../../../assets/products/w3xp.png";
-import war3 from "../../../assets/products/war3.png";
-import wcht from "../../../assets/products/wcht.png";
-import oper from "../../../assets/products/oper.png";
-import bliz from "../../../assets/products/bliz.png";
-import {UserFlags} from "./UserFlags";
+import chat from "../../../assets/products/chat.png"
+import serv from "../../../assets/products/serv.png"
+import d2dv from "../../../assets/products/d2dv.png"
+import d2xp from "../../../assets/products/d2xp.png"
+import drtl from "../../../assets/products/drtl.png"
+import jstr from "../../../assets/products/jstr.png"
+import sexp from "../../../assets/products/sexp.png"
+import star from "../../../assets/products/star.png"
+import w2bn from "../../../assets/products/w2bn.png"
+import w3xp from "../../../assets/products/w3xp.png"
+import war3 from "../../../assets/products/war3.png"
+import wcht from "../../../assets/products/wcht.png"
+import oper from "../../../assets/products/oper.png"
+import bliz from "../../../assets/products/bliz.png"
+import {UserFlags} from "./UserFlags"
 
 export namespace ProductIcons {
 
@@ -37,10 +37,10 @@ export namespace ProductIcons {
     ])
 
     export const getByClient = (client: string, flags: string) => {
-        if (flags == "") flags = "0000";
+        if (flags == "") flags = "0000"
 
-        if (UserFlags.isAdministrator(flags)) return bliz;
-        if (UserFlags.isOperator(flags)) return oper;
+        if (UserFlags.isAdministrator(flags)) return bliz
+        if (UserFlags.isOperator(flags)) return oper
 
         return icons.get(client)
     }

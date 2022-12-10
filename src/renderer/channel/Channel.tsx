@@ -1,39 +1,33 @@
-import {Chip, Divider, Link, ListItem, Stack, Tooltip} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import List from '@mui/material/List';
-import {Chat, ChatManager} from '../state/ChatManager';
-import {User, UserManager} from "../state/UserManager";
-import Send from "./Send";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import {ProductIcons} from "../utilities/ProductIcons";
-import {ConnectionManager} from "../state/ConnectionManager";
-import {Timestamps} from "../utilities/Timestamps";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import {Chip, Divider, Link, ListItem, Stack, Tooltip} from '@mui/material'
+import React, {useEffect, useState} from 'react'
+import List from '@mui/material/List'
+import {Chat, ChatManager} from '../state/ChatManager'
+import {User, UserManager} from "../state/UserManager"
+import Send from "./Send"
+import ListItemAvatar from "@mui/material/ListItemAvatar"
+import Avatar from "@mui/material/Avatar"
+import ListItemText from "@mui/material/ListItemText"
+import {ProductIcons} from "../utilities/ProductIcons"
+import {ConnectionManager} from "../state/ConnectionManager"
+import {Timestamps} from "../utilities/Timestamps"
+import Box from "@mui/material/Box"
+import {ChatHelper} from "../utilities/ChatHelper"
 
 export default function Channel() {
-    const [connected, setConnected] = useState(false)
-    const [messages, setMessages] = useState<Chat[]>([]);
+    const [messages, setMessages] = useState<Chat[]>([])
 
     useEffect(() => {
         ChatManager.subscribe((newMessage: any) => {
-            setMessages([...newMessage]); // force state change
-        });
-        ConnectionManager.subscribe((isConnected) => {
-            setConnected(isConnected)
-            ChatManager.add({
-                timestamp: Date.now(),
-                user: UserManager.getWarChatUser(),
-                message: isConnected ? "Connected!" : "Disconnected!"
-            })
+            setMessages([...newMessage]) // force state change
         })
-    }, []);
+        ConnectionManager.subscribe((isConnected) => {
+            ChatManager.add(ChatHelper.makeBotChat(isConnected ? "Connected!" : "Disconnected!"))
+        })
+    }, [])
 
     const grouped = () => {
-        let groups: Chat[][] = [];
-        let group: Chat[] = [];
+        let groups: Chat[][] = []
+        let group: Chat[] = []
         let user: User | null = null
 
         messages.forEach((message) => {
@@ -61,7 +55,7 @@ export default function Channel() {
     }
 
     return (
-        <Stack sx={{ width: '100%' }}>
+        <Stack sx={{width: '100%'}}>
             <List
                 sx={{
                     width: '100%',
@@ -78,9 +72,11 @@ export default function Channel() {
 
                         if (group[0].hasOwnProperty("channel")) {
                             return (
-                                <Divider sx={{"&::before, &::after": {
+                                <Divider sx={{
+                                    "&::before, &::after": {
                                         top: "0%",
-                                    }, marginBottom: "4px", marginTop: "4px"}}>
+                                    }, marginBottom: "4px", marginTop: "4px"
+                                }}>
                                     <Chip label={
                                         // @ts-ignore*
                                         "Channel: " + group[0].channel
@@ -113,7 +109,7 @@ export default function Channel() {
 
                         let primary = (<span style={{fontSize: "0.875rem"}}>
                             <Link href={"#"} underline={"hover"}>
-                                <Box component="div" sx={{ display: 'inline', color: color }}>
+                                <Box component="div" sx={{display: 'inline', color: color}}>
                                     {group[0].user.name}
                                 </Box>
                             </Link>
@@ -121,7 +117,8 @@ export default function Channel() {
                                 placement={"top"}
                                 title={(new Date(group[0].timestamp)).toString().split(" (")[0]}
                                 sx={{maxWidth: "none"}}>
-                                <Box component="div" sx={{ display: 'inline', paddingLeft: "4px", color: 'text.secondary' }}>
+                                <Box component="div"
+                                     sx={{display: 'inline', paddingLeft: "4px", color: 'text.secondary'}}>
                                     {Timestamps.toReadable(group[0].timestamp)}
                                 </Box>
                             </Tooltip>
@@ -139,13 +136,13 @@ export default function Channel() {
                                         variant="rounded"
                                     />
                                 </ListItemAvatar>
-                                <ListItemText primary={primary} secondary={secondary} />
+                                <ListItemText primary={primary} secondary={secondary}/>
                             </ListItem>
                         )
                     })
                 }
             </List>
-            <Send />
+            <Send/>
         </Stack>
-    );
+    )
 }

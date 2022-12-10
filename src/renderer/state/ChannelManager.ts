@@ -1,6 +1,10 @@
-import {ConnectionManager} from "./ConnectionManager";
-import {ChatManager} from "./ChatManager";
-import {User, UserManager} from "./UserManager";
+import {ConnectionManager} from "./ConnectionManager"
+import {ChatManager} from "./ChatManager"
+import {UserManager} from "./UserManager"
+import {ipcRenderer} from "../utilities/IpcRenderer"
+import {ChatHelper} from "../utilities/ChatHelper"
+import {Interprocess} from "../../common/Interprocess";
+import {MessageEvents} from "../../common/MessageEvents";
 
 export type Channel = {
     name: string,
@@ -28,8 +32,7 @@ export namespace ChannelManager {
     }
 
     function dispatchCurrent(){
-        if (currentChannel == undefined) return;
-        // @ts-ignore
+        if (currentChannel == undefined) return
         currentChannelSubscriptions.forEach((s) => s(currentChannel))
     }
     function dispatchList(){
@@ -50,22 +53,21 @@ export namespace ChannelManager {
 
         setInterval(() => {
             ChatManager.ignoreInfo = true
-            window.electron.ipcRenderer.sendMessage("chat", "/channels");
+            ipcRenderer.sendMessage("chat", "/channels")
         }, 60*1000)
 
-        window.electron.ipcRenderer.on('messages', (arg) => {
-            // @ts-ignore
-            let string = new TextDecoder().decode(arg);
+        ipcRenderer.on(Interprocess.Channels.MESSAGES, (arg) => {
+            let string = new TextDecoder().decode(arg as Uint8Array)
             let messages = string.split("\r\n")
 
             messages.forEach((message) => {
-                let fields = message.split(" ");
+                let fields = message.split(" ")
                 let code = fields[0]
                 let innerMessage: string = ""
 
                 switch (code) {
-                    case "1007": // joined channel
-                        innerMessage = message.split("\"")[1].trim()
+                    case MessageEvents.CHANNEL:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         currentChannel = {
                             name: innerMessage,
                             topic: "",
@@ -74,13 +76,13 @@ export namespace ChannelManager {
                         dispatchCurrent()
                         if (currentChannel.name == "Chat") {
                             ChatManager.ignoreInfo = true
-                            window.electron.ipcRenderer.sendMessage("chat", "/channels");
+                            ipcRenderer.sendMessage("chat", "/channels")
                         }
-                        break;
-                    case "1018": // info
-                        innerMessage = message.split("\"")[1].trim()
+                        break
+                    case MessageEvents.INFO:
+                        innerMessage = ChatHelper.parseQuoted(message)
                         if (innerMessage.startsWith("Listing ") && innerMessage.endsWith(" channels:")) {
-                            counter = Number(innerMessage.slice(8, 9))
+                            counter = Number(innerMessage.split(" ")[1])
                             channels = []
                         } else if (counter > 0) {
                             let tokens = innerMessage.split("|")
@@ -96,8 +98,7 @@ export namespace ChannelManager {
                                 ChatManager.ignoreInfo = false
                             }
                         }
-                        //dispatch()
-                        break;
+                        break
                 }
             })
         })

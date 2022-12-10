@@ -1,7 +1,7 @@
-import { createRoot } from 'react-dom/client';
-import App from './App';
-import {createTheme, CssBaseline, darkScrollbar, PaletteMode, ThemeProvider} from "@mui/material";
-import {grey} from "@mui/material/colors";
+import { createRoot } from 'react-dom/client'
+import App from './App'
+import {createTheme, CssBaseline, darkScrollbar, PaletteMode, ThemeProvider} from "@mui/material"
+import {grey} from "@mui/material/colors"
 
 export const getDesignTokens = (mode: PaletteMode) => ({
     palette: {
@@ -26,12 +26,12 @@ export const getDesignTokens = (mode: PaletteMode) => ({
             }
         }
     }
-});
+})
 
 const mode = "light"
 
 // @ts-ignore
-const theme = createTheme(getDesignTokens(mode));
+const theme = createTheme(getDesignTokens(mode))
 
 const Root = () => {
     return (
@@ -39,9 +39,9 @@ const Root = () => {
             <CssBaseline/>
             <App/>
         </ThemeProvider>
-    );
+    )
 }
 
-const container = document.getElementById('root')!;
-const root = createRoot(container);
-root.render(<Root />);
+const container = document.getElementById('root')!
+const root = createRoot(container)
+root.render(<Root />)

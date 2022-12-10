@@ -1,4 +1,7 @@
 import {ConnectionManager} from "./ConnectionManager";
+import {ipcRenderer} from "../utilities/IpcRenderer";
+import {Interprocess} from "../../common/Interprocess";
+import {MessageEvents} from "../../common/MessageEvents";
 
 export type User = {
     name: string,
@@ -29,8 +32,6 @@ export namespace UserManager {
 
     export function getByUsername(username: string): User {
         let results = users.filter((u) => u.name.toLowerCase() == username.toLowerCase())
-        //TODO handle missing
-
         return results[0]
     }
 
@@ -38,7 +39,7 @@ export namespace UserManager {
         subscriptions.push(callback)
     }
 
-    function dispatch(){
+    function dispatch() {
         subscriptions.forEach((s) => s(users))
     }
 
@@ -48,52 +49,54 @@ export namespace UserManager {
             dispatch()
         })
 
-        window.electron.ipcRenderer.on('messages', (arg) => {
-            // @ts-ignore
-            let string = new TextDecoder().decode(arg);
+        ipcRenderer.on(Interprocess.Channels.MESSAGES, (arg) => {
+            let string = new TextDecoder().decode(arg as Uint8Array)
             let messages = string.split("\r\n")
 
             messages.forEach((message) => {
-                let fields = message.split(" ");
+                let fields = message.split(" ")
                 let code = fields[0]
 
+                const name = () => fields[2]
+                const flags = () => fields[3]
+                const client = () => fields[4]
+
                 switch (code) {
-                    case "1001": // user already there
+                    case MessageEvents.USER:
                         users.push({
-                            "name": fields[2],
-                            "flags": fields[3],
-                            "client": fields[4]
+                            "name": name(),
+                            "flags": flags(),
+                            "client": client()
                         })
                         dispatch()
-                        break;
-                    case "1002": // user joined
+                        break
+                    case MessageEvents.JOIN:
                         users.push({
-                            "name": fields[2],
-                            "flags": fields[3],
-                            "client": fields[4]
+                            "name": name(),
+                            "flags": flags(),
+                            "client": client()
                         })
                         dispatch()
-                        break;
-                    case "1003": // user left -- using HOF to make up for bad protocol
-                        users = users.filter((u) => fields[2] != u.name)
+                        break
+                    case MessageEvents.LEAVE:
+                        users = users.filter((u) => u.name != name())
                         dispatch()
-                        break;
-                    case "1007":
+                        break
+                    case MessageEvents.CHANNEL:
                         users = []
                         dispatch()
-                        break;
-                    case "1009":
-                        let user = getByUsername(fields[2])
-                        user.flags = fields[3]
-                        user.client = fields[4]
-                        break;
-                    case "2010":
-                        self = fields[2]
-                        break;
+                        break
+                    case MessageEvents.UPDATE:
+                        let user = getByUsername(name())
+                        user.flags = flags()
+                        user.client = client()
+                        break
+                    case MessageEvents.NAME:
+                        self = name()
+                        break
                     default:
-                        break;
+                        break
                 }
-
             });
         });
     }
