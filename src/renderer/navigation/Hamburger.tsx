@@ -60,7 +60,6 @@ export default function Hamburger() {
                         <Divider/>
                         <Profile/>
                         <Settings/>
-                        {/*{HamburgerListItem("Settings", <SettingsIcon/>, () => {})}*/}
                         {HamburgerListItem("Update", <UpgradeIcon/>, () => {
                             ipcRenderer.sendMessage("updater", "check")
                             AnalyticsHelper.event("Menu", "Update")
