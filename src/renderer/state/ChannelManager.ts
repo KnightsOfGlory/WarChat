@@ -149,7 +149,7 @@ export namespace ChannelManager {
                                     counter--
 
                                     if (counter == 0) {
-                                        ChatManager.ignoreInfo
+                                        ChatManager.ignoreInfo = false
                                     }
                                 }
                                 break
