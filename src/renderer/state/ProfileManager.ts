@@ -5,7 +5,8 @@ export type Profile = {
     server: string,
     username: string,
     password: string,
-    home: string
+    home: string,
+    init6: boolean
 }
 
 export namespace ProfileManager {
@@ -14,7 +15,8 @@ export namespace ProfileManager {
         server: "",
         username: "",
         password: "",
-        home: ""
+        home: "",
+        init6: false
     }
 
     listen()

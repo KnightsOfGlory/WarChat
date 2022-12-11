@@ -4,7 +4,6 @@ import {AppManager} from "../state/AppManager";
 export namespace AnalyticsHelper {
 
     export function event(category: string, action: string) {
-        console.log(AppManager.getIdentifier())
         const payload = new URLSearchParams({
             v: "1",
             cid: AppManager.getIdentifier(),

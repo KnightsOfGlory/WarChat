@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import {ListItem, ListItemButton} from "@mui/material"
+import {Checkbox, FormControlLabel, FormGroup, ListItem, ListItemButton} from "@mui/material"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import BadgeIcon from "@mui/icons-material/Badge"
 import ListItemText from "@mui/material/ListItemText"
@@ -20,6 +20,7 @@ export default function Profile() {
     const [username, setUsername] = useState(ProfileManager.getProfile().username)
     const [password, setPassword] = useState(ProfileManager.getProfile().password)
     const [home, setHome] = useState(ProfileManager.getProfile().home)
+    const [init6, setInit6] = useState(ProfileManager.getProfile().init6)
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -33,7 +34,8 @@ export default function Profile() {
             server: server,
             username: username,
             password: password,
-            home: home
+            home: home,
+            init6: init6
         })
         setOpen(false)
     }
@@ -95,6 +97,13 @@ export default function Profile() {
                         value={home}
                         onChange={(e) => setHome(e.target.value)}
                     />
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox onChange={(e) => setInit6(e.target.checked)} />}
+                            label="Use init 6 custom protocol"
+                            checked={init6}
+                        />
+                    </FormGroup>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

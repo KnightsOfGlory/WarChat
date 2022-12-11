@@ -13,6 +13,7 @@ import wcht from "../../../assets/products/wcht.png"
 import oper from "../../../assets/products/oper.png"
 import bliz from "../../../assets/products/bliz.png"
 import {UserFlags} from "./UserFlags"
+import {ProfileManager} from "../state/ProfileManager";
 
 export namespace ProductIcons {
 
@@ -37,10 +38,13 @@ export namespace ProductIcons {
     ])
 
     export const getByClient = (client: string, flags: string) => {
-        if (flags == "") flags = "0000"
+        if (flags == "") flags = ProfileManager.getProfile().init6 ? "0" : "0000"
 
         if (UserFlags.isAdministrator(flags)) return bliz
         if (UserFlags.isOperator(flags)) return oper
+
+        if (ProfileManager.getProfile().init6 && UserFlags.Init6.isAdministrator(flags)) return bliz
+        if (ProfileManager.getProfile().init6 && UserFlags.Init6.isOperator(flags)) return oper
 
         return icons.get(client)
     }

@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import net from "net";
 import {ProfileManager} from "./ProfileManager";
 import {Interprocess} from "../../common/Interprocess";
+import MessageBuffer from "../../renderer/utilities/MessageBuffer";
 
 export namespace ConnectionManager {
   let connected = false
@@ -29,14 +30,29 @@ export namespace ConnectionManager {
           client.destroy()
           client = new net.Socket()
           client.connect(6112, profile.server, function() {
-            client.write("\x03\x04");
-            client.write(profile.username + "\x0D\x0A")
-            client.write(profile.password.toLowerCase() + "\x0D\x0A")
-            client.write("/join " + profile.home + "\x0D\x0A")
+            if (ProfileManager.getProfile().init6) {
+              client.write("C1\x0D\x0A");
+              client.write("ACCT " + profile.username + "\x0D\x0A\r")
+              client.write("PASS " + profile.password + "\x0D\x0A")
+              client.write("HOME Chat\x0D\x0A")
+              client.write("LOGIN\x0D\x0A")
+              client.write("/join " + profile.home + "\x0D\x0A")
+            } else {
+              client.write("\x03\x04");
+              client.write(profile.username + "\x0D\x0A")
+              client.write(profile.password.toLowerCase() + "\x0D\x0A")
+              client.write("/join " + profile.home + "\x0D\x0A")
+            }
           });
 
+          let received = new MessageBuffer("\r\n")
+
           client.on('data', function(data: string) {
-            event.reply(Interprocess.Channels.MESSAGES, data);
+            received.push(data)
+            while (!received.isFinished()) {
+              const message = received.handleData()
+              event.reply(Interprocess.Channels.MESSAGES, message);
+            }
           });
           client.on("close", () => {
             if (connected) {

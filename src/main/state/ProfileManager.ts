@@ -3,13 +3,13 @@ import os from "os";
 import path from "path";
 import {ipcMain} from "electron";
 import {Interprocess} from "../../common/Interprocess";
-import {AppManager} from "./AppManager";
 
 export type Profile = {
     server: string,
     username: string,
     password: string,
-    home: string
+    home: string,
+    init6: boolean
 }
 
 export namespace ProfileManager {
@@ -41,7 +41,8 @@ export namespace ProfileManager {
             server: "",
             username: "",
             password: "",
-            home: ""
+            home: "",
+            init6: false
         }
         let data = JSON.stringify(empty)
         fs.mkdirSync(directory, { recursive: true });

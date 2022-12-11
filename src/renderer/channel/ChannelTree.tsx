@@ -27,9 +27,7 @@ export default function ChannelTree() {
 
     useEffect(() => {
         ChannelManager.subscribeCurrent((newChannel: Channel) => setCurrentChannel(newChannel))
-        ChannelManager.subscribeList((newChannels: Channel[]) => {
-            setChannels(newChannels)
-        })
+        ChannelManager.subscribeList((newChannels: Channel[]) => setChannels([...newChannels]))
     }, [])
 
     const joinChannel = (channel: string) => {
