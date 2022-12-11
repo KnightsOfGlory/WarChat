@@ -18,6 +18,7 @@ import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import {ChatHelper} from "../utilities/ChatHelper"
 import {ipcRenderer} from "../utilities/IpcRenderer";
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
+import Settings from "../configuration/Settings";
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)
@@ -58,7 +59,8 @@ export default function Hamburger() {
                         {HamburgerListItem("Disconnect", <RadioButtonUncheckedIcon/>, handleDisconnect)}
                         <Divider/>
                         <Profile/>
-                        {HamburgerListItem("Settings", <SettingsIcon/>, () => {})}
+                        <Settings/>
+                        {/*{HamburgerListItem("Settings", <SettingsIcon/>, () => {})}*/}
                         {HamburgerListItem("Update", <UpgradeIcon/>, () => {
                             ipcRenderer.sendMessage("updater", "check")
                             AnalyticsHelper.event("Menu", "Update")

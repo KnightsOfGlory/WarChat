@@ -5,6 +5,7 @@ export namespace Interprocess {
         export const CHAT = "chat"
         export const MESSAGES = "messages"
         export const PROFILE = "profile"
+        export const SETTINGS = "settings"
         export const SOCKET = "socket"
         export const UPDATER = "updater"
     }
@@ -17,6 +18,11 @@ export namespace Interprocess {
         }
 
         export namespace Profile {
+            export const READ = "read"
+            export const SAVE = "save"
+        }
+
+        export namespace Settings {
             export const READ = "read"
             export const SAVE = "save"
         }
