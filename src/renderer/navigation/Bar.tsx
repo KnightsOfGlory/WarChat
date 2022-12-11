@@ -43,10 +43,8 @@ export default function Bar() {
                         size="large"
                         edge="end"
                         onClick={() => {
-                            let message = connected ? "Disconnecting..." : "Connecting..."
-                            ChatManager.add(ChatHelper.makeBotChat(message))
                             AnalyticsHelper.event("Menu", connected ? "Disconnect" : "Connect")
-                            ipcRenderer.sendMessage('socket', connected ? "disconnect" : "connect")
+                            connected ? ConnectionManager.disconnect() : ConnectionManager.connect()
                         }}
                         color="inherit"
                     >

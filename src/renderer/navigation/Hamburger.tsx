@@ -19,19 +19,18 @@ import {ChatHelper} from "../utilities/ChatHelper"
 import {ipcRenderer} from "../utilities/IpcRenderer";
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 import Settings from "../configuration/Settings";
+import {ConnectionManager} from "../state/ConnectionManager";
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)
 
     const handleConnect = () => {
-        ChatManager.add(ChatHelper.makeBotChat("Connecting..."))
-        ipcRenderer.sendMessage('socket', "connect")
+        ConnectionManager.connect()
         AnalyticsHelper.event("Menu", "Connect")
         setOpen(false)
     }
     const handleDisconnect = () => {
-        ChatManager.add(ChatHelper.makeBotChat("Disconnecting..."))
-        ipcRenderer.sendMessage('socket', "disconnect")
+        ConnectionManager.disconnect()
         AnalyticsHelper.event("Menu", "Disconnect")
         setOpen(false)
     }

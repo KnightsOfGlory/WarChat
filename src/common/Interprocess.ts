@@ -32,6 +32,7 @@ export namespace Interprocess {
             export const CONNECTED = "connected"
             export const DISCONNECT = "disconnect"
             export const DISCONNECTED = "disconnected"
+            export const TIMEOUT = "timeout"
         }
 
         export namespace Updater {
