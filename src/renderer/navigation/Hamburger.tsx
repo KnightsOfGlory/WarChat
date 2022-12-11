@@ -17,6 +17,7 @@ import Profile from "../configuration/Profile"
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import {ChatHelper} from "../utilities/ChatHelper"
 import {ipcRenderer} from "../utilities/IpcRenderer";
+import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)
@@ -24,11 +25,13 @@ export default function Hamburger() {
     const handleConnect = () => {
         ChatManager.add(ChatHelper.makeBotChat("Connecting..."))
         ipcRenderer.sendMessage('socket', "connect")
+        AnalyticsHelper.event("Menu", "Connect")
         setOpen(false)
     }
     const handleDisconnect = () => {
         ChatManager.add(ChatHelper.makeBotChat("Disconnecting..."))
         ipcRenderer.sendMessage('socket', "disconnect")
+        AnalyticsHelper.event("Menu", "Disconnect")
         setOpen(false)
     }
 
@@ -56,9 +59,15 @@ export default function Hamburger() {
                         <Divider/>
                         <Profile/>
                         {HamburgerListItem("Settings", <SettingsIcon/>, () => {})}
-                        {HamburgerListItem("Update", <UpgradeIcon/>, () => ipcRenderer.sendMessage("updater", "check"))}
+                        {HamburgerListItem("Update", <UpgradeIcon/>, () => {
+                            ipcRenderer.sendMessage("updater", "check")
+                            AnalyticsHelper.event("Menu", "Update")
+                        })}
                         <Divider/>
-                        {HamburgerListItem("Quit", <NotInterestedIcon/>, () => ipcRenderer.sendMessage('app', "quit"))}
+                        {HamburgerListItem("Quit", <NotInterestedIcon/>, () => {
+                            AnalyticsHelper.event("Menu", "Quit")
+                            ipcRenderer.sendMessage('app', "quit")
+                        })}
                     </List>
                 </Box>
             </Drawer>

@@ -3,6 +3,7 @@ import os from "os";
 import path from "path";
 import {ipcMain} from "electron";
 import {Interprocess} from "../../common/Interprocess";
+import {AppManager} from "./AppManager";
 
 export type Profile = {
     server: string,

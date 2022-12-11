@@ -12,6 +12,7 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import BadgeIcon from "@mui/icons-material/Badge"
 import ListItemText from "@mui/material/ListItemText"
 import {ProfileManager} from "../state/ProfileManager"
+import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 
 export default function Profile() {
     const [open, setOpen] = useState(false)
@@ -22,6 +23,7 @@ export default function Profile() {
 
     const handleClickOpen = () => {
         setOpen(true)
+        AnalyticsHelper.event("Menu", "Profile")
     }
     const handleClose = () => {
         setOpen(false)
