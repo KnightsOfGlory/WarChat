@@ -1,7 +1,8 @@
 import {ConnectionManager} from "./ConnectionManager";
-import {ipcRenderer} from "../utilities/IpcRenderer";
 import {Interprocess} from "../../common/Interprocess";
 import {MessageEvents} from "../../common/MessageEvents";
+import {ipcRenderer} from "../utilities/IpcRenderer";
+import {ProfileManager} from "./ProfileManager";
 
 export type User = {
     name: string,
@@ -23,11 +24,11 @@ export namespace UserManager {
     }
 
     export function getServerUser(): User {
-        return {name: "Server", client: "[SERV]", flags: "0000"}
+        return {name: "Server", client: "[SERV]", flags: ""}
     }
 
     export function getWarChatUser(): User {
-        return {name: "WarChat", client: "[WCHT]", flags: "0000"}
+        return {name: "WarChat", client: "[WCHT]", flags: ""}
     }
 
     export function getByUsername(username: string): User {
@@ -50,19 +51,22 @@ export namespace UserManager {
         })
 
         ipcRenderer.on(Interprocess.Channels.MESSAGES, (arg) => {
-            let string = new TextDecoder().decode(arg as Uint8Array)
+            let string = arg as string
             let messages = string.split("\r\n")
 
             messages.forEach((message) => {
+                if (message.trim().length == 0) return
+
                 let fields = message.split(" ")
                 let code = fields[0]
 
-                const name = () => fields[2]
-                const flags = () => fields[3]
-                const client = () => fields[4]
+                let name = () => fields[2]
+                let flags = () => fields[3]
+                let client = () => fields[4]
 
+                // classic telnet
                 switch (code) {
-                    case MessageEvents.USER:
+                    case MessageEvents.Classic.USER:
                         users.push({
                             "name": name(),
                             "flags": flags(),
@@ -70,7 +74,7 @@ export namespace UserManager {
                         })
                         dispatch()
                         break
-                    case MessageEvents.JOIN:
+                    case MessageEvents.Classic.JOIN:
                         users.push({
                             "name": name(),
                             "flags": flags(),
@@ -78,23 +82,69 @@ export namespace UserManager {
                         })
                         dispatch()
                         break
-                    case MessageEvents.LEAVE:
+                    case MessageEvents.Classic.LEAVE:
                         users = users.filter((u) => u.name != name())
                         dispatch()
                         break
-                    case MessageEvents.CHANNEL:
+                    case MessageEvents.Classic.CHANNEL:
                         users = []
                         dispatch()
                         break
-                    case MessageEvents.UPDATE:
+                    case MessageEvents.Classic.UPDATE:
                         let user = getByUsername(name())
                         user.flags = flags()
                         user.client = client()
                         break
-                    case MessageEvents.NAME:
+                    case MessageEvents.Classic.NAME:
                         self = name()
                         break
                     default:
+                        break
+                }
+
+                // init 6 proprietary
+                const event = () => fields[1]
+                name = () => fields[6]
+                flags = () => fields[4]
+                client = () => "[" + fields[7].split('').reverse().join('').toUpperCase() + "]"
+
+                switch (code) {
+                    case MessageEvents.Init6.Commands.USER:
+                        switch (event()) {
+                            case MessageEvents.Init6.Events.IN:
+                                users.push({
+                                    "name": name(),
+                                    "flags": flags(),
+                                    "client": client()
+                                })
+                                dispatch()
+                                break
+                            case MessageEvents.Init6.Events.JOIN:
+                                users.push({
+                                    "name": name(),
+                                    "flags": flags(),
+                                    "client": client()
+                                })
+                                dispatch()
+                                break
+                            case MessageEvents.Init6.Events.LEAVE:
+                                users = users.filter((u) => u.name != name())
+                                dispatch()
+                                break
+                            case MessageEvents.Init6.Events.UPDATE:
+                                let user = getByUsername(fields[6])
+                                user.flags = flags()
+                                user.client = client()
+                                break
+                        }
+                        break
+                    case MessageEvents.Init6.Commands.CHANNEL:
+                        switch (event()) {
+                            case MessageEvents.Init6.Events.JOIN:
+                                self = ProfileManager.getProfile().username
+                                users = []
+                                dispatch()
+                        }
                         break
                 }
             });

@@ -11,6 +11,8 @@ export namespace Interprocess {
 
     export namespace Commands {
         export namespace App {
+            export const START = "start"
+            export const IDENTIFIER = "identifier"
             export const QUIT = "quit"
         }
 

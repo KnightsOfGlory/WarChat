@@ -12,8 +12,9 @@ import HelmetTail from "../../../assets/logos/helmet-tail.png"
 import {ChatManager} from "../state/ChatManager"
 import {ConnectionManager} from "../state/ConnectionManager"
 import Hamburger from "./Hamburger"
-import {ipcRenderer} from "../utilities/IpcRenderer"
 import {ChatHelper} from "../utilities/ChatHelper"
+import {ipcRenderer} from "../utilities/IpcRenderer";
+import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 
 export default function Bar() {
     const [connected, setConnected] = React.useState(false)
@@ -44,6 +45,7 @@ export default function Bar() {
                         onClick={() => {
                             let message = connected ? "Disconnecting..." : "Connecting..."
                             ChatManager.add(ChatHelper.makeBotChat(message))
+                            AnalyticsHelper.event("Menu", connected ? "Disconnect" : "Connect")
                             ipcRenderer.sendMessage('socket', connected ? "disconnect" : "connect")
                         }}
                         color="inherit"

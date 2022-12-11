@@ -2,8 +2,9 @@ import {TextField} from "@mui/material"
 import React, {useEffect} from "react"
 import {ChatManager} from "../state/ChatManager"
 import {ConnectionManager} from "../state/ConnectionManager"
-import {ipcRenderer} from "../utilities/IpcRenderer"
 import {ChatHelper} from "../utilities/ChatHelper"
+import {ipcRenderer} from "../utilities/IpcRenderer";
+import {ProfileManager} from "../state/ProfileManager";
 
 export default function Send() {
     const [message, setMessage] = React.useState("")
@@ -24,7 +25,7 @@ export default function Send() {
             onKeyDown={(event) => {
                 if (event.code == "Enter" && connected) {
                     ipcRenderer.sendMessage("chat", message)
-                    if (!message.startsWith("/")) {
+                    if (!message.startsWith("/") && !ProfileManager.getProfile().init6) {
                         ChatManager.add(ChatHelper.makeSelfChat(message))
                     }
                     setMessage("")

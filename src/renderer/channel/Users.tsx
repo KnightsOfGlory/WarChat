@@ -10,6 +10,7 @@ import {Channel, ChannelManager} from "../state/ChannelManager"
 import {ProductIcons} from "../utilities/ProductIcons"
 import {UserFlags} from "../utilities/UserFlags"
 import {ConnectionManager} from "../state/ConnectionManager"
+import {ProfileManager} from "../state/ProfileManager";
 
 const draw = (label: string, users: User[]) => {
     if (users.length == 0) return
@@ -51,16 +52,19 @@ export default function Users() {
 
     useEffect(() => {
         ChannelManager.subscribeCurrent((newChannel: Channel) => setChannel(newChannel))
-        UserManager.subscribe((newUsers) => setUsers(newUsers))
+        UserManager.subscribe((newUsers) => setUsers([...newUsers]))
         ConnectionManager.subscribe((isConnected) => {
             if (!isConnected) setChannel(null)
         })
     }, [])
 
     const grouped = () => {
-        const admins = users.filter((u) => UserFlags.isAdministrator(u.flags))
-        const ops = users.filter((u) => UserFlags.isOperator(u.flags) && !UserFlags.isAdministrator(u.flags))
-        const members = users.filter((u) => !UserFlags.isOperator(u.flags) && !UserFlags.isAdministrator(u.flags))
+        const isAdministrator = ProfileManager.getProfile().init6 ? UserFlags.Init6.isAdministrator : UserFlags.isAdministrator
+        const isOperator = ProfileManager.getProfile().init6 ? UserFlags.Init6.isOperator : UserFlags.isOperator
+
+        const admins = users.filter((u) => isAdministrator(u.flags))
+        const ops = users.filter((u) => isOperator(u.flags) && !isAdministrator(u.flags))
+        const members = users.filter((u) => !isOperator(u.flags) && !isAdministrator(u.flags))
 
         return {
             admins: admins,

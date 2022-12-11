@@ -6,8 +6,8 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogActions from "@mui/material/DialogActions"
 import Button from "@mui/material/Button"
 import {AlertsManager} from "../state/AlertsManager"
-import {ipcRenderer} from "../utilities/IpcRenderer"
 import {Interprocess} from "../../common/Interprocess";
+import {ipcRenderer} from "../utilities/IpcRenderer";
 
 let silentUpdate = false
 
@@ -22,7 +22,7 @@ export default function AutoUpdate() {
         setInterval(() => {
             silentUpdate = true
             ipcRenderer.sendMessage("updater", "check")
-        }, 60 * 60 * 1000)
+        }, 15 * 60 * 1000)
     }, [])
 
     const handleYes = () => {

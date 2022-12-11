@@ -29,7 +29,7 @@ export default function Pages() {
                 sx={{width: "150px"}}
             >
                 <Tab icon={<ChatBubbleIcon/>} label="CHANNEL" sx={padding}/>
-                <Tab icon={<GroupsIcon/>} label="FRIENDS" sx={padding}/>
+                <Tab disabled icon={<GroupsIcon/>} label="FRIENDS" sx={padding}/>
                 <Tab disabled icon={<ForumIcon/>} label="WHISPERS" sx={padding}/>
                 <Divider/>
                 <Tab disabled icon={<BarChartIcon/>} label="STATISTICS" sx={padding}/>
