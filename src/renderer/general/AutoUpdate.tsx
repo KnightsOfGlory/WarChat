@@ -22,7 +22,7 @@ export default function AutoUpdate() {
         setInterval(() => {
             silentUpdate = true
             ipcRenderer.sendMessage("updater", "check")
-        }, 60 * 60 * 1000)
+        }, 15 * 60 * 1000)
     }, [])
 
     const handleYes = () => {
