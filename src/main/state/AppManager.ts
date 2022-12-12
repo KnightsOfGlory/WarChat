@@ -4,7 +4,7 @@ import {Interprocess} from "../../common/Interprocess";
 import os from "os";
 import path from "path";
 import fs from "fs";
-import { v4 as uuidv4 } from 'uuid';
+import uuidv4 from "../../renderer/utilities/Uuid";
 
 export namespace AppManager {
 
