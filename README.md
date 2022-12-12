@@ -5,21 +5,21 @@
 ## Windows
 Architectures supported: Intel x64, Intel x86, ARM64
 
-[Download (All)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.1.1/WarChat-Setup-0.1.1.exe)
+[Download (All)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.2.0/WarChat-Setup-0.2.0.exe)
 
 ## macOS
 Architectures supported: Intel, Apple Silicon
 
-[Download (Intel)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.1.1/WarChat-0.1.1.dmg)
+[Download (Intel)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.2.0/WarChat-0.2.0.dmg)
 
-[Download (Apple Silicon)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.1.1/WarChat-0.1.1-arm64.dmg)
+[Download (Apple Silicon)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.2.0/WarChat-0.2.0-arm64.dmg)
 
 ## Linux
 Architectures supported: Intel x64, ARM64
 
-[Download (Intel)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.1.1/WarChat-0.1.1.AppImage)
+[Download (Intel)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.2.0/WarChat-0.2.0.AppImage)
 
-[Download (ARM)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.1.1/WarChat-0.1.1-arm64.AppImage)
+[Download (ARM)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.2.0/WarChat-0.2.0-arm64.AppImage)
 
 The Linux deployment target is an AppImage.  Electron apps no longer support desktop integration for AppImages out of the box.  [AppLauncher](https://github.com/TheAssassin/AppImageLauncher) is the recommended utility to integrate and launch the WarChat AppImage on Linux.
 
