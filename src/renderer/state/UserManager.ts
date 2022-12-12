@@ -45,7 +45,7 @@ export namespace UserManager {
     }
 
     function listen() {
-        ConnectionManager.subscribe(() => {
+        ConnectionManager.subscribeConnected(() => {
             users = []
             dispatch()
         })

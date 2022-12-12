@@ -7,12 +7,14 @@ import {ConnectionManager} from "./state/ConnectionManager";
 import {ProfileManager} from "./state/ProfileManager";
 import {AutoUpdateManager} from "./state/AutoUpdateManager";
 import {AppManager} from "./state/AppManager";
+import {SettingsManager} from "./state/SettingsManager";
 
 AppManager.initialize()
 AutoUpdateManager.initialize()
 ConnectionManager.initialize()
 ChatManager.initialize()
 ProfileManager.initialize()
+SettingsManager.initialize()
 
 export let mainWindow: BrowserWindow | null = null;
 

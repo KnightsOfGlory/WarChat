@@ -20,7 +20,7 @@ export default function Channel() {
         ChatManager.subscribe((newMessage: any) => {
             setMessages([...newMessage]) // force state change
         })
-        ConnectionManager.subscribe((isConnected) => {
+        ConnectionManager.subscribeConnected((isConnected) => {
             ChatManager.add(ChatHelper.makeBotChat(isConnected ? "Connected!" : "Disconnected!"))
         })
     }, [])

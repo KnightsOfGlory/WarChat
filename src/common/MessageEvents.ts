@@ -36,6 +36,7 @@ export namespace MessageEvents {
             export const JOIN       = "JOIN"
             export const LEAVE      = "LEAVE"
             export const TALK       = "TALK"
+            export const TOPIC      = "TOPIC"
             export const UPDATE     = "UPDATE"
             export const WHISPER    = "WHISPER"
         }

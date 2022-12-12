@@ -53,7 +53,7 @@ export default function Users() {
     useEffect(() => {
         ChannelManager.subscribeCurrent((newChannel: Channel) => setChannel(newChannel))
         UserManager.subscribe((newUsers) => setUsers([...newUsers]))
-        ConnectionManager.subscribe((isConnected) => {
+        ConnectionManager.subscribeConnected((isConnected) => {
             if (!isConnected) setChannel(null)
         })
     }, [])
