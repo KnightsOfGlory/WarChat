@@ -8,15 +8,16 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import {Checkbox, FormControlLabel, FormGroup, ListItem, ListItemButton} from "@mui/material"
 import ListItemIcon from "@mui/material/ListItemIcon"
-import BadgeIcon from "@mui/icons-material/Badge"
 import ListItemText from "@mui/material/ListItemText"
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 import {SettingsManager} from "../state/SettingsManager";
 import SettingsIcon from "@mui/icons-material/Settings";
+import {ChatManager} from "../state/ChatManager";
 
 export default function Settings() {
     const [open, setOpen] = useState(false)
     const [autoReconnect, setAutoReconnect] = useState(SettingsManager.getSettings().autoReconnect)
+    const [ignoreEmotes, setIgnoreEmotes] = useState(SettingsManager.getSettings().ignoreEmotes)
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -27,9 +28,11 @@ export default function Settings() {
     }
     const handleSave = () => {
         SettingsManager.setSettings({
-            autoReconnect: autoReconnect
+            autoReconnect: autoReconnect,
+            ignoreEmotes: ignoreEmotes
         })
         setOpen(false)
+        ChatManager.forceUpdate()
     }
 
     return (
@@ -53,6 +56,11 @@ export default function Settings() {
                             control={<Checkbox onChange={(e) => setAutoReconnect(e.target.checked)} />}
                             label="Automatically Reconnect"
                             checked={autoReconnect}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox onChange={(e) => setIgnoreEmotes(e.target.checked)} />}
+                            label="Ignore Emotes"
+                            checked={ignoreEmotes}
                         />
                     </FormGroup>
                 </DialogContent>

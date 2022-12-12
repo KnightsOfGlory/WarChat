@@ -3,7 +3,6 @@ import {ChatHelper} from "../utilities/ChatHelper"
 import {Interprocess} from "../../common/Interprocess";
 import {MessageEvents} from "../../common/MessageEvents";
 import {ipcRenderer} from "../utilities/IpcRenderer";
-import {ProfileManager} from "./ProfileManager";
 
 export type Talk = {
     timestamp: number,
@@ -51,6 +50,10 @@ export namespace ChatManager {
 
     export function add(chat: Chat) {
         chats.push(chat)
+        dispatch()
+    }
+
+    export function forceUpdate() {
         dispatch()
     }
 
