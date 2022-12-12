@@ -33,13 +33,13 @@ jobs:
         env:
           AUTH: ${{ secrets.WINDOWS_CERTIFICATE }}
         run: |
-          echo "$WINDOWS_CERTIFICATE" | base64 --decode > ${HOME}/windows.pfx    
+          echo "$WINDOWS_CERTIFICATE" | base64 --decode > ./windows.pfx    
 
       - name: Publish
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
-          CSC_LINK: ${HOME}/windows.pfx
+          CSC_LINK: ./windows.pfx
           CSC_KEY_PASSWORD: ${{ secrets.CSC_WIN_KEY_PASSWORD }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -47,4 +47,4 @@ jobs:
 
       - name: Clean
         run: |
-          rm ${HOME}/windows.pfx
+          rm ./windows.pfx
