@@ -59,6 +59,7 @@ export namespace ConnectionManager {
                     if (!connected) {
                         connected = true
                         disconnected = false
+                        dontReconnect = false
                         dispatchConnected()
                     }
                     break
