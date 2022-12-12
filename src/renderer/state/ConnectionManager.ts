@@ -4,73 +4,93 @@ import {SettingsManager} from "./SettingsManager";
 import {ChatManager} from "./ChatManager";
 import {ChatHelper} from "../utilities/ChatHelper";
 
-export type Subscription = (isConnected: boolean) => void
+export type ConnectedSubscription = (connected: boolean) => void
+export type BusySubscription = (busy: boolean) => void
 
 export namespace ConnectionManager {
-    let isConnected: boolean = false
-    let subscriptions: Subscription[] = []
+
+    export let busy = false
+    let busySubscriptions: BusySubscription[] = []
+
+    let connected: boolean = false
+    let connectedSubscriptions: ConnectedSubscription[] = []
 
     listen()
     autoreconnect()
 
     export function connect() {
-        ChatManager.add(ChatHelper.makeBotChat("Connecting..."))
+        console.log("CONNECTING")
+        busy = true
         ipcRenderer.sendMessage(
             Interprocess.Channels.SOCKET,
             Interprocess.Commands.Socket.CONNECT
         )
+        setTimeout(() => { busy = false; dispatchBusy() }, 5 * 1000)
     }
-
     export function disconnect() {
-        disconnected = false
-        ChatManager.add(ChatHelper.makeBotChat("Disconnecting..."))
+        busy = true
+        dontReconnect = true
         ipcRenderer.sendMessage(
             Interprocess.Channels.SOCKET,
             Interprocess.Commands.Socket.DISCONNECT
         )
     }
 
-    export function subscribe(callback: Subscription) {
-        subscriptions.push(callback)
+    export function subscribeBusy(callback: BusySubscription) {
+        busySubscriptions.push(callback)
+    }
+    export function subscribeConnected(callback: ConnectedSubscription) {
+        connectedSubscriptions.push(callback)
     }
 
-    function dispatch() {
-        subscriptions.forEach((s) => s(isConnected))
+    function dispatchBusy() {
+        busySubscriptions.forEach((s) => s(busy))
+    }
+    function dispatchConnected() {
+        connectedSubscriptions.forEach((s) => s(connected))
     }
 
     function listen() {
         ipcRenderer.on(Interprocess.Channels.SOCKET, (arg) => {
+            busy = false
+
             switch (arg) {
                 case Interprocess.Commands.Socket.CONNECTED:
-                    if (!isConnected) {
-                        isConnected = true
+                    if (!connected) {
+                        connected = true
                         disconnected = false
-                        dispatch()
+                        dispatchConnected()
                     }
                     break
                 case Interprocess.Commands.Socket.DISCONNECTED:
-                    if (isConnected) {
-                        isConnected = false
+                    if (connected) {
+                        connected = false
                         disconnected = true
-                        dispatch()
+                        dispatchConnected()
                     }
                     break
-                // case Interprocess.Commands.Socket.TIMEOUT:
-                //     isConnected = false
-                //     disconnected = true
-                //     ChatManager.add(ChatHelper.makeBotChat("Connection timed out!"))
-                //     dispatch()
+                case Interprocess.Commands.Socket.TIMEOUT:
+                    connected = false
+                    disconnected = true
+                    ChatManager.add(ChatHelper.makeBotChat("Connection timed out!"))
+                    dispatchConnected()
+                    break
             }
+
+            dispatchBusy()
         })
     }
 
     let reconnector: NodeJS.Timer
     let disconnected = false
+    let dontReconnect = true
     function autoreconnect() {
-        reconnector = setInterval(() => {
-            if (!disconnected || isConnected || !SettingsManager.getSettings().autoReconnect) return
-
-            connect()
-        }, 1000)
+        setTimeout(() => {
+            reconnector = setInterval(() => {
+                if (dontReconnect || busy || !disconnected || connected || !SettingsManager.getSettings().autoReconnect) return
+                ChatManager.add(ChatHelper.makeBotChat("Connecting..."))
+                connect()
+            }, 1000)
+        }, 0)
     }
 }

@@ -25,11 +25,13 @@ export default function Hamburger() {
     const [open, setOpen] = useState(false)
 
     const handleConnect = () => {
+        ChatManager.add(ChatHelper.makeBotChat("Connecting..."))
         ConnectionManager.connect()
         AnalyticsHelper.event("Menu", "Connect")
         setOpen(false)
     }
     const handleDisconnect = () => {
+        ChatManager.add(ChatHelper.makeBotChat("Disconnecting..."))
         ConnectionManager.disconnect()
         AnalyticsHelper.event("Menu", "Disconnect")
         setOpen(false)

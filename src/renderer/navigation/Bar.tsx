@@ -13,14 +13,15 @@ import {ChatManager} from "../state/ChatManager"
 import {ConnectionManager} from "../state/ConnectionManager"
 import Hamburger from "./Hamburger"
 import {ChatHelper} from "../utilities/ChatHelper"
-import {ipcRenderer} from "../utilities/IpcRenderer";
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 
 export default function Bar() {
     const [connected, setConnected] = React.useState(false)
+    const [busy, setBusy] = React.useState(false)
 
     useEffect(() => {
-        ConnectionManager.subscribe((isConnected) => setConnected(isConnected))
+        ConnectionManager.subscribeConnected((connected) => setConnected(connected))
+        ConnectionManager.subscribeBusy((busy) => setBusy(busy))
     }, [])
 
     return (
@@ -43,10 +44,13 @@ export default function Bar() {
                         size="large"
                         edge="end"
                         onClick={() => {
+                            let message = connected ? "Disconnecting..." : "Connecting..."
+                            ChatManager.add(ChatHelper.makeBotChat(message))
                             AnalyticsHelper.event("Menu", connected ? "Disconnect" : "Connect")
                             connected ? ConnectionManager.disconnect() : ConnectionManager.connect()
                         }}
                         color="inherit"
+                        disabled={busy}
                     >
                         {connected ? <RadioButtonCheckedIcon/> : <RadioButtonUncheckedIcon/>}
                     </IconButton>

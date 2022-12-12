@@ -43,7 +43,7 @@ export default function Settings() {
                 </ListItemButton>
             </ListItem>
             <Dialog open={open} onClose={handleClose} maxWidth={"xs"}>
-                <DialogTitle>Profile</DialogTitle>
+                <DialogTitle>Settings</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         These are global settings that set the bot's behavior.

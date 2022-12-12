@@ -11,7 +11,7 @@ export default function Send() {
     const [connected, setConnected] = React.useState(false)
 
     useEffect(() => {
-        ConnectionManager.subscribe((isConnected: boolean) => setConnected(isConnected))
+        ConnectionManager.subscribeConnected((isConnected: boolean) => setConnected(isConnected))
     }, [])
 
     return (
