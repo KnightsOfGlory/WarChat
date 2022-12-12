@@ -28,6 +28,7 @@ jobs:
           AUTH: ${{ secrets.WINDOWS_CERTIFICATE }}
         run: |
           echo "$WINDOWS_CERTIFICATE" | base64 --decode > ./windows.pfx 
+          echo "$MACOS_CERTIFICATE" | base64 --decode > ./macos.p12
 
       - name: Build
         run: |
@@ -39,6 +40,8 @@ jobs:
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+          CSC_LINK: ./macos.p12
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           WIN_CSC_LINK: ./windows.pfx
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
