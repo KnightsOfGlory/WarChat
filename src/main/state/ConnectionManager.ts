@@ -32,7 +32,7 @@ export namespace ConnectionManager {
                     client.connect(6112, profile.server, function () {
                         if (ProfileManager.getProfile().init6) {
                             client.write("C1\x0D\x0A");
-                            client.write("ACCT " + profile.username + "\x0D\x0A\r")
+                            client.write("ACCT " + profile.username + "\x0D\x0A")
                             client.write("PASS " + profile.password + "\x0D\x0A")
                             client.write("HOME Chat\x0D\x0A")
                             client.write("LOGIN\x0D\x0A")
@@ -69,8 +69,8 @@ export namespace ConnectionManager {
                             )
                         }
                     })
-                    client.on("error", () => {
-
+                    client.on("error", (err) => {
+                        console.log(err)
                     })
                     client.on("connect", () => {
                         if (!connected) {
