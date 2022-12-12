@@ -230,6 +230,7 @@ export namespace ChatManager {
                     case MessageEvents.Init6.Commands.SERVER:
                         switch (event()) {
                             case MessageEvents.Init6.Events.INFO:
+                            case MessageEvents.Init6.Events.TOPIC:
                                 if (!ignoreInfo) {
                                     innerMessage = ChatHelper.parseInit6(message, 6)
                                     chats.push({
