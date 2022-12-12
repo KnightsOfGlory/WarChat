@@ -1,6 +1,6 @@
 {
   "name": "warchat",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "./src/main/main.ts",
   "author": "Knights of Glory",
   "license": "MIT",
