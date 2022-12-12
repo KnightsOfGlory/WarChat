@@ -3,14 +3,14 @@ import React, {useEffect, useState} from "react"
 import List from "@mui/material/List"
 import ListItemText from "@mui/material/ListItemText"
 import ListItemAvatar from "@mui/material/ListItemAvatar"
-import Avatar from "@mui/material/Avatar"
 import {User, UserManager} from "../state/UserManager"
 import Box from "@mui/material/Box"
 import {Channel, ChannelManager} from "../state/ChannelManager"
 import {ProductIcons} from "../utilities/ProductIcons"
 import {UserFlags} from "../utilities/UserFlags"
 import {ConnectionManager} from "../state/ConnectionManager"
-import {ProfileManager} from "../state/ProfileManager";
+import {ProfileManager} from "../state/ProfileManager"
+import {AvatarHelper} from "../utilities/AvatarHelper";
 
 const draw = (label: string, users: User[]) => {
     if (users.length == 0) return
@@ -22,20 +22,11 @@ const draw = (label: string, users: User[]) => {
             </ListSubheader>
             {
                 users.map((user) => {
-                    let icon = ProductIcons.getByClient(user.client.trim(), user.flags as string)
-
                     return (
-                        <ListItem
-                            key={user.name}
-                            disablePadding
-
-                        >
+                        <ListItem key={user.name} disablePadding>
                             <ListItemButton sx={{paddingTop: "4px", paddingBottom: "4px"}}>
                                 <ListItemAvatar>
-                                    <Avatar
-                                        src={icon}
-                                        variant="rounded"
-                                    />
+                                    {AvatarHelper.getAvatar(user)}
                                 </ListItemAvatar>
                                 <ListItemText primary={user.name} />
                             </ListItemButton>

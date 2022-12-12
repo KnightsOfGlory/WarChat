@@ -13,6 +13,7 @@ import {Timestamps} from "../utilities/Timestamps"
 import Box from "@mui/material/Box"
 import {ChatHelper} from "../utilities/ChatHelper"
 import {SettingsManager} from "../state/SettingsManager";
+import {AvatarHelper} from "../utilities/AvatarHelper";
 
 export default function Channel() {
     const [messages, setMessages] = useState<Chat[]>([])
@@ -135,10 +136,7 @@ export default function Channel() {
                         return (
                             <ListItem alignItems={"flex-start"} sx={{paddingTop: "0px", paddingBottom: "0px"}}>
                                 <ListItemAvatar>
-                                    <Avatar
-                                        src={icon}
-                                        variant="rounded"
-                                    />
+                                    {AvatarHelper.getAvatar(group[0].user)}
                                 </ListItemAvatar>
                                 <ListItemText primary={primary} secondary={secondary}/>
                             </ListItem>
