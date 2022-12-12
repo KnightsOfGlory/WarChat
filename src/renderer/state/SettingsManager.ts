@@ -2,7 +2,8 @@ import {Interprocess} from "../../common/Interprocess";
 import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export type Settings = {
-    autoReconnect: boolean
+    autoReconnect: boolean,
+    ignoreEmotes: boolean
 }
 
 export namespace SettingsManager {

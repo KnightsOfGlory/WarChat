@@ -12,13 +12,14 @@ import {ConnectionManager} from "../state/ConnectionManager"
 import {Timestamps} from "../utilities/Timestamps"
 import Box from "@mui/material/Box"
 import {ChatHelper} from "../utilities/ChatHelper"
+import {SettingsManager} from "../state/SettingsManager";
 
 export default function Channel() {
     const [messages, setMessages] = useState<Chat[]>([])
 
     useEffect(() => {
-        ChatManager.subscribe((newMessage: any) => {
-            setMessages([...newMessage]) // force state change
+        ChatManager.subscribe((newMessages: any) => {
+            setMessages([...newMessages]) // force state change
         })
         ConnectionManager.subscribeConnected((isConnected) => {
             ChatManager.add(ChatHelper.makeBotChat(isConnected ? "Connected!" : "Disconnected!"))
@@ -85,9 +86,12 @@ export default function Channel() {
                             )
                         }
 
-                        // @ts-ignore
-                        let icon = ProductIcons.getByClient(group[0].user.client.trim(), group[0].user.flags)
-                        let said = group.map((g) => g.message)
+                        let icon = ProductIcons.getByClient(group[0].user.client.trim(), group[0].user.flags as string)
+                        let said = group
+                            .filter((c) => !SettingsManager.getSettings().ignoreEmotes || !c.hasOwnProperty("isEmote"))
+                            .map((c) => c.message)
+
+                        if (said.length == 0) return
 
                         let saying = (
                             <React.Fragment>

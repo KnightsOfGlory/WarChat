@@ -19,6 +19,7 @@ import {Channel, ChannelManager} from "../state/ChannelManager"
 import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export default function ChannelTree() {
+    const [wait, setWait] = useState(false)
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [joining, setJoining] = useState("")
     const [currentChannel, setCurrentChannel] = useState<Channel>()
@@ -31,10 +32,14 @@ export default function ChannelTree() {
     }, [])
 
     const joinChannel = (channel: string) => {
+        if (wait) return
+
         setConfirmOpen(true)
         setJoining(channel)
     }
     const joinYes = () => {
+        setWait(true)
+        setTimeout(() => setWait(false), 2000)
         ipcRenderer.sendMessage("chat", "/join " + joining)
         setConfirmOpen(false)
     }
