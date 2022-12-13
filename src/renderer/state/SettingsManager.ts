@@ -3,7 +3,8 @@ import {ipcRenderer} from "../utilities/IpcRenderer";
 
 export type Settings = {
     autoReconnect: boolean,
-    ignoreEmotes: boolean
+    ignoreEmotes: boolean,
+    separateBots: boolean
 }
 
 export namespace SettingsManager {
@@ -13,7 +14,13 @@ export namespace SettingsManager {
     listen()
 
     export function getSettings() {
-        return settings
+        let defaultSettings = {
+            autoReconnect: true,
+            ignoreEmotes: false,
+            separateBots: true
+        }
+
+        return {...defaultSettings, ...settings}
     }
 
     export function setSettings(newSettings: Settings) {
