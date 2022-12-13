@@ -50,7 +50,7 @@ export default function ChannelTree() {
     return (
         <Box sx={{width: "225px"}}>
             <List
-                sx={{width: '225px', bgcolor: 'background.paper', maxHeight: '90%'}}
+                sx={{width: '225px', bgcolor: 'background.paper', overflowY: "overlay", height: 'calc(100vh - 64px)'}}
                 component="nav"
                 subheader={<li/>}
                 aria-labelledby="nested-list-subheader"
