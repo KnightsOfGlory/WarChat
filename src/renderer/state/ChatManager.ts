@@ -53,12 +53,12 @@ export namespace ChatManager {
         dispatch()
     }
 
-    export function forceUpdate() {
-        dispatch()
-    }
-
     export function subscribe(callback: TalkSubscription) {
         subscriptions.push(callback)
+    }
+
+    export function forceUpdate() {
+        dispatch()
     }
 
     function dispatch() {
@@ -85,7 +85,7 @@ export namespace ChatManager {
                         innerMessage = ChatHelper.parseQuoted(message)
                         chats.push({
                             timestamp: Date.now(),
-                            user: {name: name(), client: "[NONE]", flags: ""},
+                            user: {name: name(), client: "[NONE]", flags: "", bot: false},
                             message: "(whisper) " + innerMessage
                         })
                         dispatch()
@@ -177,7 +177,7 @@ export namespace ChatManager {
                                         innerMessage = ChatHelper.parseInit6(message, 8)
                                         chats.push({
                                             timestamp: Date.now(),
-                                            user: {name: name(), client: "[NONE]", flags: ""},
+                                            user: {name: name(), client: "[NONE]", flags: "", bot: false},
                                             message: "(whisper) " + innerMessage
                                         })
                                         dispatch()

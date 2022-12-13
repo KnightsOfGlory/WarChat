@@ -7,7 +7,8 @@ import {ProfileManager} from "./ProfileManager";
 export type User = {
     name: string,
     client: string,
-    flags: string | undefined
+    flags: string | undefined,
+    bot: boolean
 }
 
 export type UserSubscription = (users: User[]) => void
@@ -24,11 +25,11 @@ export namespace UserManager {
     }
 
     export function getServerUser(): User {
-        return {name: "Server", client: "[SERV]", flags: ""}
+        return {name: "Server", client: "[SERV]", flags: "", bot: false}
     }
 
     export function getWarChatUser(): User {
-        return {name: "WarChat", client: "[WCHT]", flags: ""}
+        return {name: "WarChat", client: "[WCHT]", flags: "", bot: false}
     }
 
     export function getByUsername(username: string): User {
@@ -38,6 +39,10 @@ export namespace UserManager {
 
     export function subscribe(callback: UserSubscription) {
         subscriptions.push(callback)
+    }
+
+    export function forceUpdate() {
+        dispatch()
     }
 
     function dispatch() {
@@ -70,7 +75,8 @@ export namespace UserManager {
                         users.push({
                             "name": name(),
                             "flags": flags(),
-                            "client": client()
+                            "client": client(),
+                            bot: false
                         })
                         dispatch()
                         break
@@ -78,7 +84,8 @@ export namespace UserManager {
                         users.push({
                             "name": name(),
                             "flags": flags(),
-                            "client": client()
+                            "client": client(),
+                            bot: false
                         })
                         dispatch()
                         break
@@ -115,7 +122,8 @@ export namespace UserManager {
                                 users.push({
                                     "name": name(),
                                     "flags": flags(),
-                                    "client": client()
+                                    "client": client(),
+                                    bot: false
                                 })
                                 dispatch()
                                 break
@@ -123,7 +131,8 @@ export namespace UserManager {
                                 users.push({
                                     "name": name(),
                                     "flags": flags(),
-                                    "client": client()
+                                    "client": client(),
+                                    bot: false
                                 })
                                 dispatch()
                                 break

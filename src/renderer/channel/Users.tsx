@@ -6,11 +6,12 @@ import ListItemAvatar from "@mui/material/ListItemAvatar"
 import {User, UserManager} from "../state/UserManager"
 import Box from "@mui/material/Box"
 import {Channel, ChannelManager} from "../state/ChannelManager"
-import {ProductIcons} from "../utilities/ProductIcons"
 import {UserFlags} from "../utilities/UserFlags"
 import {ConnectionManager} from "../state/ConnectionManager"
-import {ProfileManager} from "../state/ProfileManager"
-import {AvatarHelper} from "../utilities/AvatarHelper";
+import {AvatarHelper} from "../utilities/AvatarHelper"
+import {ProfileManager} from "../state/ProfileManager";
+import {HumanBotSplit} from "../utilities/HumanBotSplit";
+import {SettingsManager} from "../state/SettingsManager";
 
 const draw = (label: string, users: User[]) => {
     if (users.length == 0) return
@@ -53,14 +54,19 @@ export default function Users() {
         const isAdministrator = ProfileManager.getProfile().init6 ? UserFlags.Init6.isAdministrator : UserFlags.isAdministrator
         const isOperator = ProfileManager.getProfile().init6 ? UserFlags.Init6.isOperator : UserFlags.isOperator
 
+        HumanBotSplit.update(users.filter((u) => u && u.name))
+        let separateBots = SettingsManager.getSettings().separateBots
+
         const admins = users.filter((u) => isAdministrator(u.flags))
         const ops = users.filter((u) => isOperator(u.flags) && !isAdministrator(u.flags))
-        const members = users.filter((u) => !isOperator(u.flags) && !isAdministrator(u.flags))
+        const members = users.filter((u) => !isOperator(u.flags) && !isAdministrator(u.flags) && (!u.bot || !separateBots))
+        const bots = users.filter((u) => !isOperator(u.flags) && !isAdministrator(u.flags) && (u.bot && separateBots))
 
         return {
             admins: admins,
             ops: ops,
-            members: members
+            members: members,
+            bots: bots
         }
     }
 
@@ -69,6 +75,7 @@ export default function Users() {
         draw("ADMINISTRATORS", groups.admins),
         draw("OPERATORS", groups.ops),
         draw("MEMBERS", groups.members),
+        draw("BOTS", groups.bots),
     ]
 
     return (
