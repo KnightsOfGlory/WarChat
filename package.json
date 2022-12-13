@@ -87,6 +87,9 @@
     "webpack-dev-server": "^4.10.0",
     "webpack-merge": "^5.8.0"
   },
+  "browser": {
+    "crypto": false
+  },
   "build": {
     "productName": "WarChat",
     "appId": "io.knightsofglory.WarChat",
