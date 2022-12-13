@@ -9,7 +9,11 @@ export namespace AvatarHelper {
 
     export function getAvatar(user: User): ReactElement {
         let icon = ProductIcons.getByClient(user.client.trim(), user.flags as string)
-        let useBoring = user.client == "[CHAT]" && !UserFlags.Init6.isAdministrator(user.flags) && !UserFlags.Init6.isOperator(user.flags)
+        let useBoring =
+            !user.bot &&
+            user.client == "[CHAT]" &&
+            !UserFlags.Init6.isAdministrator(user.flags) &&
+            !UserFlags.Init6.isOperator(user.flags)
 
         return useBoring ? (
             <BoringAvatar
