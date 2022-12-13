@@ -83,12 +83,13 @@ export namespace ConnectionManager {
                     })
                     break;
                 case Interprocess.Commands.Socket.DISCONNECT:
+                    let oldClient = client
                     client.destroy()
                     setTimeout(() => {
-                        client.removeAllListeners("data")
-                        client.removeAllListeners("close")
-                        client.removeAllListeners("error")
-                        client.removeAllListeners("connect")
+                        oldClient.removeAllListeners("data")
+                        oldClient.removeAllListeners("close")
+                        oldClient.removeAllListeners("error")
+                        oldClient.removeAllListeners("connect")
                     }, 1000)
                     break;
             }

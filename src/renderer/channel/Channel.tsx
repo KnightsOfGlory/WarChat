@@ -39,7 +39,7 @@ export default function Channel() {
                 return
             }
 
-            if (user != null && message.user.name != user.name) {
+            if (message.user != null && user != null && message.user.name != user.name) {
                 groups.push(group)
                 group = []
             }
