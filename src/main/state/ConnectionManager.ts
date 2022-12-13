@@ -44,12 +44,6 @@ export namespace ConnectionManager {
                             client.write("/join " + profile.home + "\x0D\x0A")
                         }
                     });
-                    client.setTimeout(60 * 1000, () => {
-                        event.reply(
-                            Interprocess.Channels.SOCKET,
-                            Interprocess.Commands.Socket.TIMEOUT
-                        )
-                    })
 
                     let received = new MessageBuffer("\r\n")
 
