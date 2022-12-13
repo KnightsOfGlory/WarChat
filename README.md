@@ -1,5 +1,5 @@
 # WarChat
-<img width="1710" alt="screenshot" src="https://user-images.githubusercontent.com/43896559/206749742-617f9789-2d03-4dc3-85cc-d9abff9ff1a9.png">
+<img width="1710" alt="Screen_Shot_2022-12-12_at_9 51 16_PM" src="https://user-images.githubusercontent.com/43896559/207384893-a7d9c125-e327-4766-a9e9-a02be2c5f774.png">
 
 # Installation
 ## Windows
