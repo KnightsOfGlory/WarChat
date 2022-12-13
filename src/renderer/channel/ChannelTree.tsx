@@ -60,12 +60,31 @@ export default function ChannelTree() {
                 </ListSubheader>
                 {
                     channels.map((channel: Channel) => {
+                        let name = (
+                            <div>
+                                <div style={{
+                                    display: "inline-block",
+                                    maxWidth: "125px",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    paddingTop: "8px"}}>{channel.name}</div>
+                                <div style={{
+                                    display: "inline-block",
+                                    maxWidth: "50px",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    paddingTop: "8px"}}>&nbsp;– {channel.users}</div>
+                            </div>
+                        )
+
                         return (<ListItem key={channel.name} onClick={() => joinChannel(channel.name)} disablePadding>
                             <ListItemButton selected={currentChannel != null && channel.name == currentChannel.name}>
                                 <ListItemIcon>
                                     <TagIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary={channel.name + " – " + channel.users}
+                                <ListItemText primary={name}
                                               sx={{marginLeft: "-24px"}}/>
                             </ListItemButton>
                         </ListItem>)
