@@ -77,6 +77,10 @@ const configuration: webpack.Configuration = {
     __dirname: false,
     __filename: false,
   },
+
+  resolve: {
+    fallback: { crypto: false },
+  },
 };
 
 export default merge(baseConfig, configuration);

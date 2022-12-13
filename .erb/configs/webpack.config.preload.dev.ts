@@ -66,6 +66,10 @@ const configuration: webpack.Configuration = {
   },
 
   watch: true,
+
+  resolve: {
+    fallback: { crypto: false },
+  },
 };
 
 export default merge(baseConfig, configuration);
