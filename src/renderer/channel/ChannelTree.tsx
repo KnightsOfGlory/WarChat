@@ -50,7 +50,7 @@ export default function ChannelTree() {
     return (
         <Box sx={{width: "225px"}}>
             <List
-                sx={{width: '225px', bgcolor: 'background.paper', maxHeight: '90%'}}
+                sx={{width: '225px', bgcolor: 'background.paper', overflowY: "overlay", height: 'calc(100vh - 64px)'}}
                 component="nav"
                 subheader={<li/>}
                 aria-labelledby="nested-list-subheader"
@@ -60,12 +60,31 @@ export default function ChannelTree() {
                 </ListSubheader>
                 {
                     channels.map((channel: Channel) => {
+                        let name = (
+                            <div>
+                                <div style={{
+                                    display: "inline-block",
+                                    maxWidth: "125px",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    paddingTop: "8px"}}>{channel.name}</div>
+                                <div style={{
+                                    display: "inline-block",
+                                    maxWidth: "50px",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    paddingTop: "8px"}}>&nbsp;– {channel.users}</div>
+                            </div>
+                        )
+
                         return (<ListItem key={channel.name} onClick={() => joinChannel(channel.name)} disablePadding>
                             <ListItemButton selected={currentChannel != null && channel.name == currentChannel.name}>
                                 <ListItemIcon>
                                     <TagIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary={channel.name + " – " + channel.users}
+                                <ListItemText primary={name}
                                               sx={{marginLeft: "-24px"}}/>
                             </ListItemButton>
                         </ListItem>)

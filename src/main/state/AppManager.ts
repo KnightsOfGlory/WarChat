@@ -4,7 +4,7 @@ import {Interprocess} from "../../common/Interprocess";
 import os from "os";
 import path from "path";
 import fs from "fs";
-import {uuid} from "uuidv4";
+import uuidv4 from "../../renderer/utilities/Uuid";
 
 export namespace AppManager {
 
@@ -39,7 +39,7 @@ export namespace AppManager {
         let file = path.join(user, ".warchat", "identifier")
         if (!fs.existsSync(file)) {
             fs.mkdirSync(directory, { recursive: true });
-            fs.writeFileSync(file, uuid())
+            fs.writeFileSync(file, uuidv4())
         }
         let raw = fs.readFileSync(file)
         identifier = raw.toString()
