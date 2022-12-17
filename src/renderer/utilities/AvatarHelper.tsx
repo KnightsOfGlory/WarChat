@@ -1,17 +1,17 @@
 import React, {ReactElement} from "react";
-import {User} from "../state/UserManager"
 import Avatar from "@mui/material/Avatar"
 import BoringAvatar from "boring-avatars"
 import {ProductIcons} from "./ProductIcons";
 import {UserFlags} from "./UserFlags";
-import {ProfileManager} from "../state/ProfileManager";
+import {References} from "@knightsofglory/warlibrary/lib/References";
+import {User} from "@knightsofglory/warlibrary/lib/state/UserManager";
 
 export namespace AvatarHelper {
 
     export function getAvatar(user: User): ReactElement {
         let icon = ProductIcons.getByClient(user.client.trim(), user.flags as string)
         let special =
-            ProfileManager.getProfile().init6 ?
+            References.profileManager.getProfile().init6 ?
                 UserFlags.Init6.isAdministrator(user.flags) ||
                 UserFlags.Init6.isOperator(user.flags)
             :

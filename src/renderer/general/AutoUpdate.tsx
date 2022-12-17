@@ -6,8 +6,8 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogActions from "@mui/material/DialogActions"
 import Button from "@mui/material/Button"
 import {AlertsManager} from "../state/AlertsManager"
-import {Interprocess} from "../../common/Interprocess";
-import {ipcRenderer} from "../utilities/IpcRenderer";
+import {References} from "@knightsofglory/warlibrary/lib/References";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 let silentUpdate = false
 
@@ -18,16 +18,16 @@ export default function AutoUpdate() {
 
     useEffect(() => {
         listen(setOpen, setDone)
-        ipcRenderer.sendMessage("updater", "initialize")
+        References.messageBus.send("updater", "initialize")
         setInterval(() => {
             silentUpdate = true
-            ipcRenderer.sendMessage("updater", "check")
+            References.messageBus.send("updater", "check")
         }, 5 * 60 * 1000)
     }, [])
 
     const handleYes = () => {
         setUpdating(true)
-        ipcRenderer.sendMessage("updater", "download")
+        References.messageBus.send("updater", "download")
     }
 
     const prompt = (<Dialog open={open} onClose={() => setOpen(false)}>
@@ -59,7 +59,7 @@ export default function AutoUpdate() {
         </DialogContent>
         <DialogActions>
             <Button disabled={!done}
-                    onClick={() => ipcRenderer.sendMessage("updater", "install")}>Done</Button>
+                    onClick={() => References.messageBus.send("updater", "install")}>Done</Button>
         </DialogActions>
     </Dialog>)
 
@@ -73,13 +73,13 @@ export default function AutoUpdate() {
 type SetBoolean = (value: (((prevState: boolean) => boolean) | boolean)) => void
 
 function listen(setOpen: SetBoolean, setDone: SetBoolean) {
-    ipcRenderer.on(Interprocess.Channels.UPDATER, (event, data) => {
+    References.messageBus.on(Messages.Channels.UPDATER, (event, data) => {
         switch (event) {
-            case Interprocess.Commands.Updater.UPDATE_AVAILABLE:
+            case Messages.Commands.Updater.UPDATE_AVAILABLE:
                 setOpen(true)
                 silentUpdate = false
                 break
-            case Interprocess.Commands.Updater.UPDATE_NOT_AVAILABLE:
+            case Messages.Commands.Updater.UPDATE_NOT_AVAILABLE:
                 if (!silentUpdate) {
                     AlertsManager.add({
                         severity: "info",
@@ -88,10 +88,10 @@ function listen(setOpen: SetBoolean, setDone: SetBoolean) {
                     silentUpdate = false
                 }
                 break
-            case Interprocess.Commands.Updater.UPDATE_DOWNLOADED:
+            case Messages.Commands.Updater.UPDATE_DOWNLOADED:
                 setDone(true)
                 break
-            case Interprocess.Commands.Updater.ERROR:
+            case Messages.Commands.Updater.ERROR:
                 let error = data as Error
                 AlertsManager.add({
                     severity: "error",

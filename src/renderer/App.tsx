@@ -2,17 +2,16 @@ import {MemoryRouter as Router, Route, Routes} from 'react-router-dom'
 import './App.css'
 import Home from './Home'
 import {useEffect} from "react";
-import {AppManager} from "./state/AppManager";
-import {ipcRenderer} from "./utilities/IpcRenderer";
-import {Interprocess} from "../common/Interprocess";
 import {AnalyticsHelper} from "./utilities/AnalyticsHelper";
+import {References} from "@knightsofglory/warlibrary/lib/References";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export default function App() {
     useEffect(() => {
-        AppManager.initialize()
-        ipcRenderer.sendMessage(
-            Interprocess.Channels.APP,
-            Interprocess.Commands.App.START
+        References.appManager.initialize()
+        References.messageBus.send(
+            Messages.Channels.APP,
+            Messages.Commands.App.START
         )
         setInterval(() => AnalyticsHelper.event("App", "Live"), 1000*60*5)
     }, [])

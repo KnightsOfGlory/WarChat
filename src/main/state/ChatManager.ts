@@ -1,6 +1,6 @@
 import {ipcMain} from 'electron';
 import {ConnectionManager} from './ConnectionManager';
-import {Interprocess} from "../../common/Interprocess";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export namespace ChatManager {
 
@@ -9,7 +9,7 @@ export namespace ChatManager {
     }
 
     function listen() {
-        ipcMain.on(Interprocess.Channels.CHAT, async (event, arg) => {
+        ipcMain.on(Messages.Channels.CHAT, async (event, arg) => {
             ConnectionManager.send(arg);
             ConnectionManager.send('\x0D\x0A');
         });

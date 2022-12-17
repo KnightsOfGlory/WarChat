@@ -3,15 +3,13 @@ import React, {useEffect, useState} from "react"
 import List from "@mui/material/List"
 import ListItemText from "@mui/material/ListItemText"
 import ListItemAvatar from "@mui/material/ListItemAvatar"
-import {User, UserManager} from "../state/UserManager"
 import Box from "@mui/material/Box"
-import {Channel, ChannelManager} from "../state/ChannelManager"
 import {UserFlags} from "../utilities/UserFlags"
-import {ConnectionManager} from "../state/ConnectionManager"
 import {AvatarHelper} from "../utilities/AvatarHelper"
-import {ProfileManager} from "../state/ProfileManager";
 import {HumanBotSplit} from "../utilities/HumanBotSplit";
-import {SettingsManager} from "../state/SettingsManager";
+import {User} from "@knightsofglory/warlibrary/lib/state/UserManager";
+import {Channel} from "@knightsofglory/warlibrary/lib/state/ChannelManager";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 const draw = (label: string, users: User[]) => {
     if (users.length == 0) return
@@ -43,19 +41,19 @@ export default function Users() {
     const [users, setUsers] = useState<User[]>([])
 
     useEffect(() => {
-        ChannelManager.subscribeCurrent((newChannel: Channel) => setChannel(newChannel))
-        UserManager.subscribe((newUsers) => setUsers([...newUsers]))
-        ConnectionManager.subscribeConnected((isConnected) => {
+        References.channelManager.subscribe("current", (newChannel: Channel) => setChannel(newChannel))
+        References.userManager.subscribe((newUsers) => setUsers([...newUsers]))
+        References.connectionManager.subscribe("connected", (isConnected) => {
             if (!isConnected) setChannel(null)
         })
     }, [])
 
     const grouped = () => {
-        const isAdministrator = ProfileManager.getProfile().init6 ? UserFlags.Init6.isAdministrator : UserFlags.isAdministrator
-        const isOperator = ProfileManager.getProfile().init6 ? UserFlags.Init6.isOperator : UserFlags.isOperator
+        const isAdministrator = References.profileManager.getProfile().init6 ? UserFlags.Init6.isAdministrator : UserFlags.isAdministrator
+        const isOperator = References.profileManager.getProfile().init6 ? UserFlags.Init6.isOperator : UserFlags.isOperator
 
         HumanBotSplit.update(users.filter((u) => u && u.name))
-        let separateBots = SettingsManager.getSettings().separateBots
+        let separateBots = References.settingsManager.getSettings().separateBots
 
         const admins = users.filter((u) => isAdministrator(u.flags))
         const ops = users.filter((u) => isOperator(u.flags) && !isAdministrator(u.flags))

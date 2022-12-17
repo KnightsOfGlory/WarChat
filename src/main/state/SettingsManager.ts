@@ -2,7 +2,7 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import {ipcMain} from "electron";
-import {Interprocess} from "../../common/Interprocess";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export namespace SettingsManager {
 
@@ -44,16 +44,16 @@ export namespace SettingsManager {
     }
 
     function listen() {
-        ipcMain.on(Interprocess.Channels.SETTINGS, async (event, command, data) => {
+        ipcMain.on(Messages.Channels.SETTINGS, async (event, command, data) => {
             switch (command) {
-                case Interprocess.Commands.Settings.READ:
+                case Messages.Commands.Settings.READ:
                     event.reply(
-                        Interprocess.Channels.SETTINGS,
-                        Interprocess.Commands.Settings.READ,
+                        Messages.Channels.SETTINGS,
+                        Messages.Commands.Settings.READ,
                         settings
                     )
                     break
-                case Interprocess.Commands.Settings.SAVE:
+                case Messages.Commands.Settings.SAVE:
                     settings = data
                     save()
                     break

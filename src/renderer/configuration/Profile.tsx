@@ -11,16 +11,16 @@ import {Checkbox, FormControlLabel, FormGroup, ListItem, ListItemButton} from "@
 import ListItemIcon from "@mui/material/ListItemIcon"
 import BadgeIcon from "@mui/icons-material/Badge"
 import ListItemText from "@mui/material/ListItemText"
-import {ProfileManager} from "../state/ProfileManager"
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export default function Profile() {
     const [open, setOpen] = useState(false)
-    const [server, setServer] = useState(ProfileManager.getProfile().server)
-    const [username, setUsername] = useState(ProfileManager.getProfile().username)
-    const [password, setPassword] = useState(ProfileManager.getProfile().password)
-    const [home, setHome] = useState(ProfileManager.getProfile().home)
-    const [init6, setInit6] = useState(ProfileManager.getProfile().init6)
+    const [server, setServer] = useState(References.profileManager.getProfile().server)
+    const [username, setUsername] = useState(References.profileManager.getProfile().username)
+    const [password, setPassword] = useState(References.profileManager.getProfile().password)
+    const [home, setHome] = useState(References.profileManager.getProfile().home)
+    const [init6, setInit6] = useState(References.profileManager.getProfile().init6)
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -30,7 +30,7 @@ export default function Profile() {
         setOpen(false)
     }
     const handleSave = () => {
-        ProfileManager.setProfile({
+        References.profileManager.setProfile({
             server: server,
             username: username,
             password: password,

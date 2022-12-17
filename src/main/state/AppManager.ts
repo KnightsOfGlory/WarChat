@@ -1,10 +1,10 @@
 import {ipcMain} from "electron";
 import {mainWindow} from "../main";
-import {Interprocess} from "../../common/Interprocess";
 import os from "os";
 import path from "path";
 import fs from "fs";
 import uuidv4 from "../../renderer/utilities/Uuid";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export namespace AppManager {
 
@@ -16,16 +16,16 @@ export namespace AppManager {
     }
 
     function listen() {
-        ipcMain.on(Interprocess.Channels.APP, async (event, arg) => {
+        ipcMain.on(Messages.Channels.APP, async (event, arg) => {
             switch (arg) {
-                case Interprocess.Commands.App.START:
+                case Messages.Commands.App.START:
                     event.reply(
-                        Interprocess.Channels.APP,
-                        Interprocess.Commands.App.IDENTIFIER,
+                        Messages.Channels.APP,
+                        Messages.Commands.App.IDENTIFIER,
                         identifier
                     )
                     break
-                case Interprocess.Commands.App.QUIT:
+                case Messages.Commands.App.QUIT:
                     mainWindow?.close()
                     process.exit()
                     break

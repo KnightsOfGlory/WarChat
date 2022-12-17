@@ -1,12 +1,12 @@
 import axios from "axios";
-import {AppManager} from "../state/AppManager";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export namespace AnalyticsHelper {
 
     export function event(category: string, action: string) {
         const payload = new URLSearchParams({
             v: "1",
-            cid: AppManager.getIdentifier(),
+            cid: References.appManager.getIdentifier(),
             tid: 'UA-20901685-2',
             t: 'event',
             ec: category,

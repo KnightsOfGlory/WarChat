@@ -1,7 +1,7 @@
 import {ipcMain} from "electron";
 import log from "electron-log";
 import {autoUpdater, UpdateInfo} from "electron-updater";
-import {Interprocess} from "../../common/Interprocess";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export namespace AutoUpdateManager {
 
@@ -10,9 +10,9 @@ export namespace AutoUpdateManager {
     }
 
     function listen() {
-        ipcMain.on(Interprocess.Channels.UPDATER, async (event, command) => {
+        ipcMain.on(Messages.Channels.UPDATER, async (event, command) => {
             switch (command) {
-                case Interprocess.Commands.Updater.INITIALIZE:
+                case Messages.Commands.Updater.INITIALIZE:
                     log.transports.file.level = 'verbose';
                     autoUpdater.logger = log;
 
@@ -21,27 +21,27 @@ export namespace AutoUpdateManager {
                     })
                     autoUpdater.on('update-available', (info: UpdateInfo) => {
                         event.reply(
-                            Interprocess.Channels.UPDATER,
-                            Interprocess.Commands.Updater.UPDATE_AVAILABLE
+                            Messages.Channels.UPDATER,
+                            Messages.Commands.Updater.UPDATE_AVAILABLE
                         )
                     })
                     autoUpdater.on('update-not-available', (info: UpdateInfo) => {
                         event.reply(
-                            Interprocess.Channels.UPDATER,
-                            Interprocess.Commands.Updater.UPDATE_NOT_AVAILABLE
+                            Messages.Channels.UPDATER,
+                            Messages.Commands.Updater.UPDATE_NOT_AVAILABLE
                         )
                     })
                     autoUpdater.on('error', (err) => {
                         event.reply(
-                            Interprocess.Channels.UPDATER,
-                            Interprocess.Commands.Updater.ERROR,
+                            Messages.Channels.UPDATER,
+                            Messages.Commands.Updater.ERROR,
                             err
                         )
                     })
                     autoUpdater.on('update-downloaded', (info) => {
                         event.reply(
-                            Interprocess.Channels.UPDATER,
-                            Interprocess.Commands.Updater.UPDATE_DOWNLOADED
+                            Messages.Channels.UPDATER,
+                            Messages.Commands.Updater.UPDATE_DOWNLOADED
                         )
                     })
                     break;

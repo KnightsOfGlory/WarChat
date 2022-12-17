@@ -1,8 +1,8 @@
 import path from 'path';
-import {app, BrowserWindow, shell, ipcMain, ipcRenderer} from 'electron';
+import {app, BrowserWindow, shell} from 'electron';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
-import { ChatManager } from './state/ChatManager';
+import {resolveHtmlPath} from './util';
+import {ChatManager} from './state/ChatManager';
 import {ConnectionManager} from "./state/ConnectionManager";
 import {ProfileManager} from "./state/ProfileManager";
 import {AutoUpdateManager} from "./state/AutoUpdateManager";

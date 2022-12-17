@@ -1,8 +1,8 @@
 import {ipcMain} from 'electron';
 import net from "net";
 import {ProfileManager} from "./ProfileManager";
-import {Interprocess} from "../../common/Interprocess";
 import MessageBuffer from "../../renderer/utilities/MessageBuffer";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export namespace ConnectionManager {
     let connected = false
@@ -19,9 +19,9 @@ export namespace ConnectionManager {
     }
 
     function listen() {
-        ipcMain.on(Interprocess.Channels.SOCKET, async (event, arg) => {
+        ipcMain.on(Messages.Channels.SOCKET, async (event, arg) => {
             switch (arg) {
-                case Interprocess.Commands.Socket.CONNECT:
+                case Messages.Commands.Socket.CONNECT:
                     let profile = ProfileManager.getProfile()
                     client.removeAllListeners("data")
                     client.removeAllListeners("close")
@@ -51,15 +51,15 @@ export namespace ConnectionManager {
                         received.push(data)
                         while (!received.isFinished()) {
                             const message = received.handleData()
-                            event.reply(Interprocess.Channels.MESSAGES, message);
+                            event.reply(Messages.Channels.MESSAGES, message);
                         }
                     });
                     client.on("close", () => {
                         if (connected) {
                             connected = false
                             event.reply(
-                                Interprocess.Channels.SOCKET,
-                                Interprocess.Commands.Socket.DISCONNECTED
+                                Messages.Channels.SOCKET,
+                                Messages.Commands.Socket.DISCONNECTED
                             )
                         }
                     })
@@ -70,13 +70,13 @@ export namespace ConnectionManager {
                         if (!connected) {
                             connected = true
                             event.reply(
-                                Interprocess.Channels.SOCKET,
-                                Interprocess.Commands.Socket.CONNECTED
+                                Messages.Channels.SOCKET,
+                                Messages.Commands.Socket.CONNECTED
                             )
                         }
                     })
                     break;
-                case Interprocess.Commands.Socket.DISCONNECT:
+                case Messages.Commands.Socket.DISCONNECT:
                     let oldClient = client
                     client.destroy()
                     setTimeout(() => {
