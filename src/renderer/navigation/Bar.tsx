@@ -9,19 +9,24 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import Avatar from "@mui/material/Avatar"
 import HelmetTail from "../../../assets/logos/helmet-tail.png"
-import {ChatManager} from "../state/ChatManager"
-import {ConnectionManager} from "../state/ConnectionManager"
 import Hamburger from "./Hamburger"
 import {ChatHelper} from "../utilities/ChatHelper"
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export default function Bar() {
     const [connected, setConnected] = React.useState(false)
     const [busy, setBusy] = React.useState(false)
 
     useEffect(() => {
-        ConnectionManager.subscribeConnected((connected) => setConnected(connected))
-        ConnectionManager.subscribeBusy((busy) => setBusy(busy))
+        References.connectionManager.subscribe(
+            "connected",
+            (connected: boolean) => setConnected(connected)
+        )
+        References.connectionManager.subscribe(
+            "busy",
+            (busy: boolean) => setBusy(busy)
+        )
     }, [])
 
     return (
@@ -45,9 +50,9 @@ export default function Bar() {
                         edge="end"
                         onClick={() => {
                             let message = connected ? "Disconnecting..." : "Connecting..."
-                            ChatManager.add(ChatHelper.makeBotChat(message))
+                            References.chatManager.add(ChatHelper.makeBotChat(message))
                             AnalyticsHelper.event("Menu", connected ? "Disconnect" : "Connect")
-                            connected ? ConnectionManager.disconnect() : ConnectionManager.connect()
+                            connected ? References.connectionManager.disconnect() : References.connectionManager.connect()
                         }}
                         color="inherit"
                         disabled={busy}

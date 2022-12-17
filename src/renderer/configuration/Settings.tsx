@@ -10,16 +10,14 @@ import {Checkbox, FormControlLabel, FormGroup, ListItem, ListItemButton} from "@
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
-import {SettingsManager} from "../state/SettingsManager";
 import SettingsIcon from "@mui/icons-material/Settings";
-import {ChatManager} from "../state/ChatManager";
-import {UserManager} from "../state/UserManager";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export default function Settings() {
     const [open, setOpen] = useState(false)
-    const [autoReconnect, setAutoReconnect] = useState(SettingsManager.getSettings().autoReconnect)
-    const [ignoreEmotes, setIgnoreEmotes] = useState(SettingsManager.getSettings().ignoreEmotes)
-    const [separateBots, setSeparateBots] = useState(SettingsManager.getSettings().separateBots)
+    const [autoReconnect, setAutoReconnect] = useState(References.settingsManager.getSettings().autoReconnect)
+    const [ignoreEmotes, setIgnoreEmotes] = useState(References.settingsManager.getSettings().ignoreEmotes)
+    const [separateBots, setSeparateBots] = useState(References.settingsManager.getSettings().separateBots)
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -29,14 +27,14 @@ export default function Settings() {
         setOpen(false)
     }
     const handleSave = () => {
-        SettingsManager.setSettings({
+        References.settingsManager.setSettings({
             autoReconnect: autoReconnect,
             ignoreEmotes: ignoreEmotes,
             separateBots: separateBots
         })
         setOpen(false)
-        ChatManager.forceUpdate()
-        UserManager.forceUpdate()
+        References.chatManager.forceUpdate()
+        References.userManager.forceUpdate()
     }
 
     return (

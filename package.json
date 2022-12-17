@@ -1,6 +1,6 @@
 {
   "name": "warchat",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "main": "./src/main/main.ts",
   "author": "Knights of Glory",
   "license": "MIT",
@@ -19,6 +19,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@knightsofglory/warlibrary": "^0.1.0",
     "@mui/icons-material": "^5.10.14",
     "@mui/lab": "^5.0.0-alpha.108",
     "@mui/material": "^5.10.14",

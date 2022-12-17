@@ -1,29 +1,27 @@
 import {Chip, Divider, Link, ListItem, Stack, Tooltip} from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import List from '@mui/material/List'
-import {Chat, ChatManager} from '../state/ChatManager'
-import {User, UserManager} from "../state/UserManager"
 import Send from "./Send"
 import ListItemAvatar from "@mui/material/ListItemAvatar"
-import Avatar from "@mui/material/Avatar"
 import ListItemText from "@mui/material/ListItemText"
 import {ProductIcons} from "../utilities/ProductIcons"
-import {ConnectionManager} from "../state/ConnectionManager"
 import {Timestamps} from "../utilities/Timestamps"
 import Box from "@mui/material/Box"
 import {ChatHelper} from "../utilities/ChatHelper"
-import {SettingsManager} from "../state/SettingsManager";
 import {AvatarHelper} from "../utilities/AvatarHelper";
+import {Chat} from "@knightsofglory/warlibrary/lib/state/ChatManager";
+import {References} from "@knightsofglory/warlibrary/lib/References";
+import {User} from "@knightsofglory/warlibrary/lib/state/UserManager";
 
 export default function Channel() {
     const [messages, setMessages] = useState<Chat[]>([])
 
     useEffect(() => {
-        ChatManager.subscribe((newMessages: any) => {
+        References.chatManager.subscribe("chats", (newMessages: any) => {
             setMessages([...newMessages]) // force state change
         })
-        ConnectionManager.subscribeConnected((isConnected) => {
-            ChatManager.add(ChatHelper.makeBotChat(isConnected ? "Connected!" : "Disconnected!"))
+        References.connectionManager.subscribe("connected", (isConnected) => {
+            References.chatManager.add(ChatHelper.makeBotChat(isConnected ? "Connected!" : "Disconnected!"))
         })
     }, [])
 
@@ -89,7 +87,7 @@ export default function Channel() {
 
                         let icon = ProductIcons.getByClient(group[0].user.client.trim(), group[0].user.flags as string)
                         let said = group
-                            .filter((c) => !SettingsManager.getSettings().ignoreEmotes || !c.hasOwnProperty("isEmote"))
+                            .filter((c) => !References.settingsManager.getSettings().ignoreEmotes || !c.hasOwnProperty("isEmote"))
                             .map((c) => c.message)
 
                         if (said.length == 0) return
@@ -108,7 +106,8 @@ export default function Channel() {
                             </React.Fragment>)
 
                         let color = ""
-                        if (group[0].user && UserManager.getConnectedUser() && group[0].user.name == UserManager.getConnectedUser().name) {
+                        if (group[0].user && References.userManager.getConnectedUser() &&
+                            group[0].user.name == References.userManager.getConnectedUser().name) {
                             color = "success.main"
                         }
 

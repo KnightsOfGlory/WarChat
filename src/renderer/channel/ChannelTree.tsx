@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react"
 import Box from "@mui/material/Box"
 import {
-    Button, Collapse,
+    Button,
+    Collapse,
     Dialog,
     DialogActions,
     DialogContent,
@@ -15,14 +16,14 @@ import {
 import ListItemText from "@mui/material/ListItemText"
 import List from "@mui/material/List"
 import TagIcon from '@mui/icons-material/Tag'
-import {Channel, ChannelManager} from "../state/ChannelManager"
-import {ipcRenderer} from "../utilities/IpcRenderer";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import {Channel} from "@knightsofglory/warlibrary/lib/state/ChannelManager";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export default function ChannelTree() {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
     const [wait, setWait] = useState(false)
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [joining, setJoining] = useState("")
@@ -31,8 +32,8 @@ export default function ChannelTree() {
     const [channels, setChannels] = useState<Channel[]>([])
 
     useEffect(() => {
-        ChannelManager.subscribeCurrent((newChannel: Channel) => setCurrentChannel(newChannel))
-        ChannelManager.subscribeList((newChannels: Channel[]) => setChannels([...newChannels]))
+        References.channelManager.subscribe("current", (newChannel: Channel) => setCurrentChannel(newChannel))
+        References.channelManager.subscribe("list", (newChannels: Channel[]) => setChannels([...newChannels]))
     }, [])
 
     const joinChannel = (channel: string) => {
@@ -44,7 +45,7 @@ export default function ChannelTree() {
     const joinYes = () => {
         setWait(true)
         setTimeout(() => setWait(false), 2000)
-        ipcRenderer.sendMessage("chat", "/join " + joining)
+        References.messageBus.send("chat", "/join " + joining)
         setConfirmOpen(false)
     }
     const joinNo = () => {

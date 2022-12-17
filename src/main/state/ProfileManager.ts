@@ -2,7 +2,7 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import {ipcMain} from "electron";
-import {Interprocess} from "../../common/Interprocess";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export type Profile = {
     server: string,
@@ -58,16 +58,16 @@ export namespace ProfileManager {
     }
 
     function listen() {
-        ipcMain.on(Interprocess.Channels.PROFILE, async (event, command, data) => {
+        ipcMain.on(Messages.Channels.PROFILE, async (event, command, data) => {
             switch (command) {
-                case Interprocess.Commands.Profile.READ:
+                case Messages.Commands.Profile.READ:
                     event.reply(
-                        Interprocess.Channels.PROFILE,
-                        Interprocess.Commands.Profile.READ,
+                        Messages.Channels.PROFILE,
+                        Messages.Commands.Profile.READ,
                         profile
                     )
                     break
-                case Interprocess.Commands.Profile.SAVE:
+                case Messages.Commands.Profile.SAVE:
                     profile = data as Profile
                     save()
                     break

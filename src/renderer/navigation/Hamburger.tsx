@@ -11,28 +11,25 @@ import List from "@mui/material/List"
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import UpgradeIcon from '@mui/icons-material/Upgrade'
-import SettingsIcon from '@mui/icons-material/Settings'
-import {ChatManager} from "../state/ChatManager"
 import Profile from "../configuration/Profile"
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import {ChatHelper} from "../utilities/ChatHelper"
-import {ipcRenderer} from "../utilities/IpcRenderer";
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 import Settings from "../configuration/Settings";
-import {ConnectionManager} from "../state/ConnectionManager";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)
 
     const handleConnect = () => {
-        ChatManager.add(ChatHelper.makeBotChat("Connecting..."))
-        ConnectionManager.connect()
+        References.chatManager.add(ChatHelper.makeBotChat("Connecting..."))
+        References.connectionManager.connect()
         AnalyticsHelper.event("Menu", "Connect")
         setOpen(false)
     }
     const handleDisconnect = () => {
-        ChatManager.add(ChatHelper.makeBotChat("Disconnecting..."))
-        ConnectionManager.disconnect()
+        References.chatManager.add(ChatHelper.makeBotChat("Disconnecting..."))
+        References.connectionManager.disconnect()
         AnalyticsHelper.event("Menu", "Disconnect")
         setOpen(false)
     }
@@ -62,13 +59,13 @@ export default function Hamburger() {
                         <Profile/>
                         <Settings/>
                         {HamburgerListItem("Update", <UpgradeIcon/>, () => {
-                            ipcRenderer.sendMessage("updater", "check")
+                            References.messageBus.send("updater", "check")
                             AnalyticsHelper.event("Menu", "Update")
                         })}
                         <Divider/>
                         {HamburgerListItem("Quit", <NotInterestedIcon/>, () => {
                             AnalyticsHelper.event("Menu", "Quit")
-                            ipcRenderer.sendMessage('app', "quit")
+                            References.messageBus.send('app', "quit")
                         })}
                     </List>
                 </Box>

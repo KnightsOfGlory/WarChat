@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import {createTheme, CssBaseline, darkScrollbar, PaletteMode, ThemeProvider} from "@mui/material"
 import {grey} from "@mui/material/colors"
+import {Configuration} from "./wiring/Configuration";
 
 export const getDesignTokens = (mode: PaletteMode) => ({
     palette: {
@@ -41,6 +42,8 @@ const Root = () => {
         </ThemeProvider>
     )
 }
+
+Configuration.inject()
 
 const container = document.getElementById('root')!
 const root = createRoot(container)

@@ -1,5 +1,5 @@
-import {User} from "../state/UserManager";
 import {distance} from "fastest-levenshtein";
+import {User} from "@knightsofglory/warlibrary/lib/state/UserManager";
 
 export namespace HumanBotSplit {
 
