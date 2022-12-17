@@ -17,4 +17,17 @@ export namespace ChatHelper {
             message: message
         }
     }
+
+    export function isBanMessage(message: string) {
+        if (message.includes(" was banned by ")) return true
+        if (message.includes(" was unbanned by ")) return true
+        if (message.includes(" was kicked out of the channel by ")) return true
+    }
+
+    const antiIdles = [
+
+    ]
+    export function isAntiIdle(message: string) {
+        return false
+    }
 }
