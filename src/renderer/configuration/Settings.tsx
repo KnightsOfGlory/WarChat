@@ -16,8 +16,11 @@ import {References} from "@knightsofglory/warlibrary/lib/References";
 export default function Settings() {
     const [open, setOpen] = useState(false)
     const [autoReconnect, setAutoReconnect] = useState(References.settingsManager.getSettings().autoReconnect)
-    const [ignoreEmotes, setIgnoreEmotes] = useState(References.settingsManager.getSettings().ignoreEmotes)
     const [separateBots, setSeparateBots] = useState(References.settingsManager.getSettings().separateBots)
+    const [ignoreEmotes, setIgnoreEmotes] = useState(References.settingsManager.getSettings().ignoreEmotes)
+    const [ignoreAntiIdles, setIgnoreAntiIdles] = useState(References.settingsManager.getSettings().ignoreAntiIdles)
+    const [ignoreBots, setIgnoreBots] = useState(References.settingsManager.getSettings().ignoreBots)
+    const [ignoreBans, setIgnoreBans] = useState(References.settingsManager.getSettings().ignoreBans)
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -29,8 +32,11 @@ export default function Settings() {
     const handleSave = () => {
         References.settingsManager.setSettings({
             autoReconnect: autoReconnect,
+            separateBots: separateBots,
             ignoreEmotes: ignoreEmotes,
-            separateBots: separateBots
+            ignoreAntiIdles: ignoreAntiIdles,
+            ignoreBots: ignoreBots,
+            ignoreBans: ignoreBans
         })
         setOpen(false)
         References.chatManager.forceUpdate()
@@ -51,7 +57,7 @@ export default function Settings() {
                 <DialogTitle>Settings</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        These are global settings that set the bot's behavior.
+                        These are global settings that change the bot's behavior.
                     </DialogContentText>
                     <FormGroup>
                         <FormControlLabel
@@ -60,14 +66,29 @@ export default function Settings() {
                             checked={autoReconnect}
                         />
                         <FormControlLabel
+                            control={<Checkbox onChange={(e) => setSeparateBots(e.target.checked)} />}
+                            label="Separate Bots"
+                            checked={separateBots}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox onChange={(e) => setIgnoreBots(e.target.checked)} />}
+                            label="Ignore Bots"
+                            checked={ignoreBots}
+                        />
+                        <FormControlLabel
                             control={<Checkbox onChange={(e) => setIgnoreEmotes(e.target.checked)} />}
                             label="Ignore Emotes"
                             checked={ignoreEmotes}
                         />
                         <FormControlLabel
-                            control={<Checkbox onChange={(e) => setSeparateBots(e.target.checked)} />}
-                            label="Separate Bots"
-                            checked={separateBots}
+                            control={<Checkbox onChange={(e) => setIgnoreAntiIdles(e.target.checked)} />}
+                            label="Ignore Anti-Idles"
+                            checked={ignoreAntiIdles}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox onChange={(e) => setIgnoreBans(e.target.checked)} />}
+                            label="Ignore Ban/Kick"
+                            checked={ignoreBans}
                         />
                     </FormGroup>
                 </DialogContent>

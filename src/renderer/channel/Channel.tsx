@@ -85,9 +85,13 @@ export default function Channel() {
                             )
                         }
 
-                        let icon = ProductIcons.getByClient(group[0].user.client.trim(), group[0].user.flags as string)
                         let said = group
-                            .filter((c) => !References.settingsManager.getSettings().ignoreEmotes || !c.hasOwnProperty("isEmote"))
+                            .filter((c) =>
+                                (!References.settingsManager.getSettings().ignoreEmotes || !c.hasOwnProperty("isEmote")) &&
+                                (!References.settingsManager.getSettings().ignoreBots || !c.user.bot) &&
+                                (!References.settingsManager.getSettings().ignoreBans || !ChatHelper.isBanMessage(c.message)) &&
+                                (!References.settingsManager.getSettings().ignoreAntiIdles || !ChatHelper.isAntiIdle(c.message))
+                            )
                             .map((c) => c.message)
 
                         if (said.length == 0) return
