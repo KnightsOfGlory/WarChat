@@ -25,9 +25,10 @@ export namespace ChatHelper {
     }
 
     const antiIdles = [
-
+        "Apathy3 - Unstable and damn near unusable",
+        "Its Hammer Time :) - DC v1.2."
     ]
     export function isAntiIdle(message: string) {
-        return false
+        return antiIdles.includes(message)
     }
 }

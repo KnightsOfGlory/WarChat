@@ -34,9 +34,8 @@ export namespace ConnectionManager {
                             client.write("C1\x0D\x0A");
                             client.write("ACCT " + profile.username + "\x0D\x0A")
                             client.write("PASS " + profile.password + "\x0D\x0A")
-                            client.write("HOME Chat\x0D\x0A")
+                            client.write("HOME " + profile.home + "\x0D\x0A")
                             client.write("LOGIN\x0D\x0A")
-                            client.write("/join " + profile.home + "\x0D\x0A")
                         } else {
                             client.write("\x03\x04");
                             client.write(profile.username + "\x0D\x0A")
