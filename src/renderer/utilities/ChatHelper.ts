@@ -26,7 +26,8 @@ export namespace ChatHelper {
 
     const antiIdles = [
         "Apathy3 - Unstable and damn near unusable",
-        "Its Hammer Time :) - DC v1.2."
+        "Its Hammer Time :) - DC v1.2.",
+        ":+:~EwR 4 LyFe~:+: - Ghost 3.02"
     ]
     export function isAntiIdle(message: string) {
         return antiIdles.includes(message)

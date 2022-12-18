@@ -38,6 +38,13 @@ export default function Channel() {
                 return
             }
 
+            if ((References.settingsManager.getSettings().ignoreEmotes && message.hasOwnProperty("isEmote")) ||
+                (References.settingsManager.getSettings().ignoreBots && message.user.bot) ||
+                (References.settingsManager.getSettings().ignoreBans && ChatHelper.isBanMessage(message.message)) ||
+                (References.settingsManager.getSettings().ignoreAntiIdles && ChatHelper.isAntiIdle(message.message))) {
+                return
+            }
+
             if (message.user != null && user != null && message.user.name != user.name) {
                 groups.push(group)
                 group = []
@@ -85,14 +92,7 @@ export default function Channel() {
                             )
                         }
 
-                        let said = group
-                            .filter((c) =>
-                                (!References.settingsManager.getSettings().ignoreEmotes || !c.hasOwnProperty("isEmote")) &&
-                                (!References.settingsManager.getSettings().ignoreBots || !c.user.bot) &&
-                                (!References.settingsManager.getSettings().ignoreBans || !ChatHelper.isBanMessage(c.message)) &&
-                                (!References.settingsManager.getSettings().ignoreAntiIdles || !ChatHelper.isAntiIdle(c.message))
-                            )
-                            .map((c) => c.message)
+                        let said = group.map((c) => c.message)
 
                         if (said.length == 0) return
 
