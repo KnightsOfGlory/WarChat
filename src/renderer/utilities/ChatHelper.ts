@@ -26,10 +26,14 @@ export namespace ChatHelper {
 
     const antiIdles = [
         "Apathy3 - Unstable and damn near unusable",
+        "Apathy2 - Unstable and damn near unusable",
         "Its Hammer Time :) - DC v1.2.",
-        ":+:~EwR 4 LyFe~:+: - Ghost 3.02"
+        ":+:~EwR 4 LyFe~:+: - Ghost 3.02",
+        "-[ +|{W+ ]-[ Subaru Version 1.3.5 MoonGlade Series ]-"
     ]
     export function isAntiIdle(message: string) {
+        if (message.startsWith("starts with: is a SphtBot - Bot")) return true
+
         return antiIdles.includes(message)
     }
 }
