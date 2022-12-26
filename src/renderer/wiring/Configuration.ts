@@ -7,6 +7,7 @@ import {ConnectionManager} from "@knightsofglory/warlibrary/lib/state/Connection
 import {UserManager} from "@knightsofglory/warlibrary/lib/state/UserManager";
 import {ChannelManager} from "@knightsofglory/warlibrary/lib/state/ChannelManager";
 import {ChatManager} from "@knightsofglory/warlibrary/lib/state/ChatManager";
+import {FriendsManager} from "@knightsofglory/warlibrary/lib/state/FriendsManager";
 
 export namespace Configuration {
 
@@ -21,6 +22,7 @@ export namespace Configuration {
         References.userManager = new UserManager()
         References.channelManager = new ChannelManager()
         References.chatManager = new ChatManager()
+        References.friendsManager = new FriendsManager()
 
         References.settingsManager.initialize()
         References.profileManager.initialize()
@@ -30,5 +32,6 @@ export namespace Configuration {
         References.userManager.initialize()
         References.channelManager.initialize()
         References.chatManager.initialize()
+        References.friendsManager.initialize()
     }
 }

@@ -8,11 +8,16 @@ import BarChartIcon from '@mui/icons-material/BarChart'
 import Box from "@mui/material/Box"
 import {Divider} from "@mui/material"
 
-export default function Pages() {
+type Properties = {
+    setPage: React.Dispatch<React.SetStateAction<number>>
+}
+
+export default function Pages(properties: Properties) {
     const [value, setValue] = React.useState(0)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
+        properties.setPage(newValue)
     }
 
     const padding = {
@@ -29,7 +34,7 @@ export default function Pages() {
                 sx={{width: "150px"}}
             >
                 <Tab icon={<ChatBubbleIcon/>} label="CHANNEL" sx={padding}/>
-                <Tab disabled icon={<GroupsIcon/>} label="FRIENDS" sx={padding}/>
+                <Tab icon={<GroupsIcon/>} label="FRIENDS" sx={padding}/>
                 <Tab disabled icon={<ForumIcon/>} label="WHISPERS" sx={padding}/>
                 <Divider/>
                 <Tab disabled icon={<BarChartIcon/>} label="STATISTICS" sx={padding}/>
