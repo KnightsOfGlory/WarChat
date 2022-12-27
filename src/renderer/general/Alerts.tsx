@@ -16,7 +16,7 @@ export default function Alerts() {
             {
                 alerts.map((alert) => {
                     return (
-                        <Snackbar open={true} autoHideDuration={5000} onClose={() => AlertsManager.remove(alert)}>
+                        <Snackbar open={true} autoHideDuration={10000} onClose={() => AlertsManager.remove(alert)}>
                             <Alert onClose={() => AlertsManager.remove(alert)} severity={alert.severity}
                                    sx={{width: '100%'}}>
                                 {alert.message}

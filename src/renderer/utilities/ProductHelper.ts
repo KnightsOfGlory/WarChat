@@ -15,7 +15,7 @@ import bliz from "../../../assets/products/bliz.png"
 import {UserFlags} from "./UserFlags"
 import {References} from "@knightsofglory/warlibrary/lib/References";
 
-export namespace ProductIcons {
+export namespace ProductHelper {
 
     // (blizzard) 1001 USER gh0st 0011 [CHAT]
     // (ops)      1001 USER ~TG|{~xir|4 0012 [CHAT]
@@ -37,7 +37,7 @@ export namespace ProductIcons {
         ["[WCHT]", wcht],
     ])
 
-    export const getByClient = (client: string, flags: string) => {
+    export const getIcon = (client: string, flags: string) => {
         if (flags == "") flags = References.profileManager.getProfile().init6 ? "0" : "0000"
 
         if (UserFlags.isAdministrator(flags)) return bliz
@@ -47,5 +47,24 @@ export namespace ProductIcons {
         if (References.profileManager.getProfile().init6 && UserFlags.Init6.isOperator(flags)) return oper
 
         return icons.get(client)
+    }
+
+    let names = new Map([
+        ["[CHAT]", "Telnet"],
+        ["[D2DV]", "Diablo II"],
+        ["[D2XP]", "Diablo II: Lord of Destruction"],
+        ["[DRTL]", "Diablo"],
+        ["[DSHR]", "Diablo"],
+        ["[JSTR]", "Starcraft: Japan"],
+        ["[SEXP]", "Starcraft: Broodwar"],
+        ["[STAR]", "Starcraft"],
+        ["[SSHR]", "Starcraft"],
+        ["[W2BN]", "Warcraft II"],
+        ["[W3XP]", "Warcraft III: The Frozen Throne"],
+        ["[WAR3]", "Warcraft III"],
+    ])
+
+    export function getName(product: string) {
+        return names.get(product)
     }
 }

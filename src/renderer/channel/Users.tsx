@@ -78,9 +78,9 @@ export default function Users() {
 
     return (
         <Box sx={{ minWidth: "250px", height: "100%", paddingBottom: "0px" }}>
-            <Paper sx={{ textAlign: "center", textSize: "1.5rem", margin: "8px", paddingTop: "4px", paddingBottom: "4px", backgroundColor: "#272727" }}>
+            <Paper sx={{ fontWeight: "500", textAlign: "center", textSize: "1.5rem", margin: "8px", paddingTop: "4px", paddingBottom: "4px", backgroundColor: "#272727" }}>
                 {
-                    (channel == null ? "Disconnected" : channel.name + ` – ${users.length}`)
+                    (channel == null ? "DISCONNECTED" : "#" + channel.name + ` – ${users.length}`)
                 }
             </Paper>
             <List sx={{ paddingTop: "0px", overflowY: "overlay", height: 'calc(100vh - 64px - 58px)' }}>
