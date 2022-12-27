@@ -66,7 +66,7 @@ export default function Chat() {
     }
 
     return (
-        <Stack sx={{width: '100%'}}>
+        <Stack sx={{width: '100%', overflow: "hidden"}}>
             <List
                 sx={{
                     width: '100%',
@@ -136,16 +136,18 @@ export default function Chat() {
                             </Tooltip>
                         </span>)
 
-                        let secondary = (<span style={{fontSize: "1rem", color: "#ffffff"}}>
-                            {saying}
-                        </span>)
+                        let secondary = (
+                            <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all", fontSize: "1rem", color: "#ffffff"}}>
+                                {saying}
+                            </div>
+                        )
 
                         return (
                             <ListItem alignItems={"flex-start"} sx={{paddingTop: "0px", paddingBottom: "0px"}}>
                                 <ListItemAvatar>
                                     {AvatarHelper.getAvatar(group[0].user)}
                                 </ListItemAvatar>
-                                <ListItemText primary={primary} secondary={secondary}/>
+                                <ListItemText primary={primary} secondary={secondary} sx={{overflow: "hidden"}} disableTypography />
                             </ListItem>
                         )
                     })

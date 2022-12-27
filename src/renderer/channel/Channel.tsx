@@ -13,7 +13,7 @@ export default function Channel(properties: Properties) {
     const display = properties.hidden ? "none" : "flex"
 
     return (
-        <Box sx={{display: display, width: "100%"}}>
+        <Box sx={{display: display, width: "100%", overflow: "hidden"}}>
             <ChannelTree />
             <Divider orientation="vertical" flexItem/>
             <Chat />
