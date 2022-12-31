@@ -20,10 +20,10 @@ export namespace AvatarHelper {
                 UserFlags.isOperator(user.flags)
         let useBoring =
             !user.bot &&
-            user.client == "[CHAT]" &&
+            (user.client == "[CHAT]" || user.client == "[NONE]") &&
             !special
 
-        const size = small ? 20 : 40
+        const size = small ? 24 : 40
 
         return useBoring ? (
             <BoringAvatar

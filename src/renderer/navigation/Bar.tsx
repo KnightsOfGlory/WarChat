@@ -10,9 +10,10 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import Avatar from "@mui/material/Avatar"
 import HelmetTail from "../../../assets/logos/helmet-tail.png"
 import Hamburger from "./Hamburger"
-import {ChatHelper} from "../utilities/ChatHelper"
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 import {References} from "@knightsofglory/warlibrary/lib/References";
+import {ChatHelper} from "@knightsofglory/warlibrary/lib/utilities/ChatHelper";
+import {AvatarHelper} from "../utilities/AvatarHelper";
 
 export default function Bar() {
     const [connected, setConnected] = React.useState(false)
@@ -45,6 +46,19 @@ export default function Bar() {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         WarChat
                     </Typography>
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        color="inherit"
+                        sx={{marginRight: "4px", ...(connected ? {} : {display: "none"})}}
+                    >
+                        {AvatarHelper.getAvatar({
+                            name: References.profileManager.getProfile().username,
+                            client: "[NONE]",
+                            flags: "",
+                            bot: false
+                        }, true)}
+                    </IconButton>
                     <IconButton
                         size="large"
                         edge="end"

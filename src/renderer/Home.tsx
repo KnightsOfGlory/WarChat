@@ -7,6 +7,7 @@ import AutoUpdate from "./general/AutoUpdate"
 import Alerts from "./general/Alerts"
 import Channel from "./channel/Channel";
 import Friends from "./friends/Friends";
+import Whispers from "./whispers/Whispers";
 
 export default function Home() {
     const [page, setPage] = useState(0)
@@ -17,11 +18,12 @@ export default function Home() {
             <Stack direction="row" sx={{height: "100%"}}>
                 <Profiles />
                 <Divider orientation="vertical" flexItem/>
-                <Pages setPage={setPage} />
+                <Pages page={page} setPage={setPage} />
                 <Divider orientation="vertical" flexItem/>
                 {/* content */}
-                <Channel hidden={page != 0} />
-                <Friends hidden={page != 1} />
+                <Channel  hidden={page != 0} />
+                <Friends  hidden={page != 1} setPage={setPage} />
+                <Whispers hidden={page != 2} />
             </Stack>
             <AutoUpdate/>
             <Alerts/>

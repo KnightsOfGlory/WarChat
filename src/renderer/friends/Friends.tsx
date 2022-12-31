@@ -5,14 +5,15 @@ import Tab from "@mui/material/Tab";
 import {References} from "@knightsofglory/warlibrary/lib/References";
 import {Friend, Result} from "@knightsofglory/warlibrary/lib/state/FriendsManager";
 import FriendCard from "./FriendCard";
-import {Fab} from "@mui/material";
+import {Fab, Stack} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import Prompt from "../general/Prompt";
 import {AlertsManager} from "../state/AlertsManager";
 import Typography from "@mui/material/Typography";
 
 type Properties = {
-    hidden: boolean
+    hidden: boolean,
+    setPage: (page: number) => void
 }
 
 export default function Friends(properties: Properties) {
@@ -81,40 +82,45 @@ export default function Friends(properties: Properties) {
     }, [])
 
     return (
-        <Box sx={{position: "relative", overflowY: "scroll", height: "calc(100vh - 64px)", width: "100%", ...(properties.hidden ? {display: "none"} : {})}}>
-            <Prompt
-                open={open}
-                title={'Add a friend'}
-                description={'Enter the username of the friend you want to add'}
-                label={"ADD"}
-                setter={(u: string) => setUsername(u)}
-                yes={() => {References.friendsManager.addFriend(username); setUsername(""); setOpen(false)}}
-                no={() => {setUsername(""); setOpen(false)}}
-            />
-            <Fab color="primary" sx={{position: "absolute", bottom: "32px", right: "32px"}} onClick={() => setOpen(true)}>
+        <React.Fragment>
+            <Fab color="primary" sx={{position: "absolute", bottom: "32px", right: "48px", ...(properties.hidden ? {display: "none"} : {})}} onClick={() => setOpen(true)}>
                 <AddIcon />
             </Fab>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-                    <Tab label="All" />
-                    <Tab label="Online" />
-                    <Tab label="Offline" />
-                </Tabs>
-            </Box>
-            <Box style={{paddingBottom: "16px"}}>
-                {
-                    friends.length === 0 ? (
-                        <Typography style={{textAlign: "center", paddingTop: "64px"}}>
-                            Your friends list is currently empty!
-                        </Typography>
-                    ) :
-                    friends.map(f => {
-                        return <React.Fragment>
-                            <FriendCard friend={f} />
-                        </React.Fragment>
-                    })
-                }
-            </Box>
-        </Box>
+            <Stack style={{position: "relative", height: "calc(100vh - 64px)", width: "100%", ...(properties.hidden ? {display: "none"} : {})}}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider', width: "100%" }}>
+                    <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+                        <Tab label="All" />
+                        <Tab label="Online" />
+                        <Tab label="Offline" />
+                    </Tabs>
+                </Box>
+                <Box sx={{overflowY: "scroll"}}>
+                    <Prompt
+                        open={open}
+                        title={"Add a friend"}
+                        field={"Username"}
+                        description={"Enter the username of the friend you want to add"}
+                        label={"ADD"}
+                        setter={(u: string) => setUsername(u)}
+                        yes={() => {References.friendsManager.addFriend(username); setUsername(""); setOpen(false)}}
+                        no={() => {setUsername(""); setOpen(false)}}
+                    />
+                    <Box style={{paddingBottom: "16px"}}>
+                        {
+                            friends.length === 0 ? (
+                                    <Typography style={{textAlign: "center", paddingTop: "64px"}}>
+                                        Your friends list is currently empty!
+                                    </Typography>
+                                ) :
+                                friends.map(f => {
+                                    return <React.Fragment>
+                                        <FriendCard friend={f} setPage={properties.setPage} />
+                                    </React.Fragment>
+                                })
+                        }
+                    </Box>
+                </Box>
+            </Stack>
+        </React.Fragment>
     )
 }

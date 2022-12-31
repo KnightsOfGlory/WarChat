@@ -1,6 +1,6 @@
 import {TextField} from "@mui/material"
 import React, {useEffect} from "react"
-import {ChatHelper} from "../utilities/ChatHelper"
+import {ChatHelper} from "../../../../warlibrary/src/utilities/ChatHelper"
 import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export default function Send() {
@@ -29,6 +29,7 @@ export default function Send() {
                 }
             }}
             disabled={!connected}
-            sx={{width: "auto", margin: "16px"}}/>
+            sx={{width: "auto", margin: "16px"}}
+        />
     )
 }

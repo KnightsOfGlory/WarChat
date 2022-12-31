@@ -53,101 +53,99 @@ export default function ChannelTree() {
     }
 
     return (
-        <React.Fragment>
-            <Box sx={{width: open ? "225px" : "32px"}}>
-                <IconButton sx={{
-                                width: "32px",
-                                height: "32px",
-                                position: "relative",
-                                left: open ? "209px" : "17px",
-                                top: "calc(50vh - 64px)",
-                                zIndex: "2"
-                            }}
-                            onClick={() => setOpen(!open)}>
-                    { open ? <ChevronLeftIcon /> : <ChevronRightIcon/> }
-                </IconButton>
-                <Collapse orientation="horizontal"
-                          in={open}
-                          sx={{
-                              minWidth: open ? "225px" : "0px",
-                              height: 'calc(100vh - 64px)',
-                              position: "relative",
-                              top: "-32px",
-                              zIndex: "1"
-                          }}
-                          timeout={0}
+        <Box sx={{width: open ? "225px" : "32px"}}>
+            <IconButton sx={{
+                            width: "32px",
+                            height: "32px",
+                            position: "relative",
+                            left: open ? "209px" : "17px",
+                            top: "calc(50vh - 64px)",
+                            zIndex: "2"
+                        }}
+                        onClick={() => setOpen(!open)}>
+                { open ? <ChevronLeftIcon /> : <ChevronRightIcon/> }
+            </IconButton>
+            <Collapse orientation="horizontal"
+                      in={open}
+                      sx={{
+                          minWidth: open ? "225px" : "0px",
+                          height: 'calc(100vh - 64px)',
+                          position: "relative",
+                          top: "-32px",
+                          zIndex: "1"
+                      }}
+                      timeout={0}
+            >
+                <List
+                    sx={{width: '225px', bgcolor: 'background.paper', overflowY: "overlay", height: 'calc(100vh - 64px)'}}
+                    component="nav"
+                    subheader={<li/>}
+                    aria-labelledby="nested-list-subheader"
                 >
-                    <List
-                        sx={{width: '225px', bgcolor: 'background.paper', overflowY: "overlay", height: 'calc(100vh - 64px)'}}
-                        component="nav"
-                        subheader={<li/>}
-                        aria-labelledby="nested-list-subheader"
-                    >
-                        <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
-                            CHANNELS
-                        </ListSubheader>
-                        {
-                            channels.map((channel: Channel) => {
-                                let name = (
-                                    <div>
-                                        <div style={{
-                                            display: "inline-block",
-                                            maxWidth: "125px",
-                                            whiteSpace: "nowrap",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            paddingTop: "8px"}}>{channel.name}</div>
-                                        <div style={{
-                                            display: "inline-block",
-                                            maxWidth: "50px",
-                                            whiteSpace: "nowrap",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            paddingTop: "8px"}}>&nbsp;– {channel.users}</div>
-                                    </div>
-                                )
+                    <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                        CHANNELS
+                    </ListSubheader>
+                    {
+                        channels.map((channel: Channel) => {
+                            let name = (
+                                <div>
+                                    <div style={{
+                                        display: "inline-block",
+                                        maxWidth: "125px",
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        paddingTop: "8px"}}>{channel.name}</div>
+                                    <div style={{
+                                        display: "inline-block",
+                                        maxWidth: "50px",
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        paddingTop: "8px"}}>&nbsp;– {channel.users}</div>
+                                </div>
+                            )
 
-                                return (<ListItem key={channel.name} onClick={() => joinChannel(channel.name)} disablePadding>
-                                    <ListItemButton selected={currentChannel != null && channel.name == currentChannel.name}>
-                                        <ListItemIcon>
-                                            <TagIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText primary={name}
-                                                      sx={{marginLeft: "-24px"}}/>
-                                    </ListItemButton>
-                                </ListItem>)
-                            })
-                        }
-                        <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
-                            FAVORITES
-                        </ListSubheader>
-                        <ListItem onClick={() => joinChannel("KoG")} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <TagIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary="KoG" sx={{marginLeft: "-24px"}}/>
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                    <Dialog open={confirmOpen}>
-                        <DialogTitle>
-                            {"Join channel?"}
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                Do you want to leave your current channel and join {joining}?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={joinNo}>No</Button>
-                            <Button onClick={joinYes} autoFocus>
-                                Yes
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                </Collapse>
-            </Box>
-        </React.Fragment>
+                            return (<ListItem key={channel.name} onClick={() => joinChannel(channel.name)} disablePadding>
+                                <ListItemButton selected={currentChannel != null && channel.name == currentChannel.name}>
+                                    <ListItemIcon>
+                                        <TagIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={name}
+                                                  sx={{marginLeft: "-24px"}}/>
+                                </ListItemButton>
+                            </ListItem>)
+                        })
+                    }
+                    <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
+                        FAVORITES
+                    </ListSubheader>
+                    <ListItem onClick={() => joinChannel("KoG")} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <TagIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="KoG" sx={{marginLeft: "-24px"}}/>
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+                <Dialog open={confirmOpen}>
+                    <DialogTitle>
+                        {"Join channel?"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Do you want to leave your current channel and join {joining}?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={joinNo}>No</Button>
+                        <Button onClick={joinYes} autoFocus>
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Collapse>
+        </Box>
     )
 }

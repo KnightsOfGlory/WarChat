@@ -1,7 +1,6 @@
 import {ipcMain} from 'electron';
 import net from "net";
 import {ProfileManager} from "./ProfileManager";
-import MessageBuffer from "../../renderer/utilities/MessageBuffer";
 import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export namespace ConnectionManager {
@@ -44,14 +43,8 @@ export namespace ConnectionManager {
                         }
                     });
 
-                    let received = new MessageBuffer("\r\n")
-
                     client.on('data', function (data: string) {
-                        received.push(data)
-                        while (!received.isFinished()) {
-                            const message = received.handleData()
-                            event.reply(Messages.Channels.MESSAGES, message);
-                        }
+                        event.reply(Messages.Channels.MESSAGES, "" + data);
                     });
                     client.on("close", () => {
                         if (connected) {

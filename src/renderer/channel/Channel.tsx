@@ -1,9 +1,9 @@
 import React from "react"
 import ChannelTree from "./ChannelTree";
 import {Divider} from "@mui/material";
-import Chat from "./Chat";
 import Users from "./Users";
 import Box from "@mui/material/Box";
+import Chat from "./Chat";
 
 type Properties = {
     hidden: boolean

@@ -1,64 +1,50 @@
-import {Chip, Divider, Link, ListItem, Stack, Tooltip} from '@mui/material'
-import React, {useEffect, useState} from 'react'
-import List from '@mui/material/List'
-import Send from "./Send"
-import ListItemAvatar from "@mui/material/ListItemAvatar"
-import ListItemText from "@mui/material/ListItemText"
-import {Timestamps} from "../utilities/Timestamps"
-import Box from "@mui/material/Box"
-import {ChatHelper} from "../../../../warlibrary/src/utilities/ChatHelper"
-import {AvatarHelper} from "../utilities/AvatarHelper";
+import React, {useEffect, useState} from "react"
+import {Chip, Divider, Link, ListItem, Stack, Tooltip} from "@mui/material";
+import List from "@mui/material/List";
 import {Chat as ChatMessage} from "@knightsofglory/warlibrary/lib/state/ChatManager";
 import {References} from "@knightsofglory/warlibrary/lib/References";
 import {User} from "@knightsofglory/warlibrary/lib/state/UserManager";
 import {FriendsHelper} from "@knightsofglory/warlibrary/lib/utilities/FriendsHelper";
+import Box from "@mui/material/Box";
+import {Timestamps} from "../utilities/Timestamps";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import {AvatarHelper} from "../utilities/AvatarHelper";
+import ListItemText from "@mui/material/ListItemText";
+import Send from "./Send";
 
-export default function Chat() {
-    const [messages, setMessages] = useState<ChatMessage[]>([])
+type Properties = {
+    username: string,
+    messages: ChatMessage[]
+}
 
-    useEffect(() => {
-        References.chatManager.subscribe("chats", (newMessages: any) => {
-            setMessages([...newMessages]) // force state change
-        })
-        References.connectionManager.subscribe("connected", (isConnected) => {
-            References.chatManager.add(ChatHelper.makeBotChat(isConnected ? "Connected!" : "Disconnected!"))
-        })
-    }, [])
+export default function Chat(properties: Properties) {
 
     const grouped = () => {
         let groups: ChatMessage[][] = []
         let group: ChatMessage[] = []
-        let user: User | null = null
+        let lastUser: User | null = null
 
-        messages.forEach((message) => {
-            if (message.event == "whisper") return
-
+        References.chatManager.whispersFor(properties.username).forEach((message) => {
             if (FriendsHelper.isFriendsMessage(message.message ?? "")) {
                 return
             }
 
-            if (message.event == "channel") {
-                if (!message.channel) return
-                groups.push(group)
-                groups.push([message])
-                group = []
+            if (References.settingsManager.getSettings().ignoreBots && message.user.bot) {
                 return
             }
 
-            if ((References.settingsManager.getSettings().ignoreEmotes && message.event == "emote") ||
-                (References.settingsManager.getSettings().ignoreBots && message.user.bot) ||
-                (References.settingsManager.getSettings().ignoreBans && ChatHelper.isBanMessage(message.message ?? "")) ||
-                (References.settingsManager.getSettings().ignoreAntiIdles && ChatHelper.isAntiIdle(message.message ?? ""))) {
-                return
+            let thisUser = message.user
+            if (message.direction === "to") {
+                thisUser = References.userManager.getConnectedUser()
             }
 
-            if (message.user != null && user != null && message.user.name != user.name) {
+            if (message.user != null && lastUser != null && thisUser.name != lastUser.name) {
                 groups.push(group)
                 group = []
             }
 
             group.push(message)
-            user = message.user
+            lastUser = thisUser
         })
 
         if (group.length > 0) {
@@ -83,6 +69,11 @@ export default function Chat() {
                     grouped().reverse().filter((g) => g.length > 0).map((group) => {
                         if (group[0].user == undefined) return
                         if (group[0].user.client == undefined) return
+
+                        let thisUser = group[0].user
+                        if (group[0].direction === "to") {
+                            thisUser = References.userManager.getConnectedUser()
+                        }
 
                         if (group[0].event == "channel") {
                             return (
@@ -117,15 +108,15 @@ export default function Chat() {
                             </React.Fragment>)
 
                         let color = ""
-                        if (group[0].user && References.userManager.getConnectedUser() &&
-                            group[0].user.name == References.userManager.getConnectedUser().name) {
+                        if (thisUser && References.userManager.getConnectedUser() &&
+                            thisUser.name == References.userManager.getConnectedUser().name) {
                             color = "success.main"
                         }
 
                         let primary = (<span style={{fontSize: "0.875rem"}}>
                             <Link href={"#"} underline={"hover"}>
                                 <Box component="div" sx={{display: 'inline', color: color}}>
-                                    {group[0].user.name}
+                                    {thisUser.name}
                                 </Box>
                             </Link>
                             <Tooltip
@@ -148,7 +139,7 @@ export default function Chat() {
                         return (
                             <ListItem alignItems={"flex-start"} sx={{paddingTop: "0px", paddingBottom: "0px"}}>
                                 <ListItemAvatar>
-                                    {AvatarHelper.getAvatar(group[0].user)}
+                                    {AvatarHelper.getAvatar(thisUser)}
                                 </ListItemAvatar>
                                 <ListItemText primary={primary} secondary={secondary} sx={{overflow: "hidden"}} disableTypography />
                             </ListItem>
@@ -156,7 +147,7 @@ export default function Chat() {
                     })
                 }
             </List>
-            <Send/>
+            <Send username={properties.username} />
         </Stack>
     )
 }

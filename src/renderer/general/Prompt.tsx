@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 type Properties = {
     open: boolean,
     title: string,
+    field: string,
     description: string,
     label: string,
     setter: (value: string) => void,
@@ -27,7 +28,7 @@ export default function Prompt(properties: Properties) {
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="Username"
+                    label={properties.field}
                     fullWidth
                     variant="standard"
                     value={value}
@@ -35,7 +36,7 @@ export default function Prompt(properties: Properties) {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => {properties.no; setValue("")}}>CANCEL</Button>
+                <Button onClick={() => {properties.no(); setValue("")}}>CANCEL</Button>
                 <Button onClick={() => {properties.yes(); setValue("")}} autoFocus>
                     {properties.label}
                 </Button>

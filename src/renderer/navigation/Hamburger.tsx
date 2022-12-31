@@ -12,11 +12,11 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import UpgradeIcon from '@mui/icons-material/Upgrade'
 import Profile from "../configuration/Profile"
-import NotInterestedIcon from '@mui/icons-material/NotInterested'
-import {ChatHelper} from "../utilities/ChatHelper"
+import NotInterestedIcon from "@mui/icons-material/NotInterested"
 import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 import Settings from "../configuration/Settings";
 import {References} from "@knightsofglory/warlibrary/lib/References";
+import {ChatHelper} from "@knightsofglory/warlibrary/lib/utilities/ChatHelper";
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)

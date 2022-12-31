@@ -6,17 +6,29 @@ import GroupsIcon from '@mui/icons-material/Groups'
 import ForumIcon from '@mui/icons-material/Forum'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import Box from "@mui/material/Box"
-import {Divider} from "@mui/material"
+import {Badge, Divider} from "@mui/material"
+import {useEffect, useState} from "react";
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 type Properties = {
+    page: number,
     setPage: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function Pages(properties: Properties) {
-    const [value, setValue] = React.useState(0)
+
+    const [unread, setUnread] = useState(0)
+
+    useEffect(() => {
+        References.messageBus.onLocal(
+            "unread",
+            (count) => {
+                setUnread(count as number)
+            }
+        )
+    }, [])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue)
         properties.setPage(newValue)
     }
 
@@ -28,14 +40,14 @@ export default function Pages(properties: Properties) {
     return (
         <Box sx={{width: "150px", fontFamily: "Roboto"}}>
             <Tabs
-                value={value}
+                value={properties.page}
                 orientation="vertical"
                 onChange={handleChange}
                 sx={{width: "150px"}}
             >
                 <Tab icon={<ChatBubbleIcon/>} label="CHANNEL" sx={padding}/>
                 <Tab icon={<GroupsIcon/>} label="FRIENDS" sx={padding}/>
-                <Tab disabled icon={<ForumIcon/>} label="WHISPERS" sx={padding}/>
+                <Tab icon={<Badge badgeContent={unread} color={"error"}><ForumIcon/></Badge>} label="WHISPERS" sx={padding}/>
                 <Divider/>
                 <Tab disabled icon={<BarChartIcon/>} label="STATISTICS" sx={padding}/>
             </Tabs>
