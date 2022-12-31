@@ -8,6 +8,7 @@ import {UserManager} from "@knightsofglory/warlibrary/lib/state/UserManager";
 import {ChannelManager} from "@knightsofglory/warlibrary/lib/state/ChannelManager";
 import {ChatManager} from "@knightsofglory/warlibrary/lib/state/ChatManager";
 import {FriendsManager} from "@knightsofglory/warlibrary/lib/state/FriendsManager";
+import {MotdManager} from "@knightsofglory/warlibrary/lib/state/MotdManager";
 
 export namespace Configuration {
 
@@ -23,6 +24,9 @@ export namespace Configuration {
         References.channelManager = new ChannelManager()
         References.chatManager = new ChatManager()
         References.friendsManager = new FriendsManager()
+        References.motdManager = new MotdManager()
+
+        console.log(References.userManager)
 
         References.settingsManager.initialize()
         References.profileManager.initialize()
@@ -33,5 +37,6 @@ export namespace Configuration {
         References.channelManager.initialize()
         References.chatManager.initialize()
         References.friendsManager.initialize()
+        References.motdManager.initialize()
     }
 }
