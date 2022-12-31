@@ -21,7 +21,11 @@ export default function Send(properties: Properties) {
             }
             onKeyDown={(event) => {
                 if (event.code == "Enter" && connected) {
-                    References.messageBus.send("chat", `/w ${properties.username} ${message}`)
+                    if (properties.username == "All Friends") {
+                        References.messageBus.send("chat", `/f m ${message}`)
+                    } else {
+                        References.messageBus.send("chat", `/w ${properties.username} ${message}`)
+                    }
                     setMessage("")
                 }
             }}

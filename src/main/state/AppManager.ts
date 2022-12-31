@@ -1,4 +1,4 @@
-import {ipcMain} from "electron";
+import {ipcMain, shell} from "electron";
 import {mainWindow} from "../main";
 import os from "os";
 import path from "path";
@@ -16,7 +16,7 @@ export namespace AppManager {
     }
 
     function listen() {
-        ipcMain.on(Messages.Channels.APP, async (event, arg) => {
+        ipcMain.on(Messages.Channels.APP, async (event, arg, data) => {
             switch (arg) {
                 case Messages.Commands.App.START:
                     event.reply(
@@ -24,6 +24,9 @@ export namespace AppManager {
                         Messages.Commands.App.IDENTIFIER,
                         identifier
                     )
+                    break
+                case Messages.Commands.App.OPEN:
+                    await shell.openExternal(data)
                     break
                 case Messages.Commands.App.QUIT:
                     mainWindow?.close()

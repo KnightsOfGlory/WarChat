@@ -17,6 +17,7 @@ import {AnalyticsHelper} from "../utilities/AnalyticsHelper";
 import Settings from "../configuration/Settings";
 import {References} from "@knightsofglory/warlibrary/lib/References";
 import {ChatHelper} from "@knightsofglory/warlibrary/lib/utilities/ChatHelper";
+import SupportIcon from '@mui/icons-material/Support';
 
 export default function Hamburger() {
     const [open, setOpen] = useState(false)
@@ -63,6 +64,10 @@ export default function Hamburger() {
                             AnalyticsHelper.event("Menu", "Update")
                         })}
                         <Divider/>
+                        {HamburgerListItem("Help", <SupportIcon/>, () => {
+                            AnalyticsHelper.event("Menu", "Help")
+                            References.messageBus.send('app', "open", "https://github.com/KnightsOfGlory/WarChat/wiki/Guide")
+                        })}
                         {HamburgerListItem("Quit", <NotInterestedIcon/>, () => {
                             AnalyticsHelper.event("Menu", "Quit")
                             References.messageBus.send('app', "quit")

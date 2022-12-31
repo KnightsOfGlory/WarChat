@@ -38,7 +38,7 @@ export default function Data(properties: Properties) {
                   flexDirection: 'column-reverse'}}
         >
             {
-                data.reverse().map((l) => {
+                data.map((l) => {
                     return (
                         <React.Fragment>
                             {l}<br/>

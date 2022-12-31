@@ -36,7 +36,6 @@ export default function NewWhisper(properties: Properties) {
                     onChange={(e) => {let v = e.target.value; {setUsername(v); properties.setUsername(v)}}}
                 />
                 <TextField
-                    autoFocus
                     margin="dense"
                     label="Message"
                     fullWidth
@@ -47,7 +46,7 @@ export default function NewWhisper(properties: Properties) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => {properties.no(); setUsername(""); setMessage("")}}>CANCEL</Button>
-                <Button onClick={() => {properties.yes(); setUsername(""); setMessage("")}} autoFocus>
+                <Button onClick={() => {properties.yes(); setUsername(""); setMessage("")}}>
                     {properties.label}
                 </Button>
             </DialogActions>

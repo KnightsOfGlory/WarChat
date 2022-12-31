@@ -23,7 +23,14 @@ export default function Send() {
                 if (event.code == "Enter" && connected) {
                     References.messageBus.send("chat", message)
                     if (!message.startsWith("/") && !References.profileManager.getProfile().init6) {
-                        References.chatManager.add(ChatHelper.makeSelfChat(message))
+                        References.chatManager.add({
+                            timestamp: Date.now(),
+                            event: "talk",
+                            user: References.userManager.getConnectedUser(),
+                            direction: "from",
+                            message: message,
+                            channel: null
+                        })
                     }
                     setMessage("")
                 }

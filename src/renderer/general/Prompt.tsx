@@ -37,7 +37,7 @@ export default function Prompt(properties: Properties) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => {properties.no(); setValue("")}}>CANCEL</Button>
-                <Button onClick={() => {properties.yes(); setValue("")}} autoFocus>
+                <Button onClick={() => {properties.yes(); setValue("")}}>
                     {properties.label}
                 </Button>
             </DialogActions>

@@ -29,7 +29,6 @@ export default function Whispers(properties: Properties) {
         setUnread({...unreadGlobal})
     }
     function increment(username: string) {
-        console.log(username + " == " + selected)
         if (properties.hidden || username != selected) {
             unreadGlobal[username] = (unreadGlobal[username] || 0) + 1
             References.messageBus.sendLocal("unread", total({...unreadGlobal}))
@@ -56,7 +55,9 @@ export default function Whispers(properties: Properties) {
                 // const all = wu.all
                 const delta = wu.new
                 setMessages(References.chatManager.whispersFor(selected))
-                increment(delta.user.name)
+                if (delta.direction == "from") {
+                    increment(delta.user.name)
+                }
             }
         )
         References.messageBus.onLocal(

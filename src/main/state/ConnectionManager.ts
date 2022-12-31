@@ -44,7 +44,6 @@ export namespace ConnectionManager {
                     });
 
                     client.on('data', function (data: string) {
-                        console.log("" + data)
                         event.reply(Messages.Channels.MESSAGES, "" + data);
                     });
                     client.on("close", () => {

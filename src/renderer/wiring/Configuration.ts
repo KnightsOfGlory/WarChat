@@ -26,8 +26,6 @@ export namespace Configuration {
         References.friendsManager = new FriendsManager()
         References.motdManager = new MotdManager()
 
-        console.log(References.userManager)
-
         References.settingsManager.initialize()
         References.profileManager.initialize()
         References.appManager.initialize()

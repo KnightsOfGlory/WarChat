@@ -61,14 +61,17 @@ export default function UserTree(properties: Properties) {
                 </ListSubheader>
                 <UserItem username={"All Friends"} selected={properties.selected} setSelected={properties.setSelected} count={0} />
                 {
-                    users.filter((u) => References.friendsManager.hasFriend(u)).map((u) => {
-                        const count = properties.unread[u] || 0
-                        return <UserItem username={u}
-                                         selected={properties.selected}
-                                         setSelected={properties.setSelected}
-                                         count={count}
-                        />
-                    })
+                    users
+                        .filter((u) => References.friendsManager.hasFriend(u))
+                        .filter((u) => u != "All Friends")
+                        .map((u) => {
+                            const count = properties.unread[u] || 0
+                            return <UserItem username={u}
+                                             selected={properties.selected}
+                                             setSelected={properties.setSelected}
+                                             count={count}
+                            />
+                        })
                 }
                 <ListSubheader component="div" sx={{fontSize: "0.875rem"}}>
                     OTHERS
