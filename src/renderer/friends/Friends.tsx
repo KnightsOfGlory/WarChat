@@ -81,6 +81,14 @@ export default function Friends(properties: Properties) {
         )
     }, [])
 
+    function filtered(): Friend[] {
+        return friends.filter((f) => {
+            return tab == 0 ||
+                  (tab == 1 && f.online) ||
+                  (tab == 2 && !f.online)
+        })
+    }
+
     return (
         <React.Fragment>
             <Fab color="primary" sx={{position: "absolute", bottom: "32px", right: "48px", ...(properties.hidden ? {display: "none"} : {})}} onClick={() => setOpen(true)}>
@@ -112,7 +120,7 @@ export default function Friends(properties: Properties) {
                                         Your friends list is currently empty!
                                     </Typography>
                                 ) :
-                                friends.map(f => {
+                                filtered().map(f => {
                                     return <React.Fragment>
                                         <FriendCard friend={f} setPage={properties.setPage} />
                                     </React.Fragment>
