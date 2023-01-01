@@ -1,6 +1,6 @@
 import Bar from "./navigation/Bar"
 import {Divider, Stack} from "@mui/material"
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import Profiles from "./navigation/Profiles"
 import Pages from "./navigation/Pages"
 import AutoUpdate from "./general/AutoUpdate"
@@ -11,9 +11,20 @@ import Whispers from "./whispers/Whispers";
 import Motd from "./motd/Motd";
 import Data from "./data/Data";
 import Notice from "./general/Notice";
+import {References} from "@knightsofglory/warlibrary/lib/References";
+import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
 
 export default function Home() {
     const [page, setPage] = useState(0)
+    const [notice, setNotice] = useState("")
+
+    useEffect(() => {
+        References.messageBus.on(Messages.Channels.APP, (c, n) => {
+            if (c == Messages.Commands.App.NOTICE) {
+                setNotice(n as string)
+            }
+        })
+    }, [])
 
     return (
         <div style={{height: "100%"}}>
@@ -30,7 +41,11 @@ export default function Home() {
                 <Motd     hidden={page != 4} />
                 <Data     hidden={page != 5} />
             </Stack>
-            <Notice />
+            {
+                notice.length > 0 ?
+                <Notice setter={setNotice} notice={notice} /> :
+                null
+            }
             <AutoUpdate/>
             <Alerts/>
         </div>

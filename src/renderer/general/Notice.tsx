@@ -1,6 +1,11 @@
 import {Alert} from "@mui/material";
 
-export default function Notice() {
+type Properties = {
+    notice: string,
+    setter: (notice: string) => void
+}
+
+export default function Notice(properties: Properties) {
 
     return (
         <Alert severity="info"
@@ -12,11 +17,11 @@ export default function Notice() {
                     opacity: "1",
                     bottom: "0",
                     right: "0",
-                   margin: "16px"
-                }}
-               onClose={() => {}}
+                    margin: "16px"
+               }}
+               onClose={() => properties.setter("")}
         >
-            Happy New Year!
+            {properties.notice}
         </Alert>
     )
 }
