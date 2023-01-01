@@ -10,6 +10,7 @@ import {ProductHelper} from "../utilities/ProductHelper";
 import Confirm from "../general/Confirm";
 import {References} from "@knightsofglory/warlibrary/lib/References";
 import Prompt from "../general/Prompt";
+import ShortcutIcon from '@mui/icons-material/Shortcut';
 
 type Properties = {
     friend: Friend,
@@ -60,6 +61,15 @@ export default function FriendCard(properties: Properties) {
                 </CardContent>
                 <CardActions sx={{margin: "6px"}}>
                     <Button startIcon={<ChatBubbleIcon />} size="small" onClick={() => setWhisper(true)}>Whisper</Button>
+                    {
+                        friend.online ?
+                        <Button startIcon={<ShortcutIcon />} size="small" onClick={() => {
+                            References.messageBus.send("chat", `/join ${friend.channel}`)
+                            properties.setPage(0)
+                        }}>
+                            Join
+                        </Button> : null
+                    }
                     <Button startIcon={<DeleteIcon />} size="small" onClick={() => setOpen(true)}>Remove</Button>
                 </CardActions>
             </Card>
