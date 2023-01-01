@@ -75,6 +75,8 @@ export default function Chat(properties: Properties) {
                             thisUser = References.userManager.getConnectedUser()
                         }
 
+                        if (!thisUser || !thisUser.name) return
+
                         if (group[0].event == "channel") {
                             return (
                                 <Divider sx={{
