@@ -8,10 +8,12 @@ import {ProfileManager} from "./state/ProfileManager";
 import {AutoUpdateManager} from "./state/AutoUpdateManager";
 import {AppManager} from "./state/AppManager";
 import {SettingsManager} from "./state/SettingsManager";
+import {NoticeManager} from "./state/NoticeManager";
 
 AppManager.initialize()
 AutoUpdateManager.initialize()
 ConnectionManager.initialize()
+NoticeManager.initialize()
 ChatManager.initialize()
 ProfileManager.initialize()
 SettingsManager.initialize()

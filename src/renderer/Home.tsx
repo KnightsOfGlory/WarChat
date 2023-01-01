@@ -10,6 +10,7 @@ import Friends from "./friends/Friends";
 import Whispers from "./whispers/Whispers";
 import Motd from "./motd/Motd";
 import Data from "./data/Data";
+import Notice from "./general/Notice";
 
 export default function Home() {
     const [page, setPage] = useState(0)
@@ -29,6 +30,7 @@ export default function Home() {
                 <Motd     hidden={page != 4} />
                 <Data     hidden={page != 5} />
             </Stack>
+            <Notice />
             <AutoUpdate/>
             <Alerts/>
         </div>
