@@ -6,12 +6,12 @@ import ListItemAvatar from "@mui/material/ListItemAvatar"
 import ListItemText from "@mui/material/ListItemText"
 import {Timestamps} from "../utilities/Timestamps"
 import Box from "@mui/material/Box"
-import {ChatHelper} from "../../../../warlibrary/src/utilities/ChatHelper"
 import {AvatarHelper} from "../utilities/AvatarHelper";
 import {Chat as ChatMessage} from "@knightsofglory/warlibrary/lib/state/ChatManager";
 import {References} from "@knightsofglory/warlibrary/lib/References";
 import {User} from "@knightsofglory/warlibrary/lib/state/UserManager";
 import {FriendsHelper} from "@knightsofglory/warlibrary/lib/utilities/FriendsHelper";
+import {ChatHelper} from "@knightsofglory/warlibrary/lib/utilities/ChatHelper";
 
 export default function Chat() {
     const [messages, setMessages] = useState<ChatMessage[]>([])
