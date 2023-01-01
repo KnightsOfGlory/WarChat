@@ -1270,9 +1270,9 @@
     "@jridgewell/sourcemap-codec" "1.4.14"
 
 "@knightsofglory/warlibrary@^0.3.0":
-  version "0.3.21"
-  resolved "https://registry.yarnpkg.com/@knightsofglory/warlibrary/-/warlibrary-0.3.21.tgz#a031981afe6f88bbae57b6119f4369938a7b60c6"
-  integrity sha512-KPcK/lhCGyhUXbY0sybYiDj0nvV6sPKayiQhHPCBTvMnEE5uqY4v0WKo/g4e3hI8RRe+pVVFgONhAnCA37aBOg==
+  version "0.3.26"
+  resolved "https://registry.yarnpkg.com/@knightsofglory/warlibrary/-/warlibrary-0.3.26.tgz#91baf4d8370536c12d8690f57b76297ddfd049e8"
+  integrity sha512-b04a4xi7YOoWR5r1xHFed5egu94gr7fo+uhiQL+FhytvEW/T92azmIkhelP015dnE6gtm6Nk2FUIZGxwCVJH1g==
 
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"

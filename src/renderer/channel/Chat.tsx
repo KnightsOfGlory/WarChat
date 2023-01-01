@@ -107,10 +107,22 @@ export default function Chat() {
                             <React.Fragment>
                                 {
                                     said.map((message) => {
+                                        if (message == null) return null
+
+                                        let style: {} = {fontFamily: "Roboto"}
+                                        if ((message.startsWith("Listing ") && message.endsWith(" channels:")) ||
+                                            ((message.match(/\| /g) || []).length == 3)) {
+                                            style = {
+                                                fontFamily: "Roboto Mono",
+                                                fontSize: "0.8rem",
+                                                whiteSpace: "pre-wrap"
+                                            }
+                                        }
+
                                         return (
-                                            <React.Fragment>
+                                            <Box sx={style}>
                                                 {message}<br/>
-                                            </React.Fragment>
+                                            </Box>
                                         )
                                     })
                                 }

@@ -21,7 +21,8 @@ export default function Send() {
             }
             onKeyDown={(event) => {
                 if (event.code == "Enter" && connected) {
-                    References.messageBus.send("chat", message)
+                    // References.messageBus.send("chat", message)
+                    References.chatManager.send(message)
                     if (!message.startsWith("/") && !References.profileManager.getProfile().init6) {
                         References.chatManager.add({
                             timestamp: Date.now(),
