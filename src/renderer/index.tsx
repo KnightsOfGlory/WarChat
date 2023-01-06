@@ -46,15 +46,14 @@ const Root = () => {
 }
 
 Configuration.inject()
+
 Sentry.init({
-    dsn: "https://fe2a46d485b04e8691f0bf496cc44646@o4504454868369408.ingest.sentry.io/4504454870728704",
-    initialScope: {
-        user: {
-            id: References.appManager.getIdentifier(),
-            username: References.profileManager.getProfile().username
-        },
-    },
+    dsn: "https://fe2a46d485b04e8691f0bf496cc44646@o4504454868369408.ingest.sentry.io/4504454870728704"
 });
+Sentry.setUser({
+    id: References.appManager.getIdentifier(),
+    username: References.profileManager.getProfile().username
+})
 
 const container = document.getElementById('root')!
 const root = createRoot(container)

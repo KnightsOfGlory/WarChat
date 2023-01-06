@@ -11,10 +11,6 @@ import {SettingsManager} from "./state/SettingsManager";
 import {NoticeManager} from "./state/NoticeManager";
 import * as Sentry from "@sentry/electron";
 
-Sentry.init({
-    dsn: "https://fe2a46d485b04e8691f0bf496cc44646@o4504454868369408.ingest.sentry.io/4504454870728704"
-});
-
 AppManager.initialize()
 AutoUpdateManager.initialize()
 ConnectionManager.initialize()
@@ -22,6 +18,14 @@ NoticeManager.initialize()
 ChatManager.initialize()
 ProfileManager.initialize()
 SettingsManager.initialize()
+
+Sentry.init({
+    dsn: "https://fe2a46d485b04e8691f0bf496cc44646@o4504454868369408.ingest.sentry.io/4504454870728704"
+});
+Sentry.setUser({
+    id: AppManager.getIdentifier(),
+    username: ProfileManager.getProfile().username
+})
 
 export let mainWindow: BrowserWindow | null = null;
 

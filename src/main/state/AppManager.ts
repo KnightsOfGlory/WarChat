@@ -15,6 +15,10 @@ export namespace AppManager {
         ensureIdentifier()
     }
 
+    export function getIdentifier(): string {
+        return identifier
+    }
+
     function listen() {
         ipcMain.on(Messages.Channels.APP, async (event, arg, data) => {
             switch (arg) {
