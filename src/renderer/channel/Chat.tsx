@@ -20,9 +20,6 @@ export default function Chat() {
         References.chatManager.subscribe("chats", (newMessages: any) => {
             setMessages([...newMessages]) // force state change
         })
-        References.connectionManager.subscribe("connected", (isConnected) => {
-            References.chatManager.add(ChatHelper.makeBotChat(isConnected ? "Connected!" : "Disconnected!"))
-        })
     }, [])
 
     const grouped = () => {

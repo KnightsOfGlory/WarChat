@@ -13,7 +13,7 @@ export default function App() {
             Messages.Channels.APP,
             Messages.Commands.App.START
         )
-        setInterval(() => AnalyticsHelper.event("App", "Live"), 1000*60*5)
+        setInterval(() => AnalyticsHelper.event("App", "Live"), 60*1000)
     }, [])
 
     return (
