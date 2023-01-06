@@ -9,8 +9,6 @@ Sentry.init({
     dsn: "https://fe2a46d485b04e8691f0bf496cc44646@o4504454868369408.ingest.sentry.io/4504454870728704"
 });
 
-setTimeout(() => { throw new Error("Exception Test") }, 1000)
-
 export const getDesignTokens = (mode: PaletteMode) => ({
     palette: {
         mode: 'dark',
