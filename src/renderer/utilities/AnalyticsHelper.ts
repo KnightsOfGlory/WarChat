@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {References} from "@knightsofglory/warlibrary/lib/References";
+import {AlertsManager, WarChatAlert} from "../state/AlertsManager";
 
 export namespace AnalyticsHelper {
 
@@ -12,6 +13,32 @@ export namespace AnalyticsHelper {
             ec: category,
             ea: action
         }).toString();
-        axios.post('https://google-analytics.com/collect', payload);
+
+        try {
+            axios.post('https://google-analytics.com/collect', payload)
+                 .catch((e) => {
+                     AlertsManager.add({
+                         severity: "error",
+                         message: e.message
+                     } as WarChatAlert)
+                 })
+        } catch (e: unknown) {
+            if (typeof e === "string") {
+                AlertsManager.add({
+                    severity: "error",
+                    message: e
+                } as WarChatAlert)
+            } else if (e instanceof Error) {
+                AlertsManager.add({
+                    severity: "error",
+                    message: e.message
+                } as WarChatAlert)
+            } else if (e instanceof AxiosError) {
+                AlertsManager.add({
+                    severity: "error",
+                    message: e.message
+                } as WarChatAlert)
+            }
+        }
     }
 }

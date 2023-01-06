@@ -3,6 +3,8 @@ import os from "os";
 import path from "path";
 import fs from "fs";
 import {Messages} from "@knightsofglory/warlibrary/lib/common/Messages";
+import axios from "axios";
+import {AlertsManager, WarChatAlert} from "../../renderer/state/AlertsManager";
 
 export namespace NoticeManager {
 
@@ -35,14 +37,17 @@ export namespace NoticeManager {
             port: 443,
             path: '/KnightsOfGlory/WarChat/main/data/notices.json'
         })
-        request.on('response', (response) => {
-            response.on('data', (chunk) => {
-                notices = JSON.parse(chunk.toString())
-                handle()
+
+        try {
+            request.on('response', (response) => {
+                response.on('data', (chunk) => {
+                    notices = JSON.parse(chunk.toString())
+                    handle()
+                });
             });
-        });
-        request.setHeader('Content-Type', 'application/json');
-        request.end();
+            request.setHeader('Content-Type', 'application/json');
+            request.end();
+        } catch (e: unknown) {}
     }
 
     function handle() {
