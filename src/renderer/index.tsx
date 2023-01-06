@@ -4,10 +4,7 @@ import {createTheme, CssBaseline, darkScrollbar, PaletteMode, ThemeProvider} fro
 import {grey} from "@mui/material/colors"
 import {Configuration} from "./wiring/Configuration";
 import * as Sentry from "@sentry/electron";
-
-Sentry.init({
-    dsn: "https://fe2a46d485b04e8691f0bf496cc44646@o4504454868369408.ingest.sentry.io/4504454870728704"
-});
+import {References} from "@knightsofglory/warlibrary/lib/References";
 
 export const getDesignTokens = (mode: PaletteMode) => ({
     palette: {
@@ -49,6 +46,15 @@ const Root = () => {
 }
 
 Configuration.inject()
+Sentry.init({
+    dsn: "https://fe2a46d485b04e8691f0bf496cc44646@o4504454868369408.ingest.sentry.io/4504454870728704",
+    initialScope: {
+        user: {
+            id: References.appManager.getIdentifier(),
+            username: References.profileManager.getProfile().username
+        },
+    },
+});
 
 const container = document.getElementById('root')!
 const root = createRoot(container)
