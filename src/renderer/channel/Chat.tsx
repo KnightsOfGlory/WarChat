@@ -7,11 +7,12 @@ import ListItemText from "@mui/material/ListItemText"
 import {Timestamps} from "../utilities/Timestamps"
 import Box from "@mui/material/Box"
 import {AvatarHelper} from "../utilities/AvatarHelper";
-import {Chat as ChatMessage} from "@knightsofglory/warlibrary/lib/state/ChatManager";
+import {Chat as ChatMessage, ToFrom} from "@knightsofglory/warlibrary/lib/state/ChatManager";
 import {References} from "@knightsofglory/warlibrary/lib/References";
 import {User} from "@knightsofglory/warlibrary/lib/state/UserManager";
 import {FriendsHelper} from "@knightsofglory/warlibrary/lib/utilities/FriendsHelper";
 import {ChatHelper} from "@knightsofglory/warlibrary/lib/utilities/ChatHelper";
+import {text} from "stream/consumers";
 
 export default function Chat() {
     const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -26,9 +27,10 @@ export default function Chat() {
         let groups: ChatMessage[][] = []
         let group: ChatMessage[] = []
         let user: User | null = null
+        let direction: ToFrom
 
         messages.forEach((message) => {
-            if (message.event == "whisper") return
+            if (message.event == "whisper" && References.settingsManager.getSettings().whisperTab) return
 
             if (FriendsHelper.isFriendsMessage(message.message ?? "")) {
                 return
@@ -49,13 +51,14 @@ export default function Chat() {
                 return
             }
 
-            if (message.user != null && user != null && message.user.name != user.name) {
+            if (message.user != null && user != null && (message.user.name != user.name || message.direction != direction)) {
                 groups.push(group)
                 group = []
             }
 
             group.push(message)
             user = message.user
+            direction = message.direction ?? "from"
         })
 
         if (group.length > 0) {
@@ -96,6 +99,11 @@ export default function Chat() {
                             )
                         }
 
+                        let thisUser = group[0].user
+                        if (group[0].direction === "to") {
+                            thisUser = References.userManager.getConnectedUser()
+                        }
+
                         let said = group.map((c) => c.message)
 
                         if (said.length == 0) return
@@ -126,15 +134,20 @@ export default function Chat() {
                             </React.Fragment>)
 
                         let color = ""
-                        if (group[0].user && References.userManager.getConnectedUser() &&
-                            group[0].user.name == References.userManager.getConnectedUser().name) {
+                        if (thisUser && References.userManager.getConnectedUser() &&
+                            thisUser.name == References.userManager.getConnectedUser().name) {
                             color = "success.main"
+                        }
+
+                        let textColor = "#ffffff"
+                        if (group[0].event == "whisper") {
+                            textColor = "#757575"
                         }
 
                         let primary = (<span style={{fontSize: "0.875rem"}}>
                             <Link href={"#"} underline={"hover"}>
                                 <Box component="div" sx={{display: 'inline', color: color}}>
-                                    {group[0].user.name}
+                                    {thisUser.name}
                                 </Box>
                             </Link>
                             <Tooltip
@@ -149,7 +162,7 @@ export default function Chat() {
                         </span>)
 
                         let secondary = (
-                            <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all", fontSize: "1rem", color: "#ffffff"}}>
+                            <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all", fontSize: "1rem", color: textColor}}>
                                 {saying}
                             </div>
                         )
@@ -157,7 +170,7 @@ export default function Chat() {
                         return (
                             <ListItem alignItems={"flex-start"} sx={{paddingTop: "0px", paddingBottom: "0px"}}>
                                 <ListItemAvatar>
-                                    {AvatarHelper.getAvatar(group[0].user)}
+                                    {AvatarHelper.getAvatar(thisUser)}
                                 </ListItemAvatar>
                                 <ListItemText primary={primary} secondary={secondary} sx={{overflow: "hidden"}} disableTypography />
                             </ListItem>

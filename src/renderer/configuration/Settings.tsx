@@ -16,6 +16,7 @@ import {References} from "@knightsofglory/warlibrary/lib/References";
 export default function Settings() {
     const [open, setOpen] = useState(false)
     const [autoReconnect, setAutoReconnect] = useState(References.settingsManager.getSettings().autoReconnect)
+    const [whisperTab, setWhisperTab] = useState(References.settingsManager.getSettings().whisperTab)
     const [separateBots, setSeparateBots] = useState(References.settingsManager.getSettings().separateBots)
     const [ignoreEmotes, setIgnoreEmotes] = useState(References.settingsManager.getSettings().ignoreEmotes)
     const [ignoreAntiIdles, setIgnoreAntiIdles] = useState(References.settingsManager.getSettings().ignoreAntiIdles)
@@ -32,6 +33,7 @@ export default function Settings() {
     const handleSave = () => {
         References.settingsManager.setSettings({
             autoReconnect: autoReconnect,
+            whisperTab: whisperTab,
             separateBots: separateBots,
             ignoreEmotes: ignoreEmotes,
             ignoreAntiIdles: ignoreAntiIdles,
@@ -64,6 +66,11 @@ export default function Settings() {
                             control={<Checkbox onChange={(e) => setAutoReconnect(e.target.checked)} />}
                             label="Automatically Reconnect"
                             checked={autoReconnect}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox onChange={(e) => setWhisperTab(e.target.checked)} />}
+                            label="Whisper Tab"
+                            checked={whisperTab}
                         />
                         <FormControlLabel
                             control={<Checkbox onChange={(e) => setSeparateBots(e.target.checked)} />}
