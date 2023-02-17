@@ -115,7 +115,7 @@ export default function Chat() {
                                         if (message == null) return null
 
                                         let style: {} = {fontFamily: "Roboto"}
-                                        if ((message.startsWith("Listing ") && message.endsWith(" channels:")) ||
+                                        if ((message.startsWith("Listing ") && (message.endsWith(" channels:") || message.endsWith(" channel:"))) ||
                                             ((message.match(/\| /g) || []).length == 3)) {
                                             style = {
                                                 fontFamily: "Roboto Mono",
