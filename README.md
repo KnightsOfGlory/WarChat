@@ -6,7 +6,6 @@
 Architectures supported: Intel x64, Intel x86, ARM64
 
 [Download (All)](https://github.com/KnightsOfGlory/WarChat/releases/download/v0.3.7/WarChat-Setup-0.3.7.exe)
->>>>>>> 29fb6691f001fd28b902826d510d3b7f1e53aa4a
 
 ## macOS
 Architectures supported: Intel, Apple Silicon
